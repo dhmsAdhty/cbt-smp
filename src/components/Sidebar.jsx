@@ -13,7 +13,7 @@ import {
     Settings01Icon
 } from 'hugeicons-react'
 
-export default function Sidebar({ activeTab, setActiveTab }) {
+export default function Sidebar({ activeTab, setActiveTab, menuItems: propMenuItems, themeColor = 'orange' }) {
     const navigate = useNavigate()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -57,7 +57,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
         }
     }
 
-    const menuItems = [
+    const defaultMenuItems = [
         { id: 'dashboard', label: 'Dashboard', icon: DashboardSquare02Icon },
         { id: 'users', label: 'Pengguna', icon: UserMultiple02Icon },
         { id: 'kelas', label: 'Kelas', icon: MeetingRoomIcon },
@@ -65,17 +65,24 @@ export default function Sidebar({ activeTab, setActiveTab }) {
         { id: 'settings', label: 'Pengaturan', icon: Settings01Icon }
     ]
 
+    const menuItems = propMenuItems || defaultMenuItems
+
     const handleMenuClick = (tabId) => {
         setActiveTab(tabId)
         setIsMobileMenuOpen(false)
     }
+
+    const isBlue = themeColor === 'blue'
 
     return (
         <>
             {/* Mobile Menu Button */}
             <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="md:hidden fixed top-4 left-4 z-50 p-3 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all duration-300 hover:scale-105"
+                className={`md:hidden fixed top-4 left-4 z-50 p-3 rounded-xl text-white shadow-lg transition-all duration-300 hover:scale-105 ${isBlue
+                    ? 'bg-gradient-to-br from-blue-500 to-blue-600 shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40'
+                    : 'bg-gradient-to-br from-orange-500 to-orange-600 shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40'
+                    }`}
                 aria-label="Toggle menu"
             >
                 {isMobileMenuOpen ? <Cancel01Icon size={24} /> : <Menu01Icon size={24} />}
@@ -94,18 +101,21 @@ export default function Sidebar({ activeTab, setActiveTab }) {
                 fixed top-0 left-0 z-40
                 w-80 h-screen
                 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl 
-                border-r border-orange-100/50 dark:border-orange-800/30 
-                shadow-2xl shadow-orange-500/10
                 transition-all duration-500 ease-in-out
                 flex flex-col
                 ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+                ${isBlue
+                    ? 'border-r border-blue-100/50 dark:border-blue-800/30 shadow-2xl shadow-blue-500/10'
+                    : 'border-r border-orange-100/50 dark:border-orange-800/30 shadow-2xl shadow-orange-500/10'
+                }
             `}>
                 <div className="p-8 flex-1 flex flex-col overflow-y-auto">
                     {/* Logo Area */}
                     <div className="flex items-center gap-4 mb-10">
                         <div>
-                            <h1 className="text-2xl font-extrabold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
-                                CBT ADMIN
+                            <h1 className={`text-2xl font-extrabold bg-gradient-to-r bg-clip-text text-transparent ${isBlue ? 'from-blue-600 to-blue-500' : 'from-orange-600 to-orange-500'
+                                }`}>
+                                CBT {isBlue ? 'GURU' : 'ADMIN'}
                             </h1>
                             <p className="text-xs text-gray-500 dark:text-gray-400">Sekolah Tahfidz AL HIKMAH</p>
                         </div>
@@ -128,8 +138,12 @@ export default function Sidebar({ activeTab, setActiveTab }) {
                                         w-full flex items-center gap-3 px-4 py-3.5 rounded-xl 
                                         transition-all duration-300 relative group
                                         ${isActive
-                                            ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
-                                            : 'hover:bg-orange-50 dark:hover:bg-gray-800/50 text-gray-700 dark:text-gray-300'
+                                            ? isBlue
+                                                ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30'
+                                                : 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
+                                            : isBlue
+                                                ? 'hover:bg-blue-50 dark:hover:bg-gray-800/50 text-gray-700 dark:text-gray-300'
+                                                : 'hover:bg-orange-50 dark:hover:bg-gray-800/50 text-gray-700 dark:text-gray-300'
                                         }
                                     `}
                                 >
