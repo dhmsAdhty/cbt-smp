@@ -33,8 +33,27 @@ export default function Sidebar({ activeTab, setActiveTab }) {
         })
 
         if (result.isConfirmed) {
-            await supabase.auth.signOut()
-            navigate('/')
+            Swal.fire({
+                title: 'Sedang Keluar...',
+                text: 'Mohon tunggu sebentar',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading()
+                },
+                background: '#1a1a1a',
+                color: '#fff'
+            })
+
+            try {
+                await supabase.auth.signOut()
+            } catch (error) {
+                console.error('Logout error:', error)
+            } finally {
+                // Pastikan selalu redirect dan tutup loading
+                Swal.close()
+                navigate('/', { replace: true })
+            }
         }
     }
 

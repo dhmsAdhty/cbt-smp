@@ -1,13 +1,44 @@
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
+import Swal from 'sweetalert2'
 
 export default function Siswa() {
     const navigate = useNavigate()
 
     const handleLogout = async () => {
-        await supabase.auth.signOut()
-        navigate('/')
+        const result = await Swal.fire({
+            title: 'Yakin ingin keluar?',
+            text: 'Anda akan kembali ke halaman login',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#16a34a', // Green for Siswa
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, Keluar',
+            cancelButtonText: 'Batal'
+        })
+
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: 'Sedang Keluar...',
+                text: 'Mohon tunggu sebentar',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                didOpen: () => {
+                    Swal.showLoading()
+                }
+            })
+
+            try {
+                await supabase.auth.signOut()
+            } catch (error) {
+                console.error('Logout error:', error)
+            } finally {
+                Swal.close()
+                navigate('/', { replace: true })
+            }
+        }
     }
+
 
     return (
         <div className="min-h-screen bg-green-50 p-6">

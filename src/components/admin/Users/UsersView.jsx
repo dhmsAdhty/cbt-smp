@@ -153,10 +153,10 @@ const UsersView = () => {
     if (isLoading) return <LoadingSpinner />
 
     return (
-        <div className="animate-fade-in-up">
+        <div className="animate-fade-in-up timer-4000">
             <div className="grid lg:grid-cols-3 gap-8">
                 {/* Form Tambah User */}
-                <GlassCard className="p-6 lg:col-span-1">
+                <GlassCard className="p-6 lg:col-span-1 ">
                     <div className="flex items-center gap-3 mb-6">
                         <h3 className="font-bold text-xl text-gray-800 dark:text-white">Tambah User Baru</h3>
                     </div>
