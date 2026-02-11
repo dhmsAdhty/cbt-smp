@@ -1,0 +1,172 @@
+import { useState, useMemo } from 'react'
+
+const UserTable = ({ users, onViewUser }) => {
+    const [searchQuery, setSearchQuery] = useState('')
+    const [currentPage, setCurrentPage] = useState(1)
+    const itemsPerPage = 10
+
+    // Filter users based on search query
+    const filteredUsers = useMemo(() => {
+        if (!searchQuery.trim()) return users
+
+        const query = searchQuery.toLowerCase()
+        return users.filter(user =>
+            user.nama?.toLowerCase().includes(query) ||
+            user.email?.toLowerCase().includes(query) ||
+            user.role?.toLowerCase().includes(query) ||
+            user.kelas?.toLowerCase().includes(query) ||
+            user.mapel?.toLowerCase().includes(query)
+        )
+    }, [users, searchQuery])
+
+    // Calculate pagination
+    const totalPages = Math.ceil(filteredUsers.length / itemsPerPage)
+    const startIndex = (currentPage - 1) * itemsPerPage
+    const endIndex = startIndex + itemsPerPage
+    const currentUsers = filteredUsers.slice(startIndex, endIndex)
+
+    // Reset to page 1 when search changes
+    const handleSearch = (value) => {
+        setSearchQuery(value)
+        setCurrentPage(1)
+    }
+
+    // Pagination controls
+    const goToPage = (page) => {
+        setCurrentPage(Math.max(1, Math.min(page, totalPages)))
+    }
+
+    return (
+        <div className="space-y-4">
+            {/* Search Bar */}
+            <div className="flex items-center gap-3">
+                <div className="relative flex-1">
+                    <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input
+                        type="text"
+                        placeholder="Cari nama, email, role, kelas, atau mapel..."
+                        value={searchQuery}
+                        onChange={(e) => handleSearch(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2.5 bg-gray-50/50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+                    />
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                    {filteredUsers.length} user{filteredUsers.length !== 1 ? 's' : ''}
+                </div>
+            </div>
+
+            {/* Table */}
+            <div className="overflow-x-auto">
+                <table className="w-full">
+                    <thead>
+                        <tr className="border-b border-gray-200 dark:border-gray-700">
+                            <th className="text-left p-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Nama</th>
+                            <th className="text-left p-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Role</th>
+                            <th className="text-left p-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Kelas/Mapel</th>
+                            <th className="text-left p-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {currentUsers.length > 0 ? (
+                            currentUsers.map((user) => (
+                                <tr key={user.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-orange-50/50 dark:hover:bg-gray-800/50 transition-colors">
+                                    <td className="p-4 text-sm text-gray-800 dark:text-white font-medium">{user.nama}</td>
+                                    <td className="p-4">
+                                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${user.role === 'admin' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400' :
+                                                user.role === 'guru' ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400' :
+                                                    'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                                            }`}>
+                                            {user.role}
+                                        </span>
+                                    </td>
+                                    <td className="p-4 text-gray-600 dark:text-gray-400">
+                                        {user.kelas || user.mapel || '-'}
+                                    </td>
+                                    <td className="p-4">
+                                        <button
+                                            onClick={() => onViewUser(user)}
+                                            className="px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg text-sm font-medium transition-all shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transform hover:-translate-y-0.5"
+                                        >
+                                            Lihat
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="4" className="p-8 text-center text-gray-500 dark:text-gray-400">
+                                    {searchQuery ? 'Tidak ada user yang sesuai dengan pencarian' : 'Belum ada user'}
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+                <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
+                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                        Menampilkan {startIndex + 1}-{Math.min(endIndex, filteredUsers.length)} dari {filteredUsers.length} user
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={() => goToPage(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-orange-100 dark:hover:bg-orange-900/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+
+                        {/* Page Numbers */}
+                        <div className="flex gap-1">
+                            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => {
+                                // Show first page, last page, current page, and pages around current
+                                if (
+                                    page === 1 ||
+                                    page === totalPages ||
+                                    (page >= currentPage - 1 && page <= currentPage + 1)
+                                ) {
+                                    return (
+                                        <button
+                                            key={page}
+                                            onClick={() => goToPage(page)}
+                                            className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${page === currentPage
+                                                    ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
+                                                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-orange-100 dark:hover:bg-orange-900/30'
+                                                }`}
+                                        >
+                                            {page}
+                                        </button>
+                                    )
+                                } else if (
+                                    page === currentPage - 2 ||
+                                    page === currentPage + 2
+                                ) {
+                                    return <span key={page} className="px-2 text-gray-400">...</span>
+                                }
+                                return null
+                            })}
+                        </div>
+
+                        <button
+                            onClick={() => goToPage(currentPage + 1)}
+                            disabled={currentPage === totalPages}
+                            className="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-orange-100 dark:hover:bg-orange-900/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            )}
+        </div>
+    )
+}
+
+export default UserTable

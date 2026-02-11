@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #f97316;
+
+  --animate-blob: blob 7s infinite;
+
+  @keyframes blob {
+    0% {
+      transform: translate(0px, 0px) scale(1);
+    }
+
+    33% {
+      transform: translate(30px, -50px) scale(1.1);
+    }
+
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+
+    100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+  }
+}
+
+@layer utilities {
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+
+  .bg-grid-orange-100\/20 {
+    background-image: linear-gradient(to right, #ffedd5 1px, transparent 1px), linear-gradient(to bottom, #ffedd5 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .bg-grid-orange-900\/10 {
+    background-image: linear-gradient(to right, #7c2d12 1px, transparent 1px), linear-gradient(to bottom, #7c2d12 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+}
