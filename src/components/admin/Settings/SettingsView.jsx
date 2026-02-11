@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '../../../lib/supabaseClient'
 import Swal from 'sweetalert2'
 import GlassCard from '../shared/GlassCard'
+import LoadingSpinner from '../shared/LoadingSpinner'
 import {
     User02Icon,
     Mail01Icon,
@@ -35,6 +36,7 @@ const SettingsView = () => {
     })
     const [isEditing, setIsEditing] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [isFetching, setIsFetching] = useState(true)
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const [isVisible, setIsVisible] = useState(false)
@@ -45,6 +47,7 @@ const SettingsView = () => {
     }, [])
 
     const fetchUserData = async () => {
+        setIsFetching(true)
         try {
             const { data: { user } } = await supabase.auth.getUser()
             if (user) {
@@ -70,6 +73,8 @@ const SettingsView = () => {
             }
         } catch (error) {
             console.error('Error fetching user data:', error)
+        } finally {
+            setIsFetching(false)
         }
     }
 
@@ -200,6 +205,10 @@ const SettingsView = () => {
     const getInitials = (name) => {
         if (!name) return 'U'
         return name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()
+    }
+
+    if (isFetching) {
+        return <LoadingSpinner />
     }
 
     return (

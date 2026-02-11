@@ -1,11 +1,42 @@
 import { supabase } from '../../../lib/supabaseClient'
 import Swal from 'sweetalert2'
 import GlassCard from '../shared/GlassCard'
-import { useState } from 'react'
+import LoadingSpinner from '../shared/LoadingSpinner'
+import { useState, useEffect } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { CheckmarkCircle02Icon } from 'hugeicons-react'
 
-const MapelView = ({ mapelList, onRefresh }) => {
+const MapelView = () => {
+    const [mapelList, setMapelList] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const [isHovering, setIsHovering] = useState(null)
+    const [isLoading, setIsLoading] = useState(true)
+
+    const fetchMapel = async () => {
+        setIsLoading(true)
+        try {
+            const { data, error } = await supabase
+                .from('mapel')
+                .select('*')
+                .order('nama_mapel', { ascending: true })
+
+            if (error) throw error
+            setMapelList(data || [])
+        } catch (error) {
+            console.error('Error fetching mapel:', error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal memuat data',
+                text: error.message
+            })
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        fetchMapel()
+    }, [])
 
     const filteredMapel = mapelList.filter(mapel =>
         mapel.nama_mapel.toLowerCase().includes(searchTerm.toLowerCase())
@@ -26,6 +57,7 @@ const MapelView = ({ mapelList, onRefresh }) => {
             inputValidator: (value) => {
                 if (!value) return 'Nama mapel harus diisi!'
                 if (value.length < 3) return 'Nama mapel minimal 3 karakter!'
+                if (value.length < 3) return 'Nama mapel minimal 3 karakter!'
                 if (mapelList.some(m => m.nama_mapel.toLowerCase() === value.toLowerCase())) {
                     return 'Mata pelajaran sudah tersedia!'
                 }
@@ -35,21 +67,33 @@ const MapelView = ({ mapelList, onRefresh }) => {
         if (namaMapel) {
             try {
                 const { error } = await supabase.from('mapel').insert({
-                    nama_mapel: namaMapel.trim(),
-                    created_at: new Date().toISOString()
+                    nama_mapel: namaMapel.trim()
                 })
 
                 if (error) throw error
 
+                const iconHtml = renderToStaticMarkup(
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ color: '#22c55e' }}>
+                            <CheckmarkCircle02Icon size={50} />
+                        </div>
+                    </div>
+                )
+
                 Swal.fire({
-                    title: 'Berhasil!',
-                    text: 'Mata pelajaran berhasil ditambahkan',
+                    html: `
+                        ${iconHtml}
+                        <h2 style="margin-top: 10px; font-weight: bold; font-size: 1.5rem; color: #fff;">Berhasil!</h2>
+                        <p style="margin-top: 5px; color: #d1d5db;">Mata pelajaran berhasil ditambahkan</p>
+                    `,
                     showConfirmButton: false,
                     timer: 1500,
                     timerProgressBar: true,
+                    background: '#1a1a1a',
                 })
 
-                if (onRefresh) onRefresh()
+                if (onRefresh) await fetchMapel()
+                else await fetchMapel()
             } catch (err) {
                 Swal.fire({
                     title: 'Error',
@@ -81,15 +125,29 @@ const MapelView = ({ mapelList, onRefresh }) => {
                 const { error } = await supabase.from('mapel').delete().eq('id', id)
                 if (error) throw error
 
+                /* Success Delete */
+                const iconHtml = renderToStaticMarkup(
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ color: '#22c55e' }}>
+                            <CheckmarkCircle02Icon size={50} />
+                        </div>
+                    </div>
+                )
+
                 Swal.fire({
-                    title: 'Terhapus!',
-                    text: 'Mata pelajaran berhasil dihapus',
+                    html: `
+                        ${iconHtml}
+                        <h2 style="margin-top: 10px; font-weight: bold; font-size: 1.5rem; color: #fff;">Terhapus!</h2>
+                        <p style="margin-top: 5px; color: #d1d5db;">Mata pelajaran berhasil dihapus</p>
+                    `,
                     showConfirmButton: false,
                     timer: 1500,
                     timerProgressBar: true,
+                    background: '#1a1a1a',
                 })
 
-                if (onRefresh) onRefresh()
+                if (onRefresh) await fetchMapel()
+                else await fetchMapel()
             } catch (err) {
                 Swal.fire({
                     icon: 'error',
@@ -103,6 +161,8 @@ const MapelView = ({ mapelList, onRefresh }) => {
             }
         }
     }
+
+    if (isLoading) return <LoadingSpinner />
 
     return (
         <div className="space-y-6">

@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import LoadingSpinner from '../shared/LoadingSpinner'
 import { supabase } from '../../../lib/supabaseClient'
 import Swal from 'sweetalert2'
 import GlassCard from '../shared/GlassCard'
@@ -7,10 +8,43 @@ import UserForm from './UserForm'
 import UserTable from './UserTable'
 import Select from '../../ui/Select'
 
-const UsersView = ({ users, kelasList, mapelList, onRefresh }) => {
+const UsersView = () => {
+    const [users, setUsers] = useState([])
+    const [kelasList, setKelasList] = useState([])
+    const [mapelList, setMapelList] = useState([])
     const [selectedUser, setSelectedUser] = useState(null)
     const [isEditing, setIsEditing] = useState(false)
     const [editData, setEditData] = useState({})
+    const [isLoading, setIsLoading] = useState(true)
+
+    const fetchData = async () => {
+        setIsLoading(true)
+        try {
+            // Fetch users, kelas, mapel
+            const { data: usersData, error: usersError } = await supabase.from('users').select('*')
+            const { data: kelasData } = await supabase.from('kelas').select('*')
+            const { data: mapelData } = await supabase.from('mapel').select('*')
+
+            if (usersError) throw usersError
+
+            setUsers(usersData || [])
+            setKelasList(kelasData || [])
+            setMapelList(mapelData || [])
+        } catch (error) {
+            console.error('Error fetching data:', error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: error.message
+            })
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        fetchData()
+    }, [])
 
     const handleViewUser = (user) => {
         setSelectedUser(user)
@@ -57,7 +91,8 @@ const UsersView = ({ users, kelasList, mapelList, onRefresh }) => {
             })
 
             handleCloseModal()
-            if (onRefresh) onRefresh()
+            await fetchData()
+            // if (onRefresh) onRefresh()
         } catch (err) {
             Swal.fire({
                 icon: 'error',
@@ -100,7 +135,8 @@ const UsersView = ({ users, kelasList, mapelList, onRefresh }) => {
                 })
 
                 handleCloseModal()
-                if (onRefresh) onRefresh()
+                await fetchData()
+                // if (onRefresh) onRefresh()
             } catch (err) {
                 Swal.fire({
                     icon: 'error',
@@ -114,6 +150,8 @@ const UsersView = ({ users, kelasList, mapelList, onRefresh }) => {
         }
     }
 
+    if (isLoading) return <LoadingSpinner />
+
     return (
         <>
             <div className="grid lg:grid-cols-3 gap-8">
@@ -123,14 +161,14 @@ const UsersView = ({ users, kelasList, mapelList, onRefresh }) => {
                         <h3 className="font-bold text-xl text-gray-800 dark:text-white">Tambah User Baru</h3>
                     </div>
 
-                    <BulkImport onSuccess={onRefresh} />
+                    <BulkImport onSuccess={fetchData} />
 
                     <div className="border-t border-gray-200 dark:border-gray-700 my-6"></div>
 
                     <UserForm
                         kelasList={kelasList}
                         mapelList={mapelList}
-                        onSuccess={onRefresh}
+                        onSuccess={fetchData}
                     />
                 </GlassCard>
 

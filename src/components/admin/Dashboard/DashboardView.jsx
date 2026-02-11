@@ -1,7 +1,12 @@
+import { useAdminData } from '../../../hooks/useAdminData'
+import LoadingSpinner from '../shared/LoadingSpinner'
 import StatCard from './StatCard'
 import RecentActivity from './RecentActivity'
 
-const DashboardView = ({ stats, users }) => {
+const DashboardView = () => {
+    const { loading, stats, dataList } = useAdminData()
+
+    if (loading) return <LoadingSpinner />
     return (
         <div className="space-y-8">
             {/* Stats Grid */}
@@ -33,7 +38,7 @@ const DashboardView = ({ stats, users }) => {
             </div>
 
             {/* Recent Activity */}
-            <RecentActivity users={users} />
+            <RecentActivity users={dataList.users} />
         </div>
     )
 }

@@ -1,11 +1,42 @@
 import { supabase } from '../../../lib/supabaseClient'
 import Swal from 'sweetalert2'
 import GlassCard from '../shared/GlassCard'
-import { useState } from 'react'
+import LoadingSpinner from '../shared/LoadingSpinner'
+import { useState, useEffect } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import { CheckmarkCircle02Icon } from 'hugeicons-react'
 
-const KelasView = ({ kelasList, onRefresh }) => {
+const KelasView = () => {
+    const [kelasList, setKelasList] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const [isHovering, setIsHovering] = useState(null)
+    const [isLoading, setIsLoading] = useState(true)
+
+    const fetchKelas = async () => {
+        setIsLoading(true)
+        try {
+            const { data, error } = await supabase
+                .from('kelas')
+                .select('*')
+                .order('nama_kelas', { ascending: true })
+
+            if (error) throw error
+            setKelasList(data || [])
+        } catch (error) {
+            console.error('Error fetching kelas:', error)
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal memuat data',
+                text: error.message
+            })
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        fetchKelas()
+    }, [])
 
     const filteredKelas = kelasList.filter(kelas =>
         kelas.nama_kelas.toLowerCase().includes(searchTerm.toLowerCase())
@@ -26,6 +57,8 @@ const KelasView = ({ kelasList, onRefresh }) => {
             inputValidator: (value) => {
                 if (!value) return 'Nama kelas harus diisi!'
                 if (value.length < 2) return 'Nama kelas minimal 2 karakter!'
+                if (value.length < 2) return 'Nama kelas minimal 2 karakter!'
+                // Check duplicate locally if needed, but DB constraint is better
                 if (kelasList.some(k => k.nama_kelas.toLowerCase() === value.toLowerCase())) {
                     return 'Kelas sudah tersedia!'
                 }
@@ -35,21 +68,34 @@ const KelasView = ({ kelasList, onRefresh }) => {
         if (namaKelas) {
             try {
                 const { error } = await supabase.from('kelas').insert({
-                    nama_kelas: namaKelas.trim(),
-                    created_at: new Date().toISOString()
+                    nama_kelas: namaKelas.trim()
                 })
 
                 if (error) throw error
 
+                const iconHtml = renderToStaticMarkup(
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ color: '#22c55e' }}>
+                            <CheckmarkCircle02Icon size={50} />
+                        </div>
+                    </div>
+                )
+
                 Swal.fire({
-                    title: 'Berhasil!',
-                    text: 'Kelas berhasil ditambahkan',
+                    // title: 'Berhasil!',
+                    html: `
+                        ${iconHtml}
+                        <h2 style="margin-top: 10px; font-weight: bold; font-size: 1.5rem; color: #fff;">Berhasil!</h2>
+                        <p style="margin-top: 5px; color: #d1d5db;">Kelas berhasil ditambahkan</p>
+                    `,
                     showConfirmButton: false,
                     timer: 1500,
                     timerProgressBar: true,
+                    background: '#1a1a1a',
                 })
 
-                if (onRefresh) onRefresh()
+                if (onRefresh) await fetchKelas()
+                else await fetchKelas()
             } catch (err) {
                 Swal.fire({
                     title: 'Error',
@@ -81,15 +127,29 @@ const KelasView = ({ kelasList, onRefresh }) => {
                 const { error } = await supabase.from('kelas').delete().eq('id', id)
                 if (error) throw error
 
+                /* Success Delete Icon */
+                const iconHtml = renderToStaticMarkup(
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+                        <div style={{ color: '#22c55e' }}>
+                            <CheckmarkCircle02Icon size={50} />
+                        </div>
+                    </div>
+                )
+
                 Swal.fire({
-                    title: 'Terhapus!',
-                    text: 'Kelas berhasil dihapus',
+                    html: `
+                        ${iconHtml}
+                        <h2 style="margin-top: 10px; font-weight: bold; font-size: 1.5rem; color: #fff;">Terhapus!</h2>
+                        <p style="margin-top: 5px; color: #d1d5db;">Kelas berhasil dihapus</p>
+                    `,
                     showConfirmButton: false,
                     timer: 1500,
                     timerProgressBar: true,
+                    background: '#1a1a1a',
                 })
 
-                if (onRefresh) onRefresh()
+                if (onRefresh) await fetchKelas()
+                else await fetchKelas()
             } catch (err) {
                 Swal.fire({
                     icon: 'error',
@@ -103,6 +163,8 @@ const KelasView = ({ kelasList, onRefresh }) => {
             }
         }
     }
+
+    if (isLoading) return <LoadingSpinner />
 
     return (
         <div className="space-y-6">

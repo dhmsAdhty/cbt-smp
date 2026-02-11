@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Sidebar from '../../components/Sidebar'
-import { useAdminData } from '../../hooks/useAdminData'
+// import { useAdminData } from '../../hooks/useAdminData' // No longer needed here
 import LoadingSpinner from '../../components/admin/shared/LoadingSpinner'
 import DashboardView from '../../components/admin/Dashboard/DashboardView'
 import UsersView from '../../components/admin/Users/UsersView'
@@ -11,7 +11,7 @@ import SettingsView from '../../components/admin/Settings/SettingsView'
 export default function Admin() {
     const [activeTab, setActiveTab] = useState('dashboard')
     const [isVisible, setIsVisible] = useState(false)
-    const { loading, stats, dataList, refetch } = useAdminData()
+    // const { loading, stats, dataList, refetch } = useAdminData() // Removed
 
     useEffect(() => {
         setIsVisible(true)
@@ -20,29 +20,22 @@ export default function Admin() {
     const renderContent = () => {
         switch (activeTab) {
             case 'dashboard':
-                return <DashboardView stats={stats} users={dataList.users} />
+                return <DashboardView />
 
             case 'users':
-                return (
-                    <UsersView
-                        users={dataList.users}
-                        kelasList={dataList.kelas}
-                        mapelList={dataList.mapel}
-                        onRefresh={refetch}
-                    />
-                )
+                return <UsersView />
 
             case 'kelas':
-                return <KelasView kelasList={dataList.kelas} onRefresh={refetch} />
+                return <KelasView />
 
             case 'mapel':
-                return <MapelView mapelList={dataList.mapel} onRefresh={refetch} />
+                return <MapelView />
 
             case 'settings':
                 return <SettingsView />
 
             default:
-                return <DashboardView stats={stats} users={dataList.users} />
+                return <DashboardView />
         }
     }
 
@@ -101,7 +94,7 @@ export default function Admin() {
                     </header>
 
                     {/* Content */}
-                    {loading ? <LoadingSpinner /> : renderContent()}
+                    {renderContent()}
                 </div>
             </main>
         </div>
