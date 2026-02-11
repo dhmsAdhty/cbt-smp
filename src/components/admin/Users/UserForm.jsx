@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { supabase } from '../../../lib/supabaseClient'
+import { supabase, supabaseUrl, supabaseKey } from '../../../lib/supabaseClient'
+import { createClient } from '@supabase/supabase-js'
 import Swal from 'sweetalert2'
 import Select from '../../ui/Select'
 
@@ -33,7 +34,12 @@ const UserForm = ({ kelasList, mapelList, onSuccess }) => {
         })
 
         try {
-            const { data: authData, error: authError } = await supabase.auth.signUp({
+            // Buat client sementara yang tidak persist session
+            const tempSupabase = createClient(supabaseUrl, supabaseKey, {
+                auth: { popups: false, persistSession: false, detectSessionInUrl: false, autoRefreshToken: false }
+            })
+
+            const { data: authData, error: authError } = await tempSupabase.auth.signUp({
                 email: formData.email,
                 password: formData.password,
                 options: {

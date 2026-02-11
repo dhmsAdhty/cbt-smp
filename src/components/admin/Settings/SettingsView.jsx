@@ -14,7 +14,12 @@ import {
     Edit02Icon,
     CheckmarkCircle02Icon,
     Cancel01Icon,
-    InformationCircleIcon
+    InformationCircleIcon,
+    Settings02Icon,
+    ComputerVideoIcon,
+    ViewOffSlashIcon,
+    Copy01Icon,
+    DashboardSquare02Icon
 } from 'hugeicons-react'
 
 const SettingsView = () => {
@@ -40,6 +45,17 @@ const SettingsView = () => {
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const [isVisible, setIsVisible] = useState(false)
+    const [activeTab, setActiveTab] = useState('profile')
+    const [securitySettings, setSecuritySettings] = useState(() => {
+        const saved = localStorage.getItem('cbt_security_settings')
+        return saved ? JSON.parse(saved) : {
+            fullscreen_mode: true,
+            prevent_tab_switch: true,
+            prevent_copy_paste: true,
+            prevent_right_click: true,
+            block_split_screen: true
+        }
+    })
 
     useEffect(() => {
         setIsVisible(true)
@@ -168,6 +184,27 @@ const SettingsView = () => {
         }
     }
 
+    const handleSecuritySave = async (e) => {
+        e.preventDefault()
+        setLoading(true)
+
+        // Simulasi saving
+        setTimeout(() => {
+            localStorage.setItem('cbt_security_settings', JSON.stringify(securitySettings))
+            setLoading(false)
+            Swal.fire({
+                icon: 'success',
+                title: 'Pengaturan Disimpan!',
+                text: 'Konfigurasi keamanan ujian berhasil diperbarui',
+                showConfirmButton: false,
+                timer: 1500,
+                background: '#1a1a1a',
+                color: '#fff',
+                iconColor: '#f97316'
+            })
+        }, 1000)
+    }
+
     const getRoleBadge = (role) => {
         const badges = {
             admin: {
@@ -213,7 +250,7 @@ const SettingsView = () => {
 
     return (
         <div className={`
-            space-y-8 transition-all duration-700
+            space-y-8 transition-all duration-700 animate-fade-in-up
             ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}
         `}>
             {/* Header Section */}
@@ -284,178 +321,398 @@ const SettingsView = () => {
                 </div>
             </GlassCard>
 
-            {/* Profile Section */}
-            <div className="space-y-6">
-                {/* Profile Information Card */}
-                <GlassCard className="p-8 bg-white dark:bg-gray-800">
-                    <div className="flex items-center justify-between mb-8">
-                        <div className="flex items-center gap-3">
-                            <div className="p-2.5 rounded-lg bg-orange-500 text-white">
-                                <User02Icon size={24} />
+            {/* Tab Navigation */}
+            <div className="flex gap-4 border-b border-gray-200 dark:border-gray-700">
+                <button
+                    onClick={() => setActiveTab('profile')}
+                    className={`
+                        pb-4 px-4 font-medium transition-all duration-300 relative
+                        ${activeTab === 'profile'
+                            ? 'text-orange-600 dark:text-orange-400'
+                            : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}
+                    `}
+                >
+                    <div className="flex items-center gap-2">
+                        <User02Icon size={20} />
+                        <span>Profil Akun</span>
+                    </div>
+                    {activeTab === 'profile' && (
+                        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-orange-500 rounded-full"></div>
+                    )}
+                </button>
+
+                <button
+                    onClick={() => setActiveTab('security')}
+                    className={`
+                        pb-4 px-4 font-medium transition-all duration-300 relative
+                        ${activeTab === 'security'
+                            ? 'text-orange-600 dark:text-orange-400'
+                            : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'}
+                    `}
+                >
+                    <div className="flex items-center gap-2">
+                        <ShieldKeyIcon size={20} />
+                        <span>Keamanan Ujian</span>
+                    </div>
+                    {activeTab === 'security' && (
+                        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-orange-500 rounded-full"></div>
+                    )}
+                </button>
+            </div>
+
+            {/* Content Section */}
+            {activeTab === 'profile' ? (
+                <div className="space-y-6 animate-fade-in-up">
+                    {/* Profile Information Card */}
+                    <GlassCard className="p-8 bg-white dark:bg-gray-800">
+                        <div className="flex items-center justify-between mb-8">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2.5 rounded-lg bg-orange-500 text-white">
+                                    <User02Icon size={24} />
+                                </div>
+                                <div>
+                                    <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+                                        Informasi Profil
+                                    </h2>
+                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                        Kelola informasi pribadi Anda
+                                    </p>
+                                </div>
                             </div>
-                            <div>
-                                <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
-                                    Informasi Profil
-                                </h2>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">
-                                    Kelola informasi pribadi Anda
-                                </p>
-                            </div>
+
+                            {!isEditing && (
+                                <button
+                                    onClick={() => setIsEditing(true)}
+                                    className="group relative px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 transition-all duration-300 transform hover:-translate-y-0.5 overflow-hidden"
+                                >
+                                    <div className="relative flex items-center gap-2">
+                                        <Edit02Icon size={18} />
+                                        <span>Edit Profil</span>
+                                    </div>
+                                </button>
+                            )}
                         </div>
 
-                        {!isEditing && (
-                            <button
-                                onClick={() => setIsEditing(true)}
-                                className="group relative px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 transition-all duration-300 transform hover:-translate-y-0.5 overflow-hidden"
-                            >
-                                <div className="relative flex items-center gap-2">
-                                    <Edit02Icon size={18} />
-                                    <span>Edit Profil</span>
-                                </div>
-                            </button>
-                        )}
-                    </div>
+                        {!isEditing ? (
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                {[
+                                    { icon: User02Icon, label: 'Nama Lengkap', value: userData.nama, color: 'orange' },
+                                    { icon: Mail01Icon, label: 'Email', value: userData.email, color: 'blue' },
+                                    { icon: UserAccountIcon, label: 'Role', value: userData.role, color: 'purple', badge: true },
+                                    { icon: LockPasswordIcon, label: 'Password', value: '••••••••', color: 'red' },
+                                    ...(userData.kelas ? [{ icon: School01Icon, label: 'Kelas', value: userData.kelas, color: 'green' }] : []),
+                                    ...(userData.mapel ? [{ icon: BookOpen02Icon, label: 'Mata Pelajaran', value: userData.mapel, color: 'emerald' }] : [])
+                                ].map((item, index) => {
+                                    const Icon = item.icon
+                                    const colors = {
+                                        orange: 'bg-orange-50 text-orange-600 border-orange-100',
+                                        blue: 'bg-blue-50 text-blue-600 border-blue-100',
+                                        purple: 'bg-purple-50 text-purple-600 border-purple-100',
+                                        red: 'bg-red-50 text-red-600 border-red-100',
+                                        green: 'bg-green-50 text-green-600 border-green-100',
+                                        emerald: 'bg-emerald-50 text-emerald-600 border-emerald-100'
+                                    }
 
-                    {!isEditing ? (
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                            {[
-                                { icon: User02Icon, label: 'Nama Lengkap', value: userData.nama, color: 'orange' },
-                                { icon: Mail01Icon, label: 'Email', value: userData.email, color: 'blue' },
-                                { icon: UserAccountIcon, label: 'Role', value: userData.role, color: 'purple', badge: true },
-                                { icon: LockPasswordIcon, label: 'Password', value: '••••••••', color: 'red' },
-                                ...(userData.kelas ? [{ icon: School01Icon, label: 'Kelas', value: userData.kelas, color: 'green' }] : []),
-                                ...(userData.mapel ? [{ icon: BookOpen02Icon, label: 'Mata Pelajaran', value: userData.mapel, color: 'emerald' }] : [])
-                            ].map((item, index) => {
-                                const Icon = item.icon
-                                const colors = {
-                                    orange: 'bg-orange-50 text-orange-600 border-orange-100',
-                                    blue: 'bg-blue-50 text-blue-600 border-blue-100',
-                                    purple: 'bg-purple-50 text-purple-600 border-purple-100',
-                                    red: 'bg-red-50 text-red-600 border-red-100',
-                                    green: 'bg-green-50 text-green-600 border-green-100',
-                                    emerald: 'bg-emerald-50 text-emerald-600 border-emerald-100'
-                                }
-
-                                return (
-                                    <div
-                                        key={index}
-                                        className="group p-5 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-orange-500 dark:hover:border-orange-500 transition-all duration-300"
-                                    >
-                                        <div className="flex items-start gap-4">
-                                            <div className={`p-3 rounded-lg border ${colors[item.color].split(' ')[2]} ${colors[item.color].split(' ')[0]}`}>
-                                                <Icon className={`w-5 h-5 ${colors[item.color].split(' ')[1]}`} />
-                                            </div>
-                                            <div className="flex-1">
-                                                <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                                    {item.label}
-                                                </p>
-                                                {item.badge ? (
-                                                    <span className={`
+                                    return (
+                                        <div
+                                            key={index}
+                                            className="group p-5 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-orange-500 dark:hover:border-orange-500 transition-all duration-300"
+                                        >
+                                            <div className="flex items-start gap-4">
+                                                <div className={`p-3 rounded-lg border ${colors[item.color].split(' ')[2]} ${colors[item.color].split(' ')[0]}`}>
+                                                    <Icon className={`w-5 h-5 ${colors[item.color].split(' ')[1]}`} />
+                                                </div>
+                                                <div className="flex-1">
+                                                    <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                                        {item.label}
+                                                    </p>
+                                                    {item.badge ? (
+                                                        <span className={`
                                                         inline-block mt-1.5 px-3 py-1.5 rounded-full text-sm font-semibold
                                                         ${getRoleBadge(item.value).bg}
                                                         ${getRoleBadge(item.value).text}
                                                         border ${getRoleBadge(item.value).border}
                                                     `}>
-                                                        {item.value?.toUpperCase()}
-                                                    </span>
-                                                ) : (
-                                                    <p className="text-lg font-semibold text-gray-800 dark:text-white mt-1">
-                                                        {item.value || '-'}
-                                                    </p>
-                                                )}
+                                                            {item.value?.toUpperCase()}
+                                                        </span>
+                                                    ) : (
+                                                        <p className="text-lg font-semibold text-gray-800 dark:text-white mt-1">
+                                                            {item.value || '-'}
+                                                        </p>
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
+                                    )
+                                })}
+                            </div>
+                        ) : (
+                            <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                            <User02Icon className="w-4 h-4 text-orange-500" />
+                                            Nama Lengkap
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={formData.nama}
+                                            onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
+                                            className="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
+                                            required
+                                        />
                                     </div>
-                                )
-                            })}
+
+                                    <div className="space-y-2">
+                                        <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                            <Mail01Icon className="w-4 h-4 text-orange-500" />
+                                            Email
+                                        </label>
+                                        <input
+                                            type="email"
+                                            value={formData.email}
+                                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                            className="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        <LockPasswordIcon className="w-4 h-4 text-orange-500" />
+                                        Password Baru
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            type={showPassword ? "text" : "password"}
+                                            value={formData.password}
+                                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                            className="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
+                                            placeholder="Kosongkan jika tidak ingin mengubah"
+                                            minLength={6}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-orange-500 transition-colors"
+                                        >
+                                            {showPassword ? '🙈' : '👁️'}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        <LockPasswordIcon className="w-4 h-4 text-orange-500" />
+                                        Konfirmasi Password
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            type={showConfirmPassword ? "text" : "password"}
+                                            value={formData.confirmPassword}
+                                            onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                                            className="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
+                                            placeholder="Konfirmasi password baru"
+                                            minLength={6}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-orange-500 transition-colors"
+                                        >
+                                            {showConfirmPassword ? '🙈' : '👁️'}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                    <button
+                                        type="submit"
+                                        disabled={loading}
+                                        className="flex-1 relative group px-6 py-3.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+                                    >
+                                        <div className="relative flex items-center justify-center gap-2">
+                                            {loading ? (
+                                                <>
+                                                    <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                    </svg>
+                                                    <span>Menyimpan...</span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <CheckmarkCircle02Icon size={20} />
+                                                    <span>Simpan Perubahan</span>
+                                                </>
+                                            )}
+                                        </div>
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            setIsEditing(false)
+                                            setFormData({
+                                                nama: userData.nama,
+                                                email: userData.email,
+                                                password: '',
+                                                confirmPassword: ''
+                                            })
+                                        }}
+                                        className="flex-1 px-6 py-3.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-0.5 border border-gray-200 dark:border-gray-700"
+                                    >
+                                        <div className="flex items-center justify-center gap-2">
+                                            <Cancel01Icon size={20} />
+                                            <span>Batal</span>
+                                        </div>
+                                    </button>
+                                </div>
+                            </form>
+                        )}
+                    </GlassCard>
+
+                    {/* Security Tips Card */}
+                    <GlassCard className="p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                        <div className="flex items-start gap-4">
+                            <div className="p-2.5 rounded-lg bg-orange-500 text-white">
+                                <InformationCircleIcon size={20} />
+                            </div>
+
+                            <div className="flex-1">
+                                <h4 className="font-bold text-gray-800 dark:text-white mb-2">
+                                    Tips Keamanan Akun
+                                </h4>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    {[
+                                        'Gunakan password yang kuat dan unik',
+                                        'Perubahan email akan memerlukan verifikasi',
+                                        'Jangan bagikan password ke siapapun',
+                                        'Ganti password secara berkala',
+                                    ].map((tip, i) => (
+                                        <div key={i} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                            <span className="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
+                                            {tip}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
-                    ) : (
-                        <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        <User02Icon className="w-4 h-4 text-orange-500" />
-                                        Nama Lengkap
+                    </GlassCard>
+                </div>
+            ) : (
+                <div className="space-y-6 animate-fade-in-up">
+                    <GlassCard className="p-8 bg-white dark:bg-gray-800">
+                        <div className="mb-8">
+                            <h2 className="text-2xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
+                                <div className="p-2.5 rounded-lg bg-red-500 text-white">
+                                    <ShieldKeyIcon size={24} />
+                                </div>
+                                Konfigurasi Anti-Curang
+                            </h2>
+                            <p className="text-gray-500 dark:text-gray-400 mt-2">
+                                Atur pembatasan untuk siswa selama ujian berlangsung
+                            </p>
+                        </div>
+
+                        <form onSubmit={handleSecuritySave} className="space-y-6">
+                            <div className="grid grid-cols-1 gap-4">
+                                {/* Toggle 1: Fullscreen */}
+                                <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-700">
+                                    <div className="flex gap-4">
+                                        <div className="mt-1 p-2 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg h-fit">
+                                            <ComputerVideoIcon size={20} />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-semibold text-gray-800 dark:text-white">Wajib Fullscreen</h3>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">Siswa wajib menggunakan mode layar penuh selama ujian</p>
+                                        </div>
+                                    </div>
+                                    <label className="relative inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked={securitySettings.fullscreen_mode}
+                                            onChange={(e) => setSecuritySettings({ ...securitySettings, fullscreen_mode: e.target.checked })}
+                                            className="sr-only peer"
+                                        />
+                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 dark:peer-focus:ring-orange-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-500"></div>
                                     </label>
-                                    <input
-                                        type="text"
-                                        value={formData.nama}
-                                        onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
-                                        className="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
-                                        required
-                                    />
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-                                        <Mail01Icon className="w-4 h-4 text-orange-500" />
-                                        Email
+                                {/* Toggle 2: Prevent Tab Switch */}
+                                <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-700">
+                                    <div className="flex gap-4">
+                                        <div className="mt-1 p-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg h-fit">
+                                            <ViewOffSlashIcon size={20} />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-semibold text-gray-800 dark:text-white">Deteksi Pindah Tab</h3>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">Otomatis deteksi jika siswa membuka tab lain atau aplikasi lain</p>
+                                        </div>
+                                    </div>
+                                    <label className="relative inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked={securitySettings.prevent_tab_switch}
+                                            onChange={(e) => setSecuritySettings({ ...securitySettings, prevent_tab_switch: e.target.checked })}
+                                            className="sr-only peer"
+                                        />
+                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 dark:peer-focus:ring-orange-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-500"></div>
                                     </label>
-                                    <input
-                                        type="email"
-                                        value={formData.email}
-                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                        className="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
-                                        required
-                                    />
+                                </div>
+
+                                {/* Toggle 3: Prevent Split Screen */}
+                                <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-700">
+                                    <div className="flex gap-4">
+                                        <div className="mt-1 p-2 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-lg h-fit">
+                                            <DashboardSquare02Icon size={20} />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-semibold text-gray-800 dark:text-white">Cegah Split Screen</h3>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">Blokir ujian jika ukuran layar terdeteksi mengecil (split screen)</p>
+                                        </div>
+                                    </div>
+                                    <label className="relative inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked={securitySettings.block_split_screen}
+                                            onChange={(e) => setSecuritySettings({ ...securitySettings, block_split_screen: e.target.checked })}
+                                            className="sr-only peer"
+                                        />
+                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 dark:peer-focus:ring-orange-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-500"></div>
+                                    </label>
+                                </div>
+
+                                {/* Toggle 4: Prevent Copy Paste */}
+                                <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/30 rounded-xl border border-gray-200 dark:border-gray-700">
+                                    <div className="flex gap-4">
+                                        <div className="mt-1 p-2 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400 rounded-lg h-fit">
+                                            <Copy01Icon size={20} />
+                                        </div>
+                                        <div>
+                                            <h3 className="font-semibold text-gray-800 dark:text-white">Blokir Copy-Paste & Klik Kanan</h3>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400">Nonaktifkan fitur copy, paste, dan klik kanan pada soal ujian</p>
+                                        </div>
+                                    </div>
+                                    <label className="relative inline-flex items-center cursor-pointer">
+                                        <input
+                                            type="checkbox"
+                                            checked={securitySettings.prevent_copy_paste}
+                                            onChange={(e) => setSecuritySettings({ ...securitySettings, prevent_copy_paste: e.target.checked })}
+                                            className="sr-only peer"
+                                        />
+                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 dark:peer-focus:ring-orange-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-500"></div>
+                                    </label>
                                 </div>
                             </div>
 
-                            <div className="space-y-2">
-                                <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    <LockPasswordIcon className="w-4 h-4 text-orange-500" />
-                                    Password Baru
-                                </label>
-                                <div className="relative">
-                                    <input
-                                        type={showPassword ? "text" : "password"}
-                                        value={formData.password}
-                                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                        className="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
-                                        placeholder="Kosongkan jika tidak ingin mengubah"
-                                        minLength={6}
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-orange-500 transition-colors"
-                                    >
-                                        {showPassword ? '🙈' : '👁️'}
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    <LockPasswordIcon className="w-4 h-4 text-orange-500" />
-                                    Konfirmasi Password
-                                </label>
-                                <div className="relative">
-                                    <input
-                                        type={showConfirmPassword ? "text" : "password"}
-                                        value={formData.confirmPassword}
-                                        onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                                        className="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
-                                        placeholder="Konfirmasi password baru"
-                                        minLength={6}
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-orange-500 transition-colors"
-                                    >
-                                        {showConfirmPassword ? '🙈' : '👁️'}
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div className="flex gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex justify-end pt-6 border-t border-gray-200 dark:border-gray-700">
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="flex-1 relative group px-6 py-3.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+                                    className="relative group px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
                                 >
-                                    <div className="relative flex items-center justify-center gap-2">
+                                    <div className="relative flex items-center gap-2">
                                         {loading ? (
                                             <>
                                                 <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -467,64 +724,20 @@ const SettingsView = () => {
                                         ) : (
                                             <>
                                                 <CheckmarkCircle02Icon size={20} />
-                                                <span>Simpan Perubahan</span>
+                                                <span>Simpan Pengaturan</span>
                                             </>
                                         )}
                                     </div>
                                 </button>
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setIsEditing(false)
-                                        setFormData({
-                                            nama: userData.nama,
-                                            email: userData.email,
-                                            password: '',
-                                            confirmPassword: ''
-                                        })
-                                    }}
-                                    className="flex-1 px-6 py-3.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-0.5 border border-gray-200 dark:border-gray-700"
-                                >
-                                    <div className="flex items-center justify-center gap-2">
-                                        <Cancel01Icon size={20} />
-                                        <span>Batal</span>
-                                    </div>
-                                </button>
                             </div>
                         </form>
-                    )}
-                </GlassCard>
-
-                {/* Security Tips Card */}
-                <GlassCard className="p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                    <div className="flex items-start gap-4">
-                        <div className="p-2.5 rounded-lg bg-orange-500 text-white">
-                            <InformationCircleIcon size={20} />
-                        </div>
-
-                        <div className="flex-1">
-                            <h4 className="font-bold text-gray-800 dark:text-white mb-2">
-                                Tips Keamanan Akun
-                            </h4>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                {[
-                                    'Gunakan password yang kuat dan unik',
-                                    'Perubahan email akan memerlukan verifikasi',
-                                    'Jangan bagikan password ke siapapun',
-                                    'Ganti password secara berkala',
-                                ].map((tip, i) => (
-                                    <div key={i} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                                        <span className="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
-                                        {tip}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </GlassCard>
-            </div>
+                    </GlassCard>
+                </div>
+            )
+            }
         </div>
     )
 }
+
 
 export default SettingsView

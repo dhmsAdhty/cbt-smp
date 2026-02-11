@@ -153,7 +153,7 @@ const UsersView = () => {
     if (isLoading) return <LoadingSpinner />
 
     return (
-        <>
+        <div className="animate-fade-in-up">
             <div className="grid lg:grid-cols-3 gap-8">
                 {/* Form Tambah User */}
                 <GlassCard className="p-6 lg:col-span-1">
@@ -189,8 +189,8 @@ const UsersView = () => {
 
             {/* Modal Detail User */}
             {selectedUser && (
-                <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={handleCloseModal}>
-                    <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+                <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in" onClick={handleCloseModal}>
+                    <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slide-up" onClick={(e) => e.stopPropagation()}>
                         {/* Header */}
                         <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-6 rounded-t-2xl">
                             <div className="flex items-center justify-between">
@@ -345,7 +345,7 @@ const UsersView = () => {
                     </div>
                 </div>
             )}
-        </>
+        </div>
     )
 }
 
