@@ -41,8 +41,6 @@ export default function Login() {
             return
         }
 
-        // Debug: cek user ID yang login
-        console.log('User ID dari Auth:', user.id)
 
         const { data: profile, error: profileError } = await supabase
             .from('users')
@@ -50,9 +48,6 @@ export default function Login() {
             .eq('id', user.id)
             .single()
 
-        // Debug: cek hasil query
-        console.log('Profile data:', profile)
-        console.log('Profile error:', profileError)
 
         if (profileError || !profile) {
             Swal.fire({

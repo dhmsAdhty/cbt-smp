@@ -469,24 +469,7 @@ export default function Guru() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 
-                      dark:from-gray-900 dark:via-gray-800 dark:to-blue-950/30 
-                      flex relative overflow-hidden">
-
-            {/* Animated Background */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-200 dark:bg-blue-900/30 
-                              rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
-                <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-300 dark:bg-blue-800/30 
-                              rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                              w-96 h-96 bg-blue-100 dark:bg-blue-900/20 rounded-full 
-                              mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-4000"></div>
-            </div>
-
-            {/* Grid Pattern */}
-            <div className="absolute inset-0 bg-grid-blue-100/20 dark:bg-grid-blue-900/10 
-                          [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+        <div className="min-h-screen bg-white dark:bg-gray-900 flex relative overflow-hidden">
 
             {/* Sidebar */}
             <Sidebar
