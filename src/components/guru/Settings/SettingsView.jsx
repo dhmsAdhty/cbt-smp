@@ -193,7 +193,7 @@ const SettingsView = () => {
         setLoading(true)
 
         try {
-            console.log('💾 Menyimpan settings:', securitySettings)
+
 
             const { data, error } = await supabase
                 .from('security_settings')
@@ -214,7 +214,7 @@ const SettingsView = () => {
                 throw error
             }
 
-            console.log('✅ Berhasil disimpan ke database:', data)
+
 
             Swal.fire({
                 icon: 'success',

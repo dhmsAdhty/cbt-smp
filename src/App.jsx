@@ -14,6 +14,10 @@ import HasilUjian from './pages/dashboard/siswa/HasilUjian'
 // Import Satpam
 import ProtectedRoute from './components/ProtectedRoute'
 
+// Import Error Handling
+import NotFound from './pages/NotFound'
+import ErrorBoundary from './components/ui/ErrorBoundary'
+
 function App() {
   const [session, setSession] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -40,51 +44,53 @@ function App() {
   }
 
   return (
-    <Router>
-      <Routes>
-        {/* Halaman Login (Publik) */}
-        <Route path="/" element={<Login />} />
+    <ErrorBoundary>
+      <Router>
+        <Routes>
+          {/* Halaman Login (Publik) */}
+          <Route path="/" element={<Login />} />
 
-        {/* === AREA TERPROTEKSI (DASHBOARD) === */}
+          {/* === AREA TERPROTEKSI (DASHBOARD) === */}
 
-        {/* Admin */}
-        <Route path="/dashboard/admin" element={
-          <ProtectedRoute user={session}>
-            <Admin />
-          </ProtectedRoute>
-        } />
+          {/* Admin */}
+          <Route path="/dashboard/admin" element={
+            <ProtectedRoute user={session}>
+              <Admin />
+            </ProtectedRoute>
+          } />
 
-        {/* Guru */}
-        <Route path="/dashboard/guru" element={
-          <ProtectedRoute user={session}>
-            <Guru />
-          </ProtectedRoute>
-        } />
+          {/* Guru */}
+          <Route path="/dashboard/guru" element={
+            <ProtectedRoute user={session}>
+              <Guru />
+            </ProtectedRoute>
+          } />
 
-        {/* Siswa */}
-        <Route path="/dashboard/siswa" element={
-          <ProtectedRoute user={session}>
-            <Siswa />
-          </ProtectedRoute>
-        } />
+          {/* Siswa */}
+          <Route path="/dashboard/siswa" element={
+            <ProtectedRoute user={session}>
+              <Siswa />
+            </ProtectedRoute>
+          } />
 
-        <Route path="/dashboard/siswa/ujian/:id" element={
-          <ProtectedRoute user={session}>
-            <UjianKerjakan />
-          </ProtectedRoute>
-        } />
+          <Route path="/dashboard/siswa/ujian/:id" element={
+            <ProtectedRoute user={session}>
+              <UjianKerjakan />
+            </ProtectedRoute>
+          } />
 
-        <Route path="/dashboard/siswa/hasil/:id" element={
-          <ProtectedRoute user={session}>
-            <HasilUjian />
-          </ProtectedRoute>
-        } />
+          <Route path="/dashboard/siswa/hasil/:id" element={
+            <ProtectedRoute user={session}>
+              <HasilUjian />
+            </ProtectedRoute>
+          } />
 
-        {/* 404 Not Found */}
-        <Route path="*" element={<div className="p-10 text-center">Halaman tidak ditemukan</div>} />
+          {/* 404 Not Found */}
+          <Route path="*" element={<NotFound />} />
 
-      </Routes>
-    </Router>
+        </Routes>
+      </Router>
+    </ErrorBoundary>
   )
 }
 
