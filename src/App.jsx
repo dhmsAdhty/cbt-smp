@@ -8,6 +8,8 @@ import Login from './pages/Login'
 import Admin from './pages/dashboard/Admin'
 import Guru from './pages/dashboard/Guru'
 import Siswa from './pages/dashboard/Siswa'
+import UjianKerjakan from './pages/dashboard/siswa/UjianKerjakan'
+import HasilUjian from './pages/dashboard/siswa/HasilUjian'
 
 // Import Satpam
 import ProtectedRoute from './components/ProtectedRoute'
@@ -63,6 +65,18 @@ function App() {
         <Route path="/dashboard/siswa" element={
           <ProtectedRoute user={session}>
             <Siswa />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/dashboard/siswa/ujian/:id" element={
+          <ProtectedRoute user={session}>
+            <UjianKerjakan />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/dashboard/siswa/hasil/:id" element={
+          <ProtectedRoute user={session}>
+            <HasilUjian />
           </ProtectedRoute>
         } />
 

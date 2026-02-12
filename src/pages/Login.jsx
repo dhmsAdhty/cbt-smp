@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import DotGrid from '../components/ui/DotGrid'
 
 export default function Login() {
     const [email, setEmail] = useState('')
@@ -84,19 +85,24 @@ export default function Login() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 via-white to-orange-100 dark:from-gray-900 dark:via-gray-800 dark:to-orange-950/30 py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-            {/* Animated Background Elements */}
-            <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute -top-40 -right-40 w-80 h-80 bg-orange-200 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
-                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-orange-300 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-orange-100 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-blob animation-delay-4000"></div>
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 via-white to-orange-100 relative overflow-hidden">
+            {/* Animated DotGrid Background */}
+            <div className="absolute inset-0 z-0 opacity-50">
+                <DotGrid
+                    dotSize={2.5}
+                    gap={15}
+                    baseColor="#fdba74"
+                    activeColor="#c2410c"
+                    proximity={100}
+                    shockRadius={150}
+                    shockStrength={3}
+                    resistance={750}
+                    returnDuration={1.5}
+                />
             </div>
 
-            {/* Decorative Grid Pattern */}
-            <div className="absolute inset-0 bg-grid-orange-100/20 dark:bg-grid-orange-900/10 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
-
             <div className={`
-                relative w-full max-w-md transform transition-all duration-700 ease-out
+                relative z-10 w-full max-w-md transform transition-all duration-700 ease-out
                 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}
             `}>
                 {/* Premium Card */}
@@ -104,10 +110,12 @@ export default function Login() {
 
                     {/* Logo & Header */}
                     <div className="text-center mb-8">
-                        <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl shadow-lg shadow-orange-500/30 mb-6 transform hover:scale-105 transition-transform duration-300">
-                            <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                            </svg>
+                        <div className="inline-flex items-center justify-center w-35 h-35 transform hover:scale-105 transition-transform duration-300">
+                            <img
+                                src="/ATSLogo -trans.png"
+                                alt="Logo SMP Tahfidz Al Hikmah"
+                                className="w-35 h-35 object-contain"
+                            />
                         </div>
 
                         <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-2">
