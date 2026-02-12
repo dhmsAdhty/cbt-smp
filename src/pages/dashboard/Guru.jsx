@@ -16,7 +16,7 @@ import {
 import BankSoalView from '../../components/guru/BankSoal/BankSoalView'
 import UjianView from '../../components/guru/Ujian/UjianView'
 import RekapNilaiView from '../../components/guru/RekapNilai/RekapNilaiView'
-import SettingsView from '../../components/admin/Settings/SettingsView'
+import SettingsView from '../../components/guru/Settings/SettingsView'
 
 export default function Guru() {
     const [activeTab, setActiveTab] = useState('dashboard')
