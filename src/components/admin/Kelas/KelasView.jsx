@@ -94,8 +94,7 @@ const KelasView = () => {
                     background: '#1a1a1a',
                 })
 
-                if (onRefresh) await fetchKelas()
-                else await fetchKelas()
+                await fetchKelas()
             } catch (err) {
                 Swal.fire({
                     title: 'Error',
@@ -148,8 +147,7 @@ const KelasView = () => {
                     background: '#1a1a1a',
                 })
 
-                if (onRefresh) await fetchKelas()
-                else await fetchKelas()
+                await fetchKelas()
             } catch (err) {
                 Swal.fire({
                     icon: 'error',

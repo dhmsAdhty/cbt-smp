@@ -92,8 +92,7 @@ const MapelView = () => {
                     background: '#1a1a1a',
                 })
 
-                if (onRefresh) await fetchMapel()
-                else await fetchMapel()
+                await fetchMapel()
             } catch (err) {
                 Swal.fire({
                     title: 'Error',
@@ -146,8 +145,7 @@ const MapelView = () => {
                     background: '#1a1a1a',
                 })
 
-                if (onRefresh) await fetchMapel()
-                else await fetchMapel()
+                await fetchMapel()
             } catch (err) {
                 Swal.fire({
                     icon: 'error',
