@@ -176,6 +176,7 @@ export default function Siswa() {
                 setActiveTab={setActiveTab}
                 menuItems={menuItems}
                 themeColor="blue"
+                userRole="siswa"
             />
 
             <main className="flex-1 p-6 md:ml-80">

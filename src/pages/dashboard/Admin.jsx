@@ -71,7 +71,7 @@ export default function Admin() {
             </div>
 
             {/* Sidebar */}
-            <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+            <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} userRole="admin" />
 
             {/* Main Content */}
             <main className={`

@@ -13,9 +13,17 @@ import {
     Settings01Icon
 } from 'hugeicons-react'
 
-export default function Sidebar({ activeTab, setActiveTab, menuItems: propMenuItems, themeColor = 'orange' }) {
+export default function Sidebar({ activeTab, setActiveTab, menuItems: propMenuItems, themeColor = 'orange', userRole }) {
     const navigate = useNavigate()
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+
+    // ... (rest of the code)
+
+    // Helper to get role label
+    const getRoleLabel = () => {
+        if (userRole) return userRole.toUpperCase()
+        return themeColor === 'blue' ? 'GURU' : 'ADMIN'
+    }
 
     const handleLogout = async () => {
         const result = await Swal.fire({
@@ -112,12 +120,17 @@ export default function Sidebar({ activeTab, setActiveTab, menuItems: propMenuIt
                 <div className="p-8 flex-1 flex flex-col overflow-y-auto">
                     {/* Logo Area */}
                     <div className="flex items-center gap-4 mb-10">
+                        <img
+                            src="/ATSLogo -trans.png"
+                            alt="Logo Sekolah"
+                            className="w-12 h-auto"
+                        />
                         <div>
                             <h1 className={`text-2xl font-extrabold bg-gradient-to-r bg-clip-text text-transparent ${isBlue ? 'from-blue-600 to-blue-500' : 'from-orange-600 to-orange-500'
                                 }`}>
-                                CBT {isBlue ? 'GURU' : 'ADMIN'}
+                                CBT {getRoleLabel()}
                             </h1>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">Sekolah Tahfidz AL HIKMAH</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">Sekolah Tahfidz Al Hikmah</p>
                         </div>
                     </div>
 
