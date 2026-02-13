@@ -9,5 +9,15 @@ export default defineConfig({
   },
   build: {
     sourcemap: false,
+    chunkSizeWarningLimit: 1000, // Naikkan batas warning ke 1000kB (opsional)
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor'; // Pisahkan semua node_modules ke dalam chunk 'vendor'
+          }
+        },
+      },
+    },
   },
 })
