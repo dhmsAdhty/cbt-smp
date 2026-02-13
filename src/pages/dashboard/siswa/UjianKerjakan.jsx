@@ -36,12 +36,12 @@ export default function UjianKerjakan() {
         enableCopyPasteBlock: true,
         enableTabSwitchTracking: true,
         enableTimeTracking: true,
-        enableFullscreen: false,
+        enableFullscreen: true,
         onTabSwitch: (event) => {
             // Escalating warnings based on tab switch count
             const count = tabSwitchCount + 1
 
-            if (count === 3) {
+            if (count === 1) {
                 // First warning
                 Swal.fire({
                     icon: 'warning',
@@ -54,20 +54,20 @@ export default function UjianKerjakan() {
                             <li>Fokus pada soal ujian</li>
                             <li>Semua aktivitas dicatat sistem</li>
                         </ul>
-                        <p style="color: #dc2626; font-weight: bold;">Jika berpindah tab 6 kali, ujian akan otomatis dikumpulkan!</p>
+                        <p style="color: #dc2626; font-weight: bold;">Jika berpindah tab 3 kali, ujian akan otomatis dikumpulkan!</p>
                     `,
                     confirmButtonText: 'Mengerti',
                     confirmButtonColor: '#f59e0b',
                     timer: 5000,
                     timerProgressBar: true
                 })
-            } else if (count === 5) {
+            } else if (count === 2) {
                 // Final warning
                 Swal.fire({
                     icon: 'error',
                     title: '🚨 Peringatan Terakhir!',
                     html: `
-                        <p style="margin-bottom: 12px; font-size: 18px;"><strong>Tab Switch: ${count}x / 6x</strong></p>
+                        <p style="margin-bottom: 12px; font-size: 18px;"><strong>Tab Switch: ${count}x / 3x</strong></p>
                         <p style="color: #dc2626; font-weight: bold; margin-bottom: 12px;">
                             BAHAYA! 1 kali lagi ujian akan otomatis dikumpulkan!
                         </p>
@@ -78,7 +78,7 @@ export default function UjianKerjakan() {
                     allowOutsideClick: false,
                     allowEscapeKey: false
                 })
-            } else if (count >= 6) {
+            } else if (count >= 3) {
                 // Auto submit
                 Swal.fire({
                     icon: 'error',
