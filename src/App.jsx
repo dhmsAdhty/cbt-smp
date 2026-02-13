@@ -54,33 +54,33 @@ function App() {
 
           {/* Admin */}
           <Route path="/dashboard/admin" element={
-            <ProtectedRoute user={session}>
+            <ProtectedRoute user={session} allowedRoles={['admin']}>
               <Admin />
             </ProtectedRoute>
           } />
 
           {/* Guru */}
           <Route path="/dashboard/guru" element={
-            <ProtectedRoute user={session}>
+            <ProtectedRoute user={session} allowedRoles={['guru']}>
               <Guru />
             </ProtectedRoute>
           } />
 
           {/* Siswa */}
           <Route path="/dashboard/siswa" element={
-            <ProtectedRoute user={session}>
+            <ProtectedRoute user={session} allowedRoles={['siswa']}>
               <Siswa />
             </ProtectedRoute>
           } />
 
           <Route path="/dashboard/siswa/ujian/:id" element={
-            <ProtectedRoute user={session}>
+            <ProtectedRoute user={session} allowedRoles={['siswa']}>
               <UjianKerjakan />
             </ProtectedRoute>
           } />
 
           <Route path="/dashboard/siswa/hasil/:id" element={
-            <ProtectedRoute user={session}>
+            <ProtectedRoute user={session} allowedRoles={['siswa']}>
               <HasilUjian />
             </ProtectedRoute>
           } />

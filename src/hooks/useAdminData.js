@@ -9,9 +9,9 @@ export const useAdminData = () => {
     const fetchData = async () => {
         setLoading(true)
         try {
-            const { data: users } = await supabase.from('users').select('*')
-            const { data: kelas } = await supabase.from('kelas').select('*')
-            const { data: mapel } = await supabase.from('mapel').select('*')
+            const { data: users } = await supabase.from('users').select('id, nama, email, role, mapel, kelas')
+            const { data: kelas } = await supabase.from('kelas').select('id, nama_kelas')
+            const { data: mapel } = await supabase.from('mapel').select('id, nama_mapel')
 
             setDataList({
                 users: users || [],
