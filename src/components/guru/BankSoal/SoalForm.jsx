@@ -15,6 +15,10 @@ import Select from '../../ui/Select'
 import Swal from 'sweetalert2'
 
 const SoalForm = ({ soal, mapelId, kelasList = [], onClose }) => {
+    // --- Cloudinary Config ---
+    const CLOUD_NAME = "dcvx4eiib";
+    const UPLOAD_PRESET = "cbt_sekolah";
+
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({
         pertanyaan: '',
@@ -78,6 +82,31 @@ const SoalForm = ({ soal, mapelId, kelasList = [], onClose }) => {
         if (fileInputRef.current) fileInputRef.current.value = ''
     }
 
+    // Fungsi khusus untuk upload ke Cloudinary
+    const uploadImageToCloudinary = async (file) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", UPLOAD_PRESET);
+
+        try {
+            const response = await fetch(
+                `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+                { method: "POST", body: formData }
+            );
+            const data = await response.json();
+
+            if (data.error) {
+                throw new Error(data.error.message);
+            }
+
+            // Trik Hemat Kuota: Paksa gambar jadi kecil & format WebP
+            return data.secure_url.replace('/upload/', '/upload/q_auto,f_auto,w_800/');
+        } catch (error) {
+            console.error("Upload error:", error);
+            throw error;
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault()
 
@@ -100,21 +129,13 @@ const SoalForm = ({ soal, mapelId, kelasList = [], onClose }) => {
 
             // Upload Image if selected
             if (imageFile) {
-                const fileExt = imageFile.name.split('.').pop()
-                const fileName = `${Date.now()}.${fileExt}`
-                const filePath = `${user.id}/${fileName}`
-
-                const { error: uploadError } = await supabase.storage
-                    .from('soal-images')
-                    .upload(filePath, imageFile)
-
-                if (uploadError) throw uploadError
-
-                const { data: { publicUrl } } = supabase.storage
-                    .from('soal-images')
-                    .getPublicUrl(filePath)
-
-                imageUrl = publicUrl
+                try {
+                    imageUrl = await uploadImageToCloudinary(imageFile);
+                } catch (err) {
+                    Swal.fire('Error', 'Gagal upload gambar ke Cloudinary: ' + err.message, 'error');
+                    setLoading(false);
+                    return;
+                }
             } else if (imagePreview === null && soal?.gambar_url) {
                 // Logic to delete old image could be added here if needed
                 imageUrl = null
