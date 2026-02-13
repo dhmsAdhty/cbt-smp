@@ -225,10 +225,10 @@ const RekapNilaiView = () => {
         a.click()
     }
 
-    const handleDeleteResult = async (studentId, studentName) => {
+    const handleDeleteResult = async (studentId, studentName, ujianId) => {
         const result = await Swal.fire({
             title: 'Hapus Hasil Ujian?',
-            text: `Yakin ingin menghapus semua hasil ujian ${studentName}?`,
+            text: `Yakin ingin menghapus hasil ujian ${studentName}?`,
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#ef4444',
@@ -239,18 +239,27 @@ const RekapNilaiView = () => {
 
         if (result.isConfirmed) {
             try {
-                const { data: mapelSoal } = await supabase
-                    .from('bank_soal')
-                    .select('id')
-                    .eq('mapel_id', mapelDetails.id)
-
-                const soalIds = mapelSoal?.map(s => s.id) || []
-
-                const { error } = await supabase
+                let query = supabase
                     .from('ujian_jawaban')
                     .delete()
                     .eq('siswa_id', studentId)
-                    .in('soal_id', soalIds)
+
+                // Jika ada ujianId, hapus spesifik ujian tersebut (Lebih aman & cepat)
+                if (ujianId) {
+                    query = query.eq('ujian_id', ujianId)
+                } else {
+                    // Fallback ke logika lama (hapus berdasarkan semua soal mapel)
+                    // Hanya jika data lama tidak punya ujian_id
+                    const { data: mapelSoal } = await supabase
+                        .from('bank_soal')
+                        .select('id')
+                        .eq('mapel_id', mapelDetails.id)
+
+                    const soalIds = mapelSoal?.map(s => s.id) || []
+                    query = query.in('soal_id', soalIds)
+                }
+
+                const { error } = await query
 
                 if (error) throw error
 
@@ -813,7 +822,7 @@ const RekapNilaiView = () => {
                                                         <motion.button
                                                             whileHover={{ scale: 1.1, backgroundColor: "#dc2626", color: "#ffffff" }}
                                                             whileTap={{ scale: 0.9 }}
-                                                            onClick={() => handleDeleteResult(row.studentId, row.nama)}
+                                                            onClick={() => handleDeleteResult(row.studentId, row.nama, row.ujianId)}
                                                             className="p-2 text-red-600 hover:text-white hover:bg-red-600 rounded-lg transition-all"
                                                             title="Hapus hasil ujian"
                                                         >
