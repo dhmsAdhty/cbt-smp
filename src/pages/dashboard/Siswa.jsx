@@ -179,7 +179,7 @@ export default function Siswa() {
                 userRole="siswa"
             />
 
-            <main className="flex-1 p-6 md:ml-80">
+            <main className="flex-1 p-6 lg:ml-80">
                 {activeTab === 'profile' ? (
                     <ProfileView />
                 ) : (

@@ -86,24 +86,24 @@ export default function Guru() {
     ]
 
     const StatCard = ({ icon: Icon, label, value, color }) => (
-        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm">
+        <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
             <div className={`p-2.5 rounded-lg bg-gradient-to-br ${color} w-fit mb-3`}>
                 <Icon className="w-5 h-5 text-white" />
             </div>
-            <p className="text-sm text-gray-500 dark:text-gray-400">{label}</p>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
+            <p className="text-sm text-gray-500">{label}</p>
+            <p className="text-2xl font-bold text-gray-900">{value}</p>
         </div>
     )
 
     const QuickActionCard = ({ icon: Icon, title, onClick, color }) => (
         <button
             onClick={onClick}
-            className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-all text-left w-full group"
+            className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm hover:shadow-md transition-all text-left w-full group"
         >
             <div className={`p-2.5 rounded-lg bg-gradient-to-br ${color} w-fit mb-3 group-hover:scale-110 transition-transform`}>
                 <Icon className="w-5 h-5 text-white" />
             </div>
-            <h3 className="font-semibold text-gray-900 dark:text-white">{title}</h3>
+            <h3 className="font-semibold text-gray-900">{title}</h3>
         </button>
     )
 
@@ -157,7 +157,7 @@ export default function Guru() {
 
                             {/* Quick Actions */}
                             <div>
-                                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Menu Cepat</h3>
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">Menu Cepat</h3>
                                 <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
                                     <QuickActionCard
                                         icon={BookOpen02Icon}
@@ -219,7 +219,7 @@ export default function Guru() {
     }[activeTab] || 'Dashboard'
 
     return (
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-950 flex">
+        <div className="min-h-screen bg-gray-50 flex">
             <Sidebar
                 activeTab={activeTab}
                 setActiveTab={setActiveTab}
@@ -228,10 +228,10 @@ export default function Guru() {
                 userRole="guru"
             />
 
-            <main className="flex-1 p-6 lg:p-8 overflow-y-auto md:ml-80">
+            <main className="flex-1 p-6 lg:p-8 overflow-y-auto lg:ml-80">
                 <div className="max-w-7xl mx-auto">
                     <div className="mb-6">
-                        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white">
+                        <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
                             {pageTitle}
                         </h1>
                     </div>

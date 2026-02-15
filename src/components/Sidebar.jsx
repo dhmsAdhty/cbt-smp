@@ -87,7 +87,7 @@ export default function Sidebar({ activeTab, setActiveTab, menuItems: propMenuIt
             {/* Mobile Menu Button */}
             <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className={`md:hidden fixed top-4 left-4 z-50 p-3 rounded-xl text-white shadow-lg transition-all duration-300 hover:scale-105 ${isBlue
+                className={`lg:hidden fixed top-4 left-4 z-50 p-3 rounded-xl text-white shadow-lg transition-all duration-300 hover:scale-105 ${isBlue
                     ? 'bg-gradient-to-br from-blue-500 to-blue-600 shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40'
                     : 'bg-gradient-to-br from-orange-500 to-orange-600 shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40'
                     }`}
@@ -99,7 +99,7 @@ export default function Sidebar({ activeTab, setActiveTab, menuItems: propMenuIt
             {/* Overlay */}
             {isMobileMenuOpen && (
                 <div
-                    className="md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40 animate-fade-in"
+                    className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40 animate-fade-in"
                     onClick={() => setIsMobileMenuOpen(false)}
                 />
             )}
@@ -108,13 +108,13 @@ export default function Sidebar({ activeTab, setActiveTab, menuItems: propMenuIt
             <aside className={`
                 fixed top-0 left-0 z-40
                 w-80 h-screen
-                bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl 
+                bg-white/90 backdrop-blur-xl 
                 transition-all duration-500 ease-in-out
                 flex flex-col
-                ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+                ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
                 ${isBlue
-                    ? 'border-r border-blue-100/50 dark:border-blue-800/30 shadow-2xl shadow-blue-500/10'
-                    : 'border-r border-orange-100/50 dark:border-orange-800/30 shadow-2xl shadow-orange-500/10'
+                    ? 'border-r border-blue-100/50 shadow-2xl shadow-blue-500/10'
+                    : 'border-r border-orange-100/50 shadow-2xl shadow-orange-500/10'
                 }
             `}>
                 <div className="p-8 flex-1 flex flex-col overflow-y-auto">
@@ -130,13 +130,14 @@ export default function Sidebar({ activeTab, setActiveTab, menuItems: propMenuIt
                                 }`}>
                                 CBT {getRoleLabel()}
                             </h1>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">Sekolah Tahfidz Al Hikmah</p>
+
+                            <p className="text-xs text-gray-500">Sekolah Tahfidz Al Hikmah</p>
                         </div>
                     </div>
 
                     {/* Navigation */}
                     <nav className="space-y-2 flex-1">
-                        <p className="text-xs uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-3 px-4">
+                        <p className="text-xs uppercase tracking-wider text-gray-400 mb-3 px-4">
                             Menu Utama
                         </p>
                         {menuItems.map((tab) => {
@@ -155,8 +156,8 @@ export default function Sidebar({ activeTab, setActiveTab, menuItems: propMenuIt
                                                 ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30'
                                                 : 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
                                             : isBlue
-                                                ? 'hover:bg-blue-50 dark:hover:bg-gray-800/50 text-gray-700 dark:text-gray-300'
-                                                : 'hover:bg-orange-50 dark:hover:bg-gray-800/50 text-gray-700 dark:text-gray-300'
+                                                ? 'hover:bg-blue-50 text-gray-700'
+                                                : 'hover:bg-orange-50 text-gray-700'
                                         }
                                     `}
                                 >
@@ -182,7 +183,7 @@ export default function Sidebar({ activeTab, setActiveTab, menuItems: propMenuIt
                     </nav>
 
                     {/* Logout Button */}
-                    <div className="pt-6 mt-6 border-t border-gray-200 dark:border-gray-700">
+                    <div className="pt-6 mt-6 border-t border-gray-200">
                         <button
                             onClick={handleLogout}
                             className="w-full flex items-center justify-center gap-3 px-4 py-3.5 rounded-xl 
@@ -199,7 +200,7 @@ export default function Sidebar({ activeTab, setActiveTab, menuItems: propMenuIt
                         </button>
                     </div>
                 </div>
-            </aside>
+            </aside >
         </>
     )
 }
