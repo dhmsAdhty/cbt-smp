@@ -104,7 +104,7 @@ const BankSoalView = () => {
     const handleDelete = async (id) => {
         const result = await Swal.fire({
             title: 'Hapus Soal?',
-            text: 'Soal yang dihapus tidak dapat dikembalikan',
+            text: 'Soal akan dipindahkan ke sampah dan dapat dipulihkan nanti.',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',
@@ -115,16 +115,18 @@ const BankSoalView = () => {
 
         if (result.isConfirmed) {
             try {
+                // Soft delete implementation
                 const { error } = await supabase
                     .from('bank_soal')
-                    .delete()
+                    .update({ deleted_at: new Date().toISOString() })
                     .eq('id', id)
 
                 if (error) throw error
 
                 setSoals(soals.filter(s => s.id !== id))
-                Swal.fire('Terhapus!', 'Soal berhasil dihapus.', 'success')
+                Swal.fire('Terhapus!', 'Soal berhasil dihapus (Soft Delete).', 'success')
             } catch (error) {
+                console.error('Error soft deleting soal:', error)
                 Swal.fire('Error', 'Gagal menghapus soal', 'error')
             }
         }
