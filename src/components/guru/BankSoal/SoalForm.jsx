@@ -16,8 +16,9 @@ import Swal from 'sweetalert2'
 
 const SoalForm = ({ soal, mapelId, kelasList = [], onClose }) => {
     // --- Cloudinary Config ---
-    const CLOUD_NAME = "dcvx4eiib";
-    const UPLOAD_PRESET = "cbt_sekolah";
+    // --- Cloudinary Config ---
+    const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+    const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
     const [loading, setLoading] = useState(false)
     const [formData, setFormData] = useState({
