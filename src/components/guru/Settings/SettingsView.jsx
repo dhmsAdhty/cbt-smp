@@ -243,22 +243,22 @@ const SettingsView = () => {
     const getRoleBadge = (role) => {
         const badges = {
             admin: {
-                bg: 'bg-purple-50 dark:bg-purple-900/30',
-                text: 'text-purple-700 dark:text-purple-400',
-                border: 'border-purple-200 dark:border-purple-800',
-                icon: <ShieldKeyIcon size={14} className="text-purple-600 dark:text-purple-400" />
+                bg: 'bg-purple-50',
+                text: 'text-purple-700',
+                border: 'border-purple-200',
+                icon: <ShieldKeyIcon size={14} className="text-purple-600" />
             },
             guru: {
-                bg: 'bg-blue-50 dark:bg-blue-900/30',
-                text: 'text-blue-700 dark:text-blue-400',
-                border: 'border-blue-200 dark:border-blue-800',
-                icon: <School01Icon size={14} className="text-blue-600 dark:text-blue-400" />
+                bg: 'bg-blue-50',
+                text: 'text-blue-700',
+                border: 'border-blue-200',
+                icon: <School01Icon size={14} className="text-blue-600" />
             },
             siswa: {
-                bg: 'bg-green-50 dark:bg-green-900/30',
-                text: 'text-green-700 dark:text-green-400',
-                border: 'border-green-200 dark:border-green-800',
-                icon: <UserAccountIcon size={14} className="text-green-600 dark:text-green-400" />
+                bg: 'bg-green-50',
+                text: 'text-green-700',
+                border: 'border-green-200',
+                icon: <UserAccountIcon size={14} className="text-green-600" />
             }
         }
         return badges[role] || badges.siswa
@@ -281,24 +281,24 @@ const SettingsView = () => {
             className="space-y-8"
         >
             {/* Header Section */}
-            <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 shadow-sm">
+            <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
                 <div className="flex flex-col lg:flex-row lg:items-center gap-8">
                     {/* Avatar */}
                     <div className="flex-shrink-0">
-                        <div className="w-24 h-24 rounded-full bg-blue-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg shadow-blue-500/30 border-4 border-blue-50 dark:border-blue-900/30">
+                        <div className="w-24 h-24 rounded-full bg-blue-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg shadow-blue-500/30 border-4 border-blue-50">
                             {getInitials(userData.nama)}
                         </div>
                     </div>
 
                     <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                            <h1 className="text-2xl lg:text-3xl font-bold text-gray-800 dark:text-white">
+                            <h1 className="text-2xl lg:text-3xl font-bold text-gray-800">
                                 {userData.nama || 'Loading...'}
                             </h1>
                             {!isEditing && (
                                 <button
                                     onClick={() => setIsEditing(true)}
-                                    className="p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 dark:text-blue-400 transition-colors"
+                                    className="p-2 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 transition-colors"
                                 >
                                     <Edit02Icon size={18} />
                                 </button>
@@ -306,9 +306,9 @@ const SettingsView = () => {
                         </div>
 
                         <div className="flex flex-wrap items-center gap-3 mb-4">
-                            <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-full border border-gray-200 dark:border-gray-700">
+                            <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-100 rounded-full border border-gray-200">
                                 <Mail01Icon size={14} className="text-gray-500" />
-                                <span className="text-sm text-gray-600 dark:text-gray-400">{userData.email}</span>
+                                <span className="text-sm text-gray-600">{userData.email}</span>
                             </div>
 
                             {userData.role && (
@@ -327,20 +327,20 @@ const SettingsView = () => {
 
                         {/* Stats Row */}
                         <div className="flex flex-wrap gap-4">
-                            <div className="px-4 py-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-800">
+                            <div className="px-4 py-2 bg-gray-50 rounded-lg border border-gray-100">
                                 <p className="text-xs text-gray-500 mb-0.5">Role Status</p>
-                                <p className="font-semibold text-blue-600 dark:text-blue-400 capitalize">{userData.role}</p>
+                                <p className="font-semibold text-blue-600 capitalize">{userData.role}</p>
                             </div>
                             {userData.kelas && (
-                                <div className="px-4 py-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-800">
+                                <div className="px-4 py-2 bg-gray-50 rounded-lg border border-gray-100">
                                     <p className="text-xs text-gray-500 mb-0.5">Kelas</p>
-                                    <p className="font-semibold text-green-600 dark:text-green-400">{userData.kelas}</p>
+                                    <p className="font-semibold text-green-600">{userData.kelas}</p>
                                 </div>
                             )}
                             {userData.mapel && (
-                                <div className="px-4 py-2 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-100 dark:border-gray-800">
+                                <div className="px-4 py-2 bg-gray-50 rounded-lg border border-gray-100">
                                     <p className="text-xs text-gray-500 mb-0.5">Mapel</p>
-                                    <p className="font-semibold text-purple-600 dark:text-purple-400">{userData.mapel}</p>
+                                    <p className="font-semibold text-purple-600">{userData.mapel}</p>
                                 </div>
                             )}
                         </div>
@@ -351,13 +351,13 @@ const SettingsView = () => {
             {/* Content Section */}
             <div className="space-y-6">
                 {/* Profile Information Card */}
-                <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 shadow-sm">
+                <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-sm">
                     <div className="flex items-center justify-between mb-8">
                         <div>
-                            <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-1">
+                            <h2 className="text-xl font-bold text-gray-800 mb-1">
                                 Informasi Profil
                             </h2>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                            <p className="text-sm text-gray-500">
                                 Kelola informasi pribadi Anda
                             </p>
                         </div>
@@ -385,25 +385,25 @@ const SettingsView = () => {
                             ].map((item, index) => {
                                 const Icon = item.icon
                                 const colors = {
-                                    blue: 'bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800',
-                                    indigo: 'bg-indigo-50 text-indigo-600 border-indigo-100 dark:bg-indigo-900/20 dark:text-indigo-400 dark:border-indigo-800',
-                                    purple: 'bg-purple-50 text-purple-600 border-purple-100 dark:bg-purple-900/20 dark:text-purple-400 dark:border-purple-800',
-                                    gray: 'bg-gray-50 text-gray-600 border-gray-100 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700',
-                                    green: 'bg-green-50 text-green-600 border-green-100 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800',
-                                    emerald: 'bg-emerald-50 text-emerald-600 border-emerald-100 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800'
+                                    blue: 'bg-blue-50 text-blue-600 border-blue-100',
+                                    indigo: 'bg-indigo-50 text-indigo-600 border-indigo-100',
+                                    purple: 'bg-purple-50 text-purple-600 border-purple-100',
+                                    gray: 'bg-gray-50 text-gray-600 border-gray-100',
+                                    green: 'bg-green-50 text-green-600 border-green-100',
+                                    emerald: 'bg-emerald-50 text-emerald-600 border-emerald-100'
                                 }
 
                                 return (
                                     <div
                                         key={index}
-                                        className="group p-5 bg-white dark:bg-gray-800/50 rounded-xl border border-gray-100 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-300"
+                                        className="group p-5 bg-white rounded-xl border border-gray-100 hover:border-blue-300 transition-all duration-300"
                                     >
                                         <div className="flex items-start gap-4">
                                             <div className={`p-2.5 rounded-lg border ${colors[item.color]}`}>
                                                 <Icon size={18} />
                                             </div>
                                             <div className="flex-1">
-                                                <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider font-medium mb-1">
+                                                <p className="text-xs text-gray-500 uppercase tracking-wider font-medium mb-1">
                                                     {item.label}
                                                 </p>
                                                 {item.badge ? (
@@ -415,7 +415,7 @@ const SettingsView = () => {
                                                         {item.value?.toUpperCase()}
                                                     </span>
                                                 ) : (
-                                                    <p className="text-base font-semibold text-gray-800 dark:text-white">
+                                                    <p className="text-base font-semibold text-gray-800">
                                                         {item.value || '-'}
                                                     </p>
                                                 )}
@@ -429,34 +429,34 @@ const SettingsView = () => {
                         <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
                                         Nama Lengkap
                                     </label>
                                     <input
                                         type="text"
                                         value={formData.nama}
                                         onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
-                                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm"
                                         required
                                     />
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
                                         Email
                                     </label>
                                     <input
                                         type="email"
                                         value={formData.email}
                                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm"
                                         required
                                     />
                                 </div>
                             </div>
 
                             <div className="space-y-2">
-                                <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
                                     Password Baru
                                 </label>
                                 <div className="relative">
@@ -464,7 +464,7 @@ const SettingsView = () => {
                                         type={showPassword ? "text" : "password"}
                                         value={formData.password}
                                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm"
                                         placeholder="Kosongkan jika tidak ingin mengubah"
                                         minLength={6}
                                     />
@@ -479,7 +479,7 @@ const SettingsView = () => {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
                                     Konfirmasi Password
                                 </label>
                                 <div className="relative">
@@ -487,7 +487,7 @@ const SettingsView = () => {
                                         type={showConfirmPassword ? "text" : "password"}
                                         value={formData.confirmPassword}
                                         onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                                        className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm"
+                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm"
                                         placeholder="Konfirmasi password baru"
                                         minLength={6}
                                     />
@@ -501,7 +501,7 @@ const SettingsView = () => {
                                 </div>
                             </div>
 
-                            <div className="flex gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex gap-4 pt-4 border-t border-gray-200">
                                 <button
                                     type="submit"
                                     disabled={loading}
@@ -529,7 +529,7 @@ const SettingsView = () => {
                                             confirmPassword: ''
                                         })
                                     }}
-                                    className="flex-1 px-6 py-3 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-semibold transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                                    className="flex-1 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-semibold transition-all duration-300 border border-gray-200"
                                 >
                                     <div className="flex items-center justify-center gap-2">
                                         <Cancel01Icon size={18} />
@@ -542,14 +542,14 @@ const SettingsView = () => {
                 </div>
 
                 {/* Security Tips Card */}
-                <div className="p-6 bg-blue-50 dark:bg-blue-900/10 border border-blue-100 dark:border-blue-900/30 rounded-2xl">
+                <div className="p-6 bg-blue-50 border border-blue-100 rounded-2xl">
                     <div className="flex items-start gap-4">
-                        <div className="p-2 rounded-lg bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400">
+                        <div className="p-2 rounded-lg bg-blue-100 text-blue-600">
                             <InformationCircleIcon size={20} />
                         </div>
 
                         <div className="flex-1">
-                            <h4 className="font-bold text-gray-800 dark:text-white mb-2">
+                            <h4 className="font-bold text-gray-800 mb-2">
                                 Tips Keamanan Akun
                             </h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -559,7 +559,7 @@ const SettingsView = () => {
                                     'Jangan bagikan password ke siapapun',
                                     'Ganti password secara berkala',
                                 ].map((tip, i) => (
-                                    <div key={i} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <div key={i} className="flex items-center gap-2 text-sm text-gray-600">
                                         <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
                                         {tip}
                                     </div>

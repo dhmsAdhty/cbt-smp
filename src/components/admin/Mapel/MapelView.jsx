@@ -89,7 +89,8 @@ const MapelView = () => {
                     showConfirmButton: false,
                     timer: 1500,
                     timerProgressBar: true,
-                    background: '#1a1a1a',
+                    timer: 1500,
+                    timerProgressBar: true,
                 })
 
                 await fetchMapel()
@@ -142,7 +143,8 @@ const MapelView = () => {
                     showConfirmButton: false,
                     timer: 1500,
                     timerProgressBar: true,
-                    background: '#1a1a1a',
+                    timer: 1500,
+                    timerProgressBar: true,
                 })
 
                 await fetchMapel()
@@ -152,8 +154,8 @@ const MapelView = () => {
                     title: '❌ Error',
                     text: err.message,
                     confirmButtonColor: '#f97316',
-                    background: '#1a1a1a',
-                    color: '#fff',
+                    text: err.message,
+                    confirmButtonColor: '#f97316',
                     iconColor: '#f97316'
                 })
             }
@@ -173,7 +175,7 @@ const MapelView = () => {
                             <h2 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-gray-800">
                                 Tambah Mata Pelajaran
                             </h2>
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
+                            <p className="text-sm text-gray-500">
                                 Kelola data mata pelajaran sekolah
                             </p>
                         </div>
@@ -192,7 +194,7 @@ const MapelView = () => {
                                 placeholder="Cari mapel..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-64 pl-10 pr-4 py-2.5 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 dark:focus:border-orange-500 placeholder-gray-400 text-gray-900 dark:text-white transition-all duration-200"
+                                className="w-64 pl-10 pr-4 py-2.5 bg-white/80 backdrop-blur-sm border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 placeholder-gray-400 text-gray-900 transition-all duration-200"
                             />
                         </div>
 
@@ -213,18 +215,18 @@ const MapelView = () => {
                 </div>
 
                 {/* Stats */}
-                <div className="flex items-center gap-4 mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex items-center gap-4 mt-4 pt-4 border-t border-gray-200">
                     <div className="flex items-center gap-2">
                         <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
-                        <span className="text-sm text-gray-600 dark:text-gray-400">
-                            Total Mapel: <span className="font-bold text-orange-600 dark:text-orange-400">{mapelList.length}</span>
+                        <span className="text-sm text-gray-600">
+                            Total Mapel: <span className="font-bold text-orange-600">{mapelList.length}</span>
                         </span>
                     </div>
                     {searchTerm && (
                         <div className="flex items-center gap-2">
                             <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                            <span className="text-sm text-gray-600 dark:text-gray-400">
-                                Hasil pencarian: <span className="font-bold text-blue-600 dark:text-blue-400">{filteredMapel.length}</span>
+                            <span className="text-sm text-gray-600">
+                                Hasil pencarian: <span className="font-bold text-blue-600">{filteredMapel.length}</span>
                             </span>
                         </div>
                     )}
@@ -244,7 +246,7 @@ const MapelView = () => {
                                 onMouseLeave={() => setIsHovering(null)}
                             >
                                 {/* Premium Card */}
-                                <div className="relative p-5 bg-gradient-to-br from-white to-orange-50/50 dark:from-gray-800 dark:to-gray-900 rounded-xl border border-orange-100/50 dark:border-orange-800/30 shadow-lg hover:shadow-2xl hover:shadow-orange-500/20 transition-all duration-500 hover:-translate-y-1 overflow-hidden">
+                                <div className="relative p-5 bg-gradient-to-br from-white to-orange-50/50 rounded-xl border border-orange-100/50 shadow-lg hover:shadow-2xl hover:shadow-orange-500/20 transition-all duration-500 hover:-translate-y-1 overflow-hidden">
 
                                     {/* Background Decoration */}
                                     <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-orange-400/10 to-orange-600/10 rounded-full blur-2xl"></div>
@@ -256,7 +258,7 @@ const MapelView = () => {
                                             <div className="flex items-center gap-3">
                                                 {/* Icon */}
                                                 <div>
-                                                    <h3 className="font-bold text-sm text-gray-800 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+                                                    <h3 className="font-bold text-sm text-gray-800 group-hover:text-orange-600 transition-colors">
                                                         {mapel.nama_mapel}
                                                     </h3>
                                                 </div>
@@ -269,7 +271,7 @@ const MapelView = () => {
                                                     p-2 rounded-lg transition-all duration-300
                                                     ${isHovering === mapel.id
                                                         ? 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg shadow-red-500/30 scale-110'
-                                                        : 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-gradient-to-r hover:from-red-500 hover:to-red-600 hover:text-white'
+                                                        : 'bg-red-50 text-red-600 hover:bg-gradient-to-r hover:from-red-500 hover:to-red-600 hover:text-white'
                                                     }
                                                 `}
                                             >
@@ -295,10 +297,10 @@ const MapelView = () => {
                             </div>
                         </div>
 
-                        <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">
+                        <h3 className="text-xl font-bold text-gray-800 mb-2">
                             {searchTerm ? 'Mata Pelajaran Tidak Ditemukan' : 'Belum Ada Mata Pelajaran'}
                         </h3>
-                        <p className="text-gray-500 dark:text-gray-400 text-center max-w-md mb-6">
+                        <p className="text-gray-500 text-center max-w-md mb-6">
                             {searchTerm
                                 ? `Tidak ada mata pelajaran dengan nama "${searchTerm}"`
                                 : 'Klik tombol "Tambah Mapel" untuk menambahkan mata pelajaran baru'
@@ -308,7 +310,7 @@ const MapelView = () => {
                         {searchTerm && (
                             <button
                                 onClick={() => setSearchTerm('')}
-                                className="px-6 py-2.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-medium transition-all duration-300"
+                                className="px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-medium transition-all duration-300"
                             >
                                 Reset Pencarian
                             </button>
@@ -320,9 +322,9 @@ const MapelView = () => {
             {/* Quick Actions */}
             {filteredMapel.length > 0 && (
                 <div className="flex justify-end">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 dark:bg-orange-900/20 rounded-lg border border-orange-200 dark:border-orange-800/30">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 rounded-lg border border-orange-200">
                         <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
-                        <span className="text-sm text-orange-700 dark:text-orange-400">
+                        <span className="text-sm text-orange-700">
                             {filteredMapel.length} mata pelajaran ditampilkan
                         </span>
                     </div>

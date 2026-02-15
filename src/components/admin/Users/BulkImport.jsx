@@ -4,13 +4,13 @@ const BulkImport = ({ onSuccess }) => {
     const { importProgress, downloadTemplate, handleBulkImport } = useBulkImport(onSuccess)
 
     return (
-        <div className="mb-6 p-4 bg-orange-50/50 dark:bg-orange-900/20 border border-orange-200/50 dark:border-orange-800/30 rounded-xl">
-            <p className="text-sm font-semibold text-center text-orange-700 dark:text-orange-400 mb-3">Import Bulk Users</p>
+        <div className="mb-6 p-4 bg-orange-50/50 border border-orange-200/50 rounded-xl">
+            <p className="text-sm font-semibold text-center text-orange-700 mb-3">Import Bulk Users</p>
             <div className="space-y-2">
                 <button
                     type="button"
                     onClick={downloadTemplate}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-orange-300 dark:border-orange-700 text-orange-600 dark:text-orange-400 rounded-lg hover:bg-orange-50 dark:hover:bg-orange-900/30 transition-all text-sm"
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-white border border-orange-300 text-orange-600 rounded-lg hover:bg-orange-50 transition-all text-sm"
                 >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -33,11 +33,11 @@ const BulkImport = ({ onSuccess }) => {
             </div>
             {importProgress.isImporting && (
                 <div className="mt-3">
-                    <div className="flex justify-between text-xs text-orange-600 dark:text-orange-400 mb-1">
+                    <div className="flex justify-between text-xs text-orange-600 mb-1">
                         <span>Importing...</span>
                         <span>{importProgress.current} / {importProgress.total}</span>
                     </div>
-                    <div className="w-full bg-orange-200 dark:bg-orange-900/50 rounded-full h-2">
+                    <div className="w-full bg-orange-200 rounded-full h-2">
                         <div
                             className="bg-gradient-to-r from-orange-500 to-orange-600 h-2 rounded-full transition-all duration-300"
                             style={{ width: `${(importProgress.current / importProgress.total) * 100}%` }}

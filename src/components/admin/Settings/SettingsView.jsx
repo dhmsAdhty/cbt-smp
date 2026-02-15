@@ -109,8 +109,8 @@ const SettingsView = () => {
                     title: 'Verifikasi Email',
                     text: 'Email verifikasi telah dikirim ke alamat email baru Anda.',
                     confirmButtonColor: '#f97316',
-                    background: '#1a1a1a',
-                    color: '#fff',
+                    text: 'Email verifikasi telah dikirim ke alamat email baru Anda.',
+                    confirmButtonColor: '#f97316',
                     iconColor: '#f97316'
                 })
             }
@@ -146,8 +146,8 @@ const SettingsView = () => {
                 showConfirmButton: false,
                 timer: 2000,
                 timerProgressBar: true,
-                background: '#1a1a1a',
-                color: '#fff',
+                timer: 2000,
+                timerProgressBar: true,
                 iconColor: '#f97316'
             })
 
@@ -160,8 +160,8 @@ const SettingsView = () => {
                 title: '❌ Error',
                 text: error.message,
                 confirmButtonColor: '#f97316',
-                background: '#1a1a1a',
-                color: '#fff',
+                text: error.message,
+                confirmButtonColor: '#f97316',
                 iconColor: '#f97316'
             })
         } finally {
@@ -172,22 +172,22 @@ const SettingsView = () => {
     const getRoleBadge = (role) => {
         const badges = {
             admin: {
-                bg: 'bg-gradient-to-r from-purple-500/20 to-purple-600/20 dark:from-purple-500/30 dark:to-purple-600/30',
-                text: 'text-purple-700 dark:text-purple-400',
+                bg: 'bg-gradient-to-r from-purple-500/20 to-purple-600/20',
+                text: 'text-purple-700',
                 border: 'border-purple-500/30',
-                icon: <ShieldKeyIcon size={14} className="text-purple-600 dark:text-purple-400" />
+                icon: <ShieldKeyIcon size={14} className="text-purple-600" />
             },
             guru: {
-                bg: 'bg-gradient-to-r from-orange-500/20 to-orange-600/20 dark:from-orange-500/30 dark:to-orange-600/30',
-                text: 'text-orange-700 dark:text-orange-400',
+                bg: 'bg-gradient-to-r from-orange-500/20 to-orange-600/20',
+                text: 'text-orange-700',
                 border: 'border-orange-500/30',
-                icon: <School01Icon size={14} className="text-orange-600 dark:text-orange-400" />
+                icon: <School01Icon size={14} className="text-orange-600" />
             },
             siswa: {
-                bg: 'bg-gradient-to-r from-green-500/20 to-green-600/20 dark:from-green-500/30 dark:to-green-600/30',
-                text: 'text-green-700 dark:text-green-400',
+                bg: 'bg-gradient-to-r from-green-500/20 to-green-600/20',
+                text: 'text-green-700',
                 border: 'border-green-500/30',
-                icon: <UserAccountIcon size={14} className="text-green-600 dark:text-green-400" />
+                icon: <UserAccountIcon size={14} className="text-green-600" />
             }
         }
         return badges[role] || badges.siswa
@@ -218,18 +218,18 @@ const SettingsView = () => {
             ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}
         `}>
             {/* Header Section */}
-            <GlassCard className="relative overflow-hidden bg-white dark:bg-gray-800">
+            <GlassCard className="relative overflow-hidden bg-white">
                 <div className="relative z-10 flex flex-col lg:flex-row lg:items-center gap-8">
                     {/* Avatar */}
                     <div className="flex items-center gap-6 p-5">
-                        <div className="relative w-28 h-28 rounded-full bg-orange-500 flex items-center justify-center text-white text-4xl font-bold shadow-xl border-4 border-white dark:border-gray-800">
+                        <div className="relative w-28 h-28 rounded-full bg-orange-500 flex items-center justify-center text-white text-4xl font-bold shadow-xl border-4 border-white">
                             {getInitials(userData.nama)}
                         </div>
                     </div>
 
                     <div className="flex-1 p-5">
                         <div className="flex items-center gap-3 mb-2">
-                            <h1 className="text-3xl lg:text-4xl font-bold text-gray-800 dark:text-white">
+                            <h1 className="text-3xl lg:text-4xl font-bold text-gray-800">
                                 {userData.nama || 'Loading...'}
                             </h1>
                             {!isEditing && (
@@ -243,9 +243,9 @@ const SettingsView = () => {
                         </div>
 
                         <div className="flex flex-wrap items-center gap-3 mb-3">
-                            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 dark:bg-gray-700 rounded-full border border-gray-200 dark:border-gray-600">
+                            <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 rounded-full border border-gray-200">
                                 <Mail01Icon size={14} className="text-orange-500" />
-                                <span className="text-sm text-gray-700 dark:text-gray-300">{userData.email}</span>
+                                <span className="text-sm text-gray-700">{userData.email}</span>
                             </div>
 
                             {userData.role && (
@@ -265,21 +265,21 @@ const SettingsView = () => {
                 </div>
 
                 {/* Quick Stats */}
-                <div className="p-5 flex lg:flex-col gap-3 lg:ml-auto border-t lg:border-t-0 lg:border-l border-gray-100 dark:border-gray-700">
-                    <div className="px-4 py-2.5 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
-                        <p className="text-xs text-gray-500 dark:text-gray-400">Role Status</p>
-                        <p className="font-bold text-orange-600 dark:text-orange-400 capitalize">{userData.role}</p>
+                <div className="p-5 flex lg:flex-col gap-3 lg:ml-auto border-t lg:border-t-0 lg:border-l border-gray-100">
+                    <div className="px-4 py-2.5 bg-gray-50 rounded-xl border border-gray-200">
+                        <p className="text-xs text-gray-500">Role Status</p>
+                        <p className="font-bold text-orange-600 capitalize">{userData.role}</p>
                     </div>
                     {userData.kelas && (
-                        <div className="px-4 py-2.5 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
-                            <p className="text-xs text-gray-500 dark:text-gray-400">Kelas</p>
-                            <p className="font-bold text-blue-600 dark:text-blue-400">{userData.kelas}</p>
+                        <div className="px-4 py-2.5 bg-gray-50 rounded-xl border border-gray-200">
+                            <p className="text-xs text-gray-500">Kelas</p>
+                            <p className="font-bold text-blue-600">{userData.kelas}</p>
                         </div>
                     )}
                     {userData.mapel && (
-                        <div className="px-4 py-2.5 bg-gray-50 dark:bg-gray-700/50 rounded-xl border border-gray-200 dark:border-gray-600">
-                            <p className="text-xs text-gray-500 dark:text-gray-400">Mapel</p>
-                            <p className="font-bold text-green-600 dark:text-green-400">{userData.mapel}</p>
+                        <div className="px-4 py-2.5 bg-gray-50 rounded-xl border border-gray-200">
+                            <p className="text-xs text-gray-500">Mapel</p>
+                            <p className="font-bold text-green-600">{userData.mapel}</p>
                         </div>
                     )}
                 </div>
@@ -288,17 +288,17 @@ const SettingsView = () => {
             {/* Content Section */}
             <div className="space-y-6 animate-fade-in-up">
                 {/* Profile Information Card */}
-                <GlassCard className="p-8 bg-white dark:bg-gray-800">
+                <GlassCard className="p-8 bg-white">
                     <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center gap-3">
                             <div className="p-2.5 rounded-lg bg-orange-500 text-white">
                                 <User02Icon size={24} />
                             </div>
                             <div>
-                                <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+                                <h2 className="text-2xl font-bold text-gray-800">
                                     Informasi Profil
                                 </h2>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">
+                                <p className="text-sm text-gray-500">
                                     Kelola informasi pribadi Anda
                                 </p>
                             </div>
@@ -340,14 +340,14 @@ const SettingsView = () => {
                                 return (
                                     <div
                                         key={index}
-                                        className="group p-5 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-orange-500 dark:hover:border-orange-500 transition-all duration-300"
+                                        className="group p-5 bg-white rounded-xl border border-gray-200 hover:border-orange-500 transition-all duration-300"
                                     >
                                         <div className="flex items-start gap-4">
                                             <div className={`p-3 rounded-lg border ${colors[item.color].split(' ')[2]} ${colors[item.color].split(' ')[0]}`}>
                                                 <Icon className={`w-5 h-5 ${colors[item.color].split(' ')[1]}`} />
                                             </div>
                                             <div className="flex-1">
-                                                <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                                <p className="text-xs text-gray-500 uppercase tracking-wider">
                                                     {item.label}
                                                 </p>
                                                 {item.badge ? (
@@ -360,7 +360,7 @@ const SettingsView = () => {
                                                         {item.value?.toUpperCase()}
                                                     </span>
                                                 ) : (
-                                                    <p className="text-lg font-semibold text-gray-800 dark:text-white mt-1">
+                                                    <p className="text-lg font-semibold text-gray-800 mt-1">
                                                         {item.value || '-'}
                                                     </p>
                                                 )}
@@ -374,7 +374,7 @@ const SettingsView = () => {
                         <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
                                         <User02Icon className="w-4 h-4 text-orange-500" />
                                         Nama Lengkap
                                     </label>
@@ -382,13 +382,13 @@ const SettingsView = () => {
                                         type="text"
                                         value={formData.nama}
                                         onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
-                                        className="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
+                                        className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
                                         required
                                     />
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
                                         <Mail01Icon className="w-4 h-4 text-orange-500" />
                                         Email
                                     </label>
@@ -396,14 +396,14 @@ const SettingsView = () => {
                                         type="email"
                                         value={formData.email}
                                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                        className="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
+                                        className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
                                         required
                                     />
                                 </div>
                             </div>
 
                             <div className="space-y-2">
-                                <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
                                     <LockPasswordIcon className="w-4 h-4 text-orange-500" />
                                     Password Baru
                                 </label>
@@ -412,7 +412,7 @@ const SettingsView = () => {
                                         type={showPassword ? "text" : "password"}
                                         value={formData.password}
                                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                        className="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
+                                        className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
                                         placeholder="Kosongkan jika tidak ingin mengubah"
                                         minLength={6}
                                     />
@@ -427,7 +427,7 @@ const SettingsView = () => {
                             </div>
 
                             <div className="space-y-2">
-                                <label className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                                <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
                                     <LockPasswordIcon className="w-4 h-4 text-orange-500" />
                                     Konfirmasi Password
                                 </label>
@@ -436,7 +436,7 @@ const SettingsView = () => {
                                         type={showConfirmPassword ? "text" : "password"}
                                         value={formData.confirmPassword}
                                         onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                                        className="w-full px-5 py-3.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
+                                        className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
                                         placeholder="Konfirmasi password baru"
                                         minLength={6}
                                     />
@@ -450,7 +450,7 @@ const SettingsView = () => {
                                 </div>
                             </div>
 
-                            <div className="flex gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex gap-4 pt-4 border-t border-gray-200">
                                 <button
                                     type="submit"
                                     disabled={loading}
@@ -484,7 +484,7 @@ const SettingsView = () => {
                                             confirmPassword: ''
                                         })
                                     }}
-                                    className="flex-1 px-6 py-3.5 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-0.5 border border-gray-200 dark:border-gray-700"
+                                    className="flex-1 px-6 py-3.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-semibold transition-all duration-300 transform hover:-translate-y-0.5 border border-gray-200"
                                 >
                                     <div className="flex items-center justify-center gap-2">
                                         <Cancel01Icon size={20} />
@@ -497,14 +497,14 @@ const SettingsView = () => {
                 </GlassCard>
 
                 {/* Security Tips Card */}
-                <GlassCard className="p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                <GlassCard className="p-6 bg-white border border-gray-200">
                     <div className="flex items-start gap-4">
                         <div className="p-2.5 rounded-lg bg-orange-500 text-white">
                             <InformationCircleIcon size={20} />
                         </div>
 
                         <div className="flex-1">
-                            <h4 className="font-bold text-gray-800 dark:text-white mb-2">
+                            <h4 className="font-bold text-gray-800 mb-2">
                                 Tips Keamanan Akun
                             </h4>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -514,7 +514,7 @@ const SettingsView = () => {
                                     'Jangan bagikan password ke siapapun',
                                     'Ganti password secara berkala',
                                 ].map((tip, i) => (
-                                    <div key={i} className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <div key={i} className="flex items-center gap-2 text-sm text-gray-600">
                                         <span className="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
                                         {tip}
                                     </div>

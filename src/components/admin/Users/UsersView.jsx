@@ -158,12 +158,12 @@ const UsersView = () => {
                 {/* Form Tambah User */}
                 <GlassCard className="p-6 lg:col-span-1 ">
                     <div className="flex items-center gap-3 mb-6">
-                        <h3 className="font-bold text-xl text-gray-800 dark:text-white">Tambah User Baru</h3>
+                        <h3 className="font-bold text-xl text-gray-800">Tambah User Baru</h3>
                     </div>
 
                     <BulkImport onSuccess={fetchData} />
 
-                    <div className="border-t border-gray-200 dark:border-gray-700 my-6"></div>
+                    <div className="border-t border-gray-200 my-6"></div>
 
                     <UserForm
                         kelasList={kelasList}
@@ -175,7 +175,7 @@ const UsersView = () => {
                 {/* Tabel Users */}
                 <GlassCard className="p-6 lg:col-span-2">
                     <div className="flex items-center justify-between mb-6">
-                        <h3 className="font-bold text-xl text-gray-800 dark:text-white">
+                        <h3 className="font-bold text-xl text-gray-800">
                             Daftar Users ({users.length})
                         </h3>
                     </div>
@@ -190,7 +190,7 @@ const UsersView = () => {
             {/* Modal Detail User */}
             {selectedUser && (
                 <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in" onClick={handleCloseModal}>
-                    <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slide-up" onClick={(e) => e.stopPropagation()}>
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slide-up" onClick={(e) => e.stopPropagation()}>
                         {/* Header */}
                         <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-6 rounded-t-2xl">
                             <div className="flex items-center justify-between">
@@ -220,35 +220,35 @@ const UsersView = () => {
                                 // View Mode
                                 <>
                                     <div className="grid grid-cols-2 gap-4">
-                                        <div className="p-4 bg-orange-50/50 dark:bg-gray-800/50 rounded-xl">
-                                            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Nama Lengkap</p>
-                                            <p className="font-semibold text-gray-800 dark:text-white">{selectedUser.nama}</p>
+                                        <div className="p-4 bg-orange-50/50 rounded-xl">
+                                            <p className="text-sm text-gray-500 mb-1">Nama Lengkap</p>
+                                            <p className="font-semibold text-gray-800">{selectedUser.nama}</p>
                                         </div>
-                                        <div className="p-4 bg-orange-50/50 dark:bg-gray-800/50 rounded-xl">
-                                            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Email</p>
-                                            <p className="font-semibold text-gray-800 dark:text-white">{selectedUser.email}</p>
+                                        <div className="p-4 bg-orange-50/50 rounded-xl">
+                                            <p className="text-sm text-gray-500 mb-1">Email</p>
+                                            <p className="font-semibold text-gray-800">{selectedUser.email}</p>
                                         </div>
-                                        <div className="p-4 bg-orange-50/50 dark:bg-gray-800/50 rounded-xl">
-                                            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Role</p>
-                                            <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${selectedUser.role === 'admin' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400' :
-                                                selectedUser.role === 'guru' ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400' :
-                                                    'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                                        <div className="p-4 bg-orange-50/50 rounded-xl">
+                                            <p className="text-sm text-gray-500 mb-1">Role</p>
+                                            <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${selectedUser.role === 'admin' ? 'bg-purple-100 text-purple-700' :
+                                                selectedUser.role === 'guru' ? 'bg-orange-100 text-orange-700' :
+                                                    'bg-green-100 text-green-700'
                                                 }`}>
                                                 {selectedUser.role}
                                             </span>
                                         </div>
-                                        <div className="p-4 bg-orange-50/50 dark:bg-gray-800/50 rounded-xl">
-                                            <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                                        <div className="p-4 bg-orange-50/50 rounded-xl">
+                                            <p className="text-sm text-gray-500 mb-1">
                                                 {selectedUser.role === 'siswa' ? 'Kelas' : selectedUser.role === 'guru' ? 'Mata Pelajaran' : 'Kelas/Mapel'}
                                             </p>
-                                            <p className="font-semibold text-gray-800 dark:text-white">
+                                            <p className="font-semibold text-gray-800">
                                                 {selectedUser.kelas || selectedUser.mapel || '-'}
                                             </p>
                                         </div>
                                     </div>
 
                                     {/* Action Buttons */}
-                                    <div className="flex gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                    <div className="flex gap-3 pt-4 border-t border-gray-200">
                                         <button
                                             onClick={() => setIsEditing(true)}
                                             className="flex-1 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all transform hover:-translate-y-0.5"
@@ -268,21 +268,21 @@ const UsersView = () => {
                                 <>
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Nama Lengkap</label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">Nama Lengkap</label>
                                             <input
                                                 type="text"
                                                 value={editData.nama}
                                                 onChange={(e) => setEditData({ ...editData, nama: e.target.value })}
-                                                className="w-full px-4 py-3 bg-gray-50/50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+                                                className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
                                             <input
                                                 type="email"
                                                 value={editData.email}
                                                 onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-                                                className="w-full px-4 py-3 bg-gray-50/50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+                                                className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
                                             />
                                         </div>
                                         <Select
@@ -316,7 +316,7 @@ const UsersView = () => {
                                     </div>
 
                                     {/* Edit Action Buttons */}
-                                    <div className="flex gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                                    <div className="flex gap-3 pt-4 border-t border-gray-200">
                                         <button
                                             onClick={handleUpdate}
                                             className="flex-1 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all transform hover:-translate-y-0.5"

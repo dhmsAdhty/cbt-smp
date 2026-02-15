@@ -49,10 +49,10 @@ const UserTable = ({ users, onViewUser }) => {
                         placeholder="Cari nama, email, role, kelas, atau mapel..."
                         value={searchQuery}
                         onChange={(e) => handleSearch(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2.5 bg-gray-50/50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+                        className="w-full pl-10 pr-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
                     />
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-sm text-gray-600">
                     {filteredUsers.length} user{filteredUsers.length !== 1 ? 's' : ''}
                 </div>
             </div>
@@ -61,27 +61,27 @@ const UserTable = ({ users, onViewUser }) => {
             <div className="overflow-x-auto">
                 <table className="w-full">
                     <thead>
-                        <tr className="border-b border-gray-200 dark:border-gray-700">
-                            <th className="text-left p-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Nama</th>
-                            <th className="text-left p-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Role</th>
-                            <th className="text-left p-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Kelas/Mapel</th>
-                            <th className="text-left p-4 text-sm font-semibold text-gray-700 dark:text-gray-300">Aksi</th>
+                        <tr className="border-b border-gray-200">
+                            <th className="text-left p-4 text-sm font-semibold text-gray-700">Nama</th>
+                            <th className="text-left p-4 text-sm font-semibold text-gray-700">Role</th>
+                            <th className="text-left p-4 text-sm font-semibold text-gray-700">Kelas/Mapel</th>
+                            <th className="text-left p-4 text-sm font-semibold text-gray-700">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         {currentUsers.length > 0 ? (
                             currentUsers.map((user) => (
-                                <tr key={user.id} className="border-b border-gray-100 dark:border-gray-800 hover:bg-orange-50/50 dark:hover:bg-gray-800/50 transition-colors">
-                                    <td className="p-4 text-sm text-gray-800 dark:text-white font-medium">{user.nama}</td>
+                                <tr key={user.id} className="border-b border-gray-100 hover:bg-orange-50/50 transition-colors">
+                                    <td className="p-4 text-sm text-gray-800 font-medium">{user.nama}</td>
                                     <td className="p-4">
-                                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${user.role === 'admin' ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400' :
-                                                user.role === 'guru' ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400' :
-                                                    'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                                        <span className={`px-3 py-1 rounded-full text-xs font-semibold ${user.role === 'admin' ? 'bg-purple-100 text-purple-700' :
+                                            user.role === 'guru' ? 'bg-orange-100 text-orange-700' :
+                                                'bg-green-100 text-green-700'
                                             }`}>
                                             {user.role}
                                         </span>
                                     </td>
-                                    <td className="p-4 text-gray-600 dark:text-gray-400">
+                                    <td className="p-4 text-gray-600">
                                         {user.kelas || user.mapel || '-'}
                                     </td>
                                     <td className="p-4">
@@ -96,7 +96,7 @@ const UserTable = ({ users, onViewUser }) => {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="4" className="p-8 text-center text-gray-500 dark:text-gray-400">
+                                <td colSpan="4" className="p-8 text-center text-gray-500">
                                     {searchQuery ? 'Tidak ada user yang sesuai dengan pencarian' : 'Belum ada user'}
                                 </td>
                             </tr>
@@ -107,15 +107,15 @@ const UserTable = ({ users, onViewUser }) => {
 
             {/* Pagination */}
             {totalPages > 1 && (
-                <div className="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700">
-                    <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+                    <div className="text-sm text-gray-600">
                         Menampilkan {startIndex + 1}-{Math.min(endIndex, filteredUsers.length)} dari {filteredUsers.length} user
                     </div>
                     <div className="flex items-center gap-2">
                         <button
                             onClick={() => goToPage(currentPage - 1)}
                             disabled={currentPage === 1}
-                            className="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-orange-100 dark:hover:bg-orange-900/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            className="px-3 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-orange-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -136,8 +136,8 @@ const UserTable = ({ users, onViewUser }) => {
                                             key={page}
                                             onClick={() => goToPage(page)}
                                             className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${page === currentPage
-                                                    ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
-                                                    : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-orange-100 dark:hover:bg-orange-900/30'
+                                                ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
+                                                : 'bg-gray-100 text-gray-700 hover:bg-orange-100'
                                                 }`}
                                         >
                                             {page}
@@ -156,7 +156,7 @@ const UserTable = ({ users, onViewUser }) => {
                         <button
                             onClick={() => goToPage(currentPage + 1)}
                             disabled={currentPage === totalPages}
-                            className="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-orange-100 dark:hover:bg-orange-900/30 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            className="px-3 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-orange-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
