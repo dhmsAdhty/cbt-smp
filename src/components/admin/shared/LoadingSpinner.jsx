@@ -3,12 +3,12 @@ const LoadingSpinner = ({ color = 'orange' }) => {
         orange: {
             border: 'border-orange-200 border-t-orange-600',
             pulse: 'bg-orange-500/20',
-            text: 'text-orange-600 dark:text-orange-400',
+            text: 'text-orange-600',
         },
         blue: {
             border: 'border-blue-200 border-t-blue-600',
             pulse: 'bg-blue-500/20',
-            text: 'text-blue-600 dark:text-blue-400',
+            text: 'text-blue-600',
         },
     }
     const c = colors[color] || colors.orange
