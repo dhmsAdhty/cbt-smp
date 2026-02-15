@@ -102,26 +102,26 @@ export default function Login() {
             </div>
 
             <div className={`
-                relative z-10 w-full max-w-md transform transition-all duration-700 ease-out
+                relative z-10 w-[90%] md:w-full max-w-md transform transition-all duration-700 ease-out
                 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}
             `}>
                 {/* Premium Card */}
-                <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-3xl shadow-2xl p-8 md:p-10 border border-orange-100/50 dark:border-orange-800/30">
+                <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl p-6 md:p-10 border border-orange-100/50">
 
                     {/* Logo & Header */}
                     <div className="text-center mb-8">
-                        <div className="inline-flex items-center justify-center w-35 h-35 transform hover:scale-105 transition-transform duration-300">
+                        <div className="inline-flex items-center justify-center w-24 h-24 md:w-32 md:h-32 transform hover:scale-105 transition-transform duration-300">
                             <img
                                 src="/ATSLogo -trans.png"
                                 alt="Logo SMP Tahfidz Al Hikmah"
-                                className="w-35 h-35 object-contain"
+                                className="w-full h-full object-contain"
                             />
                         </div>
 
-                        <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-2">
-                            SMP Tahidz Al Hikmah
+                        <h1 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent mb-2">
+                            SMP Tahfidz Al Hikmah
                         </h1>
-                        <p className="text-gray-500 dark:text-gray-400 flex items-center justify-center gap-2">
+                        <p className="text-gray-500 flex items-center justify-center gap-2 text-sm md:text-base">
                             <span className="w-1 h-1 bg-orange-500 rounded-full"></span>
                             Silakan masuk ke akun Anda
                             <span className="w-1 h-1 bg-orange-500 rounded-full"></span>
@@ -132,7 +132,7 @@ export default function Login() {
                     <form onSubmit={handleLogin} className="space-y-6">
                         {/* Email Field */}
                         <div className="group">
-                            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">
                                 Alamat Email
                             </label>
                             <div className="relative">
@@ -144,7 +144,7 @@ export default function Login() {
                                 <input
                                     type="email"
                                     required
-                                    className="block w-full pl-10 pr-3 py-3.5 bg-gray-50 dark:bg-gray-800/50 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 dark:focus:border-orange-500 placeholder-gray-400 text-gray-900 dark:text-white transition-all duration-200"
+                                    className="block w-full pl-10 pr-3 py-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 placeholder-gray-400 text-gray-900 transition-all duration-200"
                                     placeholder="admin@sekolah.com"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
@@ -154,7 +154,7 @@ export default function Login() {
 
                         {/* Password Field */}
                         <div className="group">
-                            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            <label className="block text-sm font-semibold text-gray-700 mb-2">
                                 Password
                             </label>
                             <div className="relative">
@@ -166,7 +166,7 @@ export default function Login() {
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     required
-                                    className="block w-full pl-10 pr-12 py-3.5 bg-gray-50 dark:bg-gray-800/50 border-2 border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 dark:focus:border-orange-500 placeholder-gray-400 text-gray-900 dark:text-white transition-all duration-200"
+                                    className="block w-full pl-10 pr-12 py-3.5 bg-gray-50 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 placeholder-gray-400 text-gray-900 transition-all duration-200"
                                     placeholder="••••••••"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
