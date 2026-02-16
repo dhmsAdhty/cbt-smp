@@ -21,7 +21,7 @@ const UsersView = () => {
         setIsLoading(true)
         try {
             // Fetch users, kelas, mapel
-            const { data: usersData, error: usersError } = await supabase.from('users').select('*')
+            const { data: usersData, error: usersError } = await supabase.from('users').select('*').is('deleted_at', null)
             const { data: kelasData } = await supabase.from('kelas').select('*')
             const { data: mapelData } = await supabase.from('mapel').select('*')
 
