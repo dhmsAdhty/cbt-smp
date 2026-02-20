@@ -174,7 +174,7 @@ const KelasView = () => {
                     <div className="flex items-center gap-3">
 
                         <div>
-                            <h2 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-gray-800">
+                            <h2 className="text-2xl font-bold bg-linear-to-r from-orange-600 to-orange-500 bg-clip-text text-gray-800">
                                 Tambah Kelas
                             </h2>
                             <p className="text-sm text-gray-500">
@@ -203,9 +203,9 @@ const KelasView = () => {
                         {/* Add Button */}
                         <button
                             onClick={handleAdd}
-                            className="group relative px-6 py-2.5 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all duration-300 transform hover:-translate-y-0.5 overflow-hidden"
+                            className="group relative px-6 py-2.5 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all duration-300 transform hover:-translate-y-0.5 overflow-hidden"
                         >
-                            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                            <div className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                             <div className="relative flex items-center gap-2">
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -248,11 +248,11 @@ const KelasView = () => {
                                 onMouseLeave={() => setIsHovering(null)}
                             >
                                 {/* Premium Card */}
-                                <div className="relative p-5 bg-gradient-to-br from-white to-orange-50/50 rounded-xl border border-orange-100/50 shadow-lg hover:shadow-2xl hover:shadow-orange-500/20 transition-all duration-500 hover:-translate-y-1 overflow-hidden">
+                                <div className="relative p-5 bg-linear-to-br from-white to-orange-50/50 rounded-xl border border-orange-100/50 shadow-lg hover:shadow-2xl hover:shadow-orange-500/20 transition-all duration-500 hover:-translate-y-1 overflow-hidden">
 
                                     {/* Background Decoration */}
-                                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-orange-400/10 to-orange-600/10 rounded-full blur-2xl"></div>
-                                    <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-orange-400/10 to-orange-600/10 rounded-full blur-xl"></div>
+                                    <div className="absolute top-0 right-0 w-24 h-24 bg-linear-to-br from-orange-400/10 to-orange-600/10 rounded-full blur-2xl"></div>
+                                    <div className="absolute bottom-0 left-0 w-16 h-16 bg-linear-to-tr from-orange-400/10 to-orange-600/10 rounded-full blur-xl"></div>
 
                                     {/* Content */}
                                     <div className="relative">
@@ -271,8 +271,8 @@ const KelasView = () => {
                                                 className={`
                                                     p-2 rounded-lg transition-all duration-300
                                                     ${isHovering === kelas.id
-                                                        ? 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg shadow-red-500/30 scale-110'
-                                                        : 'bg-red-50 text-red-600 hover:bg-gradient-to-r hover:from-red-500 hover:to-red-600 hover:text-white'
+                                                        ? 'bg-linear-to-r from-red-500 to-red-600 text-white shadow-lg shadow-red-500/30 scale-110'
+                                                        : 'bg-red-50 text-red-600 hover:bg-linear-to-r hover:from-red-500 hover:to-red-600 hover:text-white'
                                                     }
                                                 `}
                                             >
@@ -291,7 +291,7 @@ const KelasView = () => {
                         {/* Empty State */}
                         <div className="relative mb-6">
                             <div className="absolute inset-0 bg-orange-500 rounded-full blur-3xl opacity-20 animate-pulse"></div>
-                            <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-orange-400/20 to-orange-600/20 flex items-center justify-center">
+                            <div className="relative w-24 h-24 rounded-full bg-linear-to-br from-orange-400/20 to-orange-600/20 flex items-center justify-center">
                                 <svg className="w-12 h-12 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                 </svg>

@@ -87,7 +87,7 @@ const UserTable = ({ users, onViewUser }) => {
                                     <td className="p-4">
                                         <button
                                             onClick={() => onViewUser(user)}
-                                            className="px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg text-sm font-medium transition-all shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transform hover:-translate-y-0.5"
+                                            className="px-4 py-2 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg text-sm font-medium transition-all shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transform hover:-translate-y-0.5"
                                         >
                                             Lihat
                                         </button>
@@ -136,7 +136,7 @@ const UserTable = ({ users, onViewUser }) => {
                                             key={page}
                                             onClick={() => goToPage(page)}
                                             className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${page === currentPage
-                                                ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
+                                                ? 'bg-linear-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
                                                 : 'bg-gray-100 text-gray-700 hover:bg-orange-100'
                                                 }`}
                                         >

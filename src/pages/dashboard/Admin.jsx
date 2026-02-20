@@ -7,6 +7,7 @@ import UsersView from '../../components/admin/Users/UsersView'
 import KelasView from '../../components/admin/Kelas/KelasView'
 import MapelView from '../../components/admin/Mapel/MapelView'
 import SettingsView from '../../components/admin/Settings/SettingsView'
+import TrashBankSoalView from '../../components/admin/TrashBankSoal/TrashBankSoalView'
 
 export default function Admin() {
     const [activeTab, setActiveTab] = useState('dashboard')
@@ -31,6 +32,9 @@ export default function Admin() {
             case 'mapel':
                 return <MapelView />
 
+            case 'trash_soal':
+                return <TrashBankSoalView />
+
             case 'settings':
                 return <SettingsView />
 
@@ -45,6 +49,7 @@ export default function Admin() {
             users: 'Manajemen Users',
             kelas: 'Manajemen Kelas',
             mapel: 'Manajemen Mata Pelajaran',
+            trash_soal: 'Soal Terhapus',
             settings: 'Pengaturan Akun'
         }
         return titles[activeTab] || 'Dashboard Admin'
@@ -56,13 +61,14 @@ export default function Admin() {
             users: 'Kelola data pengguna sistem',
             kelas: 'Kelola data kelas',
             mapel: 'Kelola data mata pelajaran',
+            trash_soal: 'Kelola dan pulihkan soal yang telah dihapus',
             settings: 'Kelola profil dan pengaturan akun Anda'
         }
         return descriptions[activeTab] || 'Selamat datang di panel admin CBT'
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-100 flex relative overflow-hidden">
+        <div className="min-h-screen bg-linear-to-br from-orange-50 via-white to-orange-100 flex relative overflow-hidden">
             {/* Animated Background Elements */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 <div className="absolute top-20 left-10 w-72 h-72 bg-orange-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
@@ -84,7 +90,7 @@ export default function Admin() {
                     {/* Header */}
                     <header className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
                         <div>
-                            <h1 className="text-4xl font-bold bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600 bg-clip-text text-transparent mb-2">
+                            <h1 className="text-4xl font-bold bg-linear-to-r from-orange-600 via-orange-500 to-orange-600 bg-clip-text text-transparent mb-2">
                                 {getPageTitle()}
                             </h1>
                             <p className="text-gray-600">

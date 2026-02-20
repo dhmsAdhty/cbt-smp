@@ -10,7 +10,8 @@ import {
     Logout03Icon,
     Menu01Icon,
     Cancel01Icon,
-    Settings01Icon
+    Settings01Icon,
+    Delete02Icon
 } from 'hugeicons-react'
 
 export default function Sidebar({ activeTab, setActiveTab, menuItems: propMenuItems, themeColor = 'orange', userRole }) {
@@ -70,6 +71,7 @@ export default function Sidebar({ activeTab, setActiveTab, menuItems: propMenuIt
         { id: 'users', label: 'Pengguna', icon: UserMultiple02Icon },
         { id: 'kelas', label: 'Kelas', icon: MeetingRoomIcon },
         { id: 'mapel', label: 'Mata Pelajaran', icon: BookOpen02Icon },
+        { id: 'trash_soal', label: 'Soal Terhapus', icon: Delete02Icon },
         { id: 'settings', label: 'Pengaturan', icon: Settings01Icon }
     ]
 
@@ -88,8 +90,8 @@ export default function Sidebar({ activeTab, setActiveTab, menuItems: propMenuIt
             <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className={`lg:hidden fixed top-4 left-4 z-50 p-3 rounded-xl text-white shadow-lg transition-all duration-300 hover:scale-105 ${isBlue
-                    ? 'bg-gradient-to-br from-blue-500 to-blue-600 shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40'
-                    : 'bg-gradient-to-br from-orange-500 to-orange-600 shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40'
+                    ? 'bg-linear-to-br from-blue-500 to-blue-600 shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40'
+                    : 'bg-linear-to-br from-orange-500 to-orange-600 shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40'
                     }`}
                 aria-label="Toggle menu"
             >
@@ -126,7 +128,7 @@ export default function Sidebar({ activeTab, setActiveTab, menuItems: propMenuIt
                             className="w-12 h-auto"
                         />
                         <div>
-                            <h1 className={`text-2xl font-extrabold bg-gradient-to-r bg-clip-text text-transparent ${isBlue ? 'from-blue-600 to-blue-500' : 'from-orange-600 to-orange-500'
+                            <h1 className={`text-2xl font-extrabold bg-linear-to-r bg-clip-text text-transparent ${isBlue ? 'from-blue-600 to-blue-500' : 'from-orange-600 to-orange-500'
                                 }`}>
                                 CBT {getRoleLabel()}
                             </h1>
@@ -153,8 +155,8 @@ export default function Sidebar({ activeTab, setActiveTab, menuItems: propMenuIt
                                         transition-all duration-300 relative group
                                         ${isActive
                                             ? isBlue
-                                                ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30'
-                                                : 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
+                                                ? 'bg-linear-to-r from-blue-500 to-blue-600 text-white shadow-lg shadow-blue-500/30'
+                                                : 'bg-linear-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
                                             : isBlue
                                                 ? 'hover:bg-blue-50 text-gray-700'
                                                 : 'hover:bg-orange-50 text-gray-700'
@@ -187,14 +189,14 @@ export default function Sidebar({ activeTab, setActiveTab, menuItems: propMenuIt
                         <button
                             onClick={handleLogout}
                             className="w-full flex items-center justify-center gap-3 px-4 py-3.5 rounded-xl 
-                                     bg-gradient-to-r from-red-500 to-red-600 
+                                     bg-linear-to-r from-red-500 to-red-600 
                                      hover:from-red-600 hover:to-red-700 
                                      text-white font-medium 
                                      shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 
                                      transition-all duration-300 transform hover:-translate-y-0.5 
                                      group relative overflow-hidden"
                         >
-                            <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                            <div className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                             <Logout03Icon size={20} className="relative z-10" />
                             <span className="relative z-10">Keluar Sistem</span>
                         </button>

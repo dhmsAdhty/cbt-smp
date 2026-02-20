@@ -25,32 +25,7 @@ const RekapNilaiView = () => {
         fetchRekapData()
     }, [])
 
-    // Realtime subscription
-    useEffect(() => {
-        if (!mapelDetails) return
 
-        const channel = supabase
-            .channel('rekap-nilai-updates')
-            .on('postgres_changes',
-                {
-                    event: 'INSERT',
-                    schema: 'public',
-                    table: 'ujian_jawaban'
-                },
-                () => fetchRekapData()
-            )
-            .on('postgres_changes',
-                {
-                    event: 'DELETE',
-                    schema: 'public',
-                    table: 'ujian_jawaban'
-                },
-                () => fetchRekapData()
-            )
-            .subscribe()
-
-        return () => supabase.removeChannel(channel)
-    }, [mapelDetails])
 
     const fetchRekapData = async () => {
         try {
@@ -81,18 +56,41 @@ const RekapNilaiView = () => {
                 .from('bank_soal')
                 .select('id')
                 .eq('mapel_id', mapelData.id)
+                .is('deleted_at', null)
 
             const soalIds = mapelSoal?.map(s => s.id) || []
+            console.log('📚 Mapel soal:', { mapelId: mapelData.id, totalSoal: soalIds.length, soalIds })
+
             if (soalIds.length === 0) {
+                console.log('⚠️ No soal found for this mapel')
                 setRekapData([])
                 setLoading(false)
                 return
             }
 
-            const { data: answers } = await supabase
+            let query = supabase
                 .from('ujian_jawaban')
                 .select('siswa_id, soal_id, ujian_id, is_correct')
-                .in('soal_id', soalIds)
+
+            // Use filter approach instead of in() to avoid Supabase issues
+            if (soalIds.length > 0) {
+                query = query.in('soal_id', soalIds)
+            }
+
+            const { data: answers, error: answersError } = await query
+
+            if (answersError) {
+                console.error('❌ Error fetching answers:', answersError)
+                throw answersError
+            }
+
+            console.log('📝 Answers found:', answers?.length || 0)
+
+            console.log('🔍 Rekap Debug:', {
+                soalIds: soalIds.length,
+                answers: answers?.length || 0,
+                mapelId: mapelData.id
+            })
 
             const studentIds = [...new Set(answers?.map(a => a.siswa_id) || [])]
             const ujianIds = [...new Set(answers?.map(a => a.ujian_id).filter(Boolean) || [])]
@@ -140,6 +138,7 @@ const RekapNilaiView = () => {
                 nilai: s.answeredCount > 0 ? ((s.correctCount / s.answeredCount) * 100).toFixed(1) : 0
             }))
 
+            console.log('✅ Setting rekap data:', { totalRows: formattedData.length, data: formattedData })
             setRekapData(formattedData)
         } catch (error) {
             console.error('Error fetching rekap:', error)
@@ -171,6 +170,7 @@ const RekapNilaiView = () => {
                 .from('bank_soal')
                 .select('id, pertanyaan, opsi_jawaban, kunci_jawaban, tipe_soal')
                 .in('id', soalIds)
+                .is('deleted_at', null)
 
             const detailedAnswers = answers.map(ans => {
                 const soal = soalList?.find(s => s.id === ans.soal_id)
@@ -244,24 +244,49 @@ const RekapNilaiView = () => {
                     .delete()
                     .eq('siswa_id', studentId)
 
-                // Jika ada ujianId, hapus spesifik ujian tersebut (Lebih aman & cepat)
+                // Jika ada ujianId, hapus spesifik ujian tersebut
                 if (ujianId) {
                     query = query.eq('ujian_id', ujianId)
+                    console.log('🗑️ Deleting by ujianId:', ujianId)
                 } else {
-                    // Fallback ke logika lama (hapus berdasarkan semua soal mapel)
-                    // Hanya jika data lama tidak punya ujian_id
+                    // Fallback: hapus berdasarkan soal mapel
                     const { data: mapelSoal } = await supabase
                         .from('bank_soal')
                         .select('id')
                         .eq('mapel_id', mapelDetails.id)
+                        .is('deleted_at', null)
 
                     const soalIds = mapelSoal?.map(s => s.id) || []
-                    query = query.in('soal_id', soalIds)
+
+                    if (soalIds.length > 0) {
+                        query = query.in('soal_id', soalIds)
+                        console.log('🗑️ Deleting by soalIds:', soalIds)
+                    } else {
+                        // Tidak ada filter valid → batalkan agar tidak delete semua data siswa
+                        Swal.fire('Gagal', 'Tidak ada soal mapel ditemukan, tidak bisa menghapus.', 'error')
+                        return
+                    }
                 }
 
-                const { error } = await query
+                // Tambah .select() agar Supabase mengembalikan row yang terhapus
+                const { data: deletedRows, error } = await query.select()
 
-                if (error) throw error
+                if (error) {
+                    console.error('❌ Delete error:', error)
+                    throw error
+                }
+
+                console.log('✅ Deleted rows:', deletedRows?.length ?? 0, deletedRows)
+
+                if (!deletedRows || deletedRows.length === 0) {
+                    // Tidak ada baris yang terhapus — kemungkinan RLS memblokir atau filter salah
+                    console.warn('⚠️ Tidak ada row yang terhapus. Cek RLS atau filter query.')
+                    Swal.fire('Perhatian', 'Data tidak terhapus. Kemungkinan ada masalah izin di database.', 'warning')
+                    return
+                }
+
+                setRekapData([]) // Clear UI langsung
+                await fetchRekapData() // Fetch ulang setelah delete selesai
 
                 Swal.fire({
                     icon: 'success',
@@ -270,8 +295,6 @@ const RekapNilaiView = () => {
                     timer: 1500,
                     showConfirmButton: false
                 })
-
-                fetchRekapData()
             } catch (error) {
                 console.error('Error deleting result:', error)
                 Swal.fire('Error', 'Gagal menghapus hasil ujian', 'error')
@@ -397,7 +420,7 @@ const RekapNilaiView = () => {
                             initial={{ backgroundPosition: "0% 0%" }}
                             animate={{ backgroundPosition: "100% 100%" }}
                             transition={{ duration: 0.8, ease: "easeOut" }}
-                            className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-white"
+                            className="bg-linear-to-r from-blue-600 to-blue-700 p-6 text-white"
                         >
                             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                                 <div>

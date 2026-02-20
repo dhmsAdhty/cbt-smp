@@ -9,7 +9,7 @@ import {
     CheckmarkCircle02Icon
 } from 'hugeicons-react'
 import LoadingSpinner from '../../admin/shared/LoadingSpinner'
-import soalForm from './SoalForm'
+import SoalForm from './SoalForm'
 import Select from '../../ui/Select'
 import Swal from 'sweetalert2'
 
@@ -31,7 +31,7 @@ const useKelas = () => {
                 .from('kelas')
                 .select('*')
                 .order('nama_kelas', { ascending: true })
-            
+
             if (error) throw error
             setKelasList(data || [])
         } catch (error) {
@@ -133,13 +133,15 @@ const useBankSoal = (mapelId) => {
     // Soft delete handler
     const deleteSoal = useCallback(async (id) => {
         try {
-            const { error } = await supabase
+            const { data, error } = await supabase
                 .from('bank_soal')
                 .update({ deleted_at: new Date().toISOString() })
                 .eq('id', id)
+                .select()
 
             if (error) throw error
-            
+            if (!data || data.length === 0) throw new Error('Gagal menghapus soal: Data tidak ditemukan atau akses ditolak.')
+
             // Update local state
             setSoals(prev => prev.filter(s => s.id !== id))
             return { success: true }
@@ -149,12 +151,12 @@ const useBankSoal = (mapelId) => {
         }
     }, [])
 
-    return { 
-        soals, 
-        loading, 
-        error, 
+    return {
+        soals,
+        loading,
+        error,
         refetch: fetchSoal,
-        deleteSoal 
+        deleteSoal
     }
 }
 
@@ -208,15 +210,15 @@ const itemVariants = {
 // Sub Components
 // =====================
 
-const Toolbar = ({ 
-    searchTerm, 
-    onSearchChange, 
-    filterKelas, 
-    onFilterKelasChange, 
-    filterTipe, 
-    onFilterTipeChange, 
-    kelasList, 
-    onAdd 
+const Toolbar = ({
+    searchTerm,
+    onSearchChange,
+    filterKelas,
+    onFilterKelasChange,
+    filterTipe,
+    onFilterTipeChange,
+    kelasList,
+    onAdd
 }) => (
     <div className="p-4 flex flex-col md:flex-row gap-4 items-center justify-between sticky top-0 z-20 bg-white rounded-2xl border border-gray-200 shadow-sm">
         <div className="flex flex-1 w-full gap-3 flex-col sm:flex-row">
@@ -280,8 +282,8 @@ const OpsiJawaban = ({ soal }) => {
         ? soal.opsi_jawaban
         : Object.entries(soal.opsi_jawaban || {}).map(([k, v]) => ({ label: k, text: v }))
 
-    const totalOpsi = Array.isArray(soal.opsi_jawaban) 
-        ? soal.opsi_jawaban.length 
+    const totalOpsi = Array.isArray(soal.opsi_jawaban)
+        ? soal.opsi_jawaban.length
         : Object.keys(soal.opsi_jawaban || {}).length
 
     return (
@@ -289,16 +291,15 @@ const OpsiJawaban = ({ soal }) => {
             {opsis.slice(0, 2).map((opsi, i) => (
                 <div
                     key={i}
-                    className={`px-3 py-1.5 rounded-lg text-xs flex items-center gap-2 ${
-                        soal.kunci_jawaban === opsi.label
-                            ? 'bg-green-50 text-green-700 font-semibold'
-                            : 'bg-gray-50 text-gray-600'
-                    }`}
+                    className={`px-3 py-1.5 rounded-lg text-xs flex items-center gap-2 ${soal.kunci_jawaban === opsi.label
+                        ? 'bg-green-50 text-green-700 font-semibold'
+                        : 'bg-gray-50 text-gray-600'
+                        }`}
                 >
                     <span className="font-bold">{opsi.label}.</span>
                     <span className="truncate">{opsi.text}</span>
                     {soal.kunci_jawaban === opsi.label && (
-                        <CheckmarkCircle02Icon size={14} className="ml-auto flex-shrink-0" />
+                        <CheckmarkCircle02Icon size={14} className="ml-auto shrink-0" />
                     )}
                 </div>
             ))}
@@ -327,11 +328,10 @@ const SoalCard = ({ soal, index, onEdit, onDelete }) => (
                     <span className="bg-blue-100 text-blue-700 px-2.5 py-0.5 rounded-full text-xs font-bold">
                         {index + 1}
                     </span>
-                    <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                        soal.tipe_soal === 'essay'
-                            ? 'bg-blue-50 text-blue-600'
-                            : 'bg-gray-100 text-gray-600'
-                    }`}>
+                    <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${soal.tipe_soal === 'essay'
+                        ? 'bg-blue-50 text-blue-600'
+                        : 'bg-gray-100 text-gray-600'
+                        }`}>
                         {soal.tipe_soal === 'pilihan_ganda' ? 'PG' : 'Essay'}
                     </span>
                     {soal.kelas && (
@@ -453,10 +453,10 @@ const BankSoalView = () => {
 
     const handleDelete = useCallback(async (id) => {
         const result = await showDeleteConfirmation()
-        
+
         if (result.isConfirmed) {
             const { success, error } = await deleteSoal(id)
-            
+
             if (success) {
                 showSuccessMessage('Soal berhasil dihapus (Soft Delete).')
             } else {

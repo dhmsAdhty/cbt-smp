@@ -21,7 +21,7 @@ const UsersView = () => {
         setIsLoading(true)
         try {
             // Fetch users, kelas, mapel
-            const { data: usersData, error: usersError } = await supabase.from('users').select('*').is('deleted_at', null)
+            const { data: usersData, error: usersError } = await supabase.from('users').select('*')
             const { data: kelasData } = await supabase.from('kelas').select('*')
             const { data: mapelData } = await supabase.from('mapel').select('*')
 
@@ -192,7 +192,7 @@ const UsersView = () => {
                 <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in" onClick={handleCloseModal}>
                     <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slide-up" onClick={(e) => e.stopPropagation()}>
                         {/* Header */}
-                        <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-6 rounded-t-2xl">
+                        <div className="bg-linear-to-r from-orange-500 to-orange-600 p-6 rounded-t-2xl">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-4">
                                     <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-xl flex items-center justify-center text-white text-2xl font-bold">
@@ -251,13 +251,13 @@ const UsersView = () => {
                                     <div className="flex gap-3 pt-4 border-t border-gray-200">
                                         <button
                                             onClick={() => setIsEditing(true)}
-                                            className="flex-1 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all transform hover:-translate-y-0.5"
+                                            className="flex-1 px-6 py-3 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all transform hover:-translate-y-0.5"
                                         >
                                             Edit
                                         </button>
                                         <button
                                             onClick={handleDelete}
-                                            className="flex-1 px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white rounded-xl font-semibold shadow-lg shadow-orange-600/30 hover:shadow-xl hover:shadow-orange-600/40 transition-all transform hover:-translate-y-0.5"
+                                            className="flex-1 px-6 py-3 bg-linear-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white rounded-xl font-semibold shadow-lg shadow-orange-600/30 hover:shadow-xl hover:shadow-orange-600/40 transition-all transform hover:-translate-y-0.5"
                                         >
                                             Hapus
                                         </button>
@@ -319,7 +319,7 @@ const UsersView = () => {
                                     <div className="flex gap-3 pt-4 border-t border-gray-200">
                                         <button
                                             onClick={handleUpdate}
-                                            className="flex-1 px-6 py-3 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all transform hover:-translate-y-0.5"
+                                            className="flex-1 px-6 py-3 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all transform hover:-translate-y-0.5"
                                         >
                                             Simpan
                                         </button>

@@ -85,6 +85,7 @@ const UjianForm = ({ ujian, guruId, onClose }) => {
                 .from('bank_soal')
                 .select('id, pertanyaan, bobot, tipe_soal')
                 .eq('mapel_id', mapelId)
+                .is('deleted_at', null)
                 .order('created_at', { ascending: false })
 
             if (error) throw error

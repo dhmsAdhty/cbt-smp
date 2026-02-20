@@ -12,7 +12,8 @@ import {
     PlayCircleIcon,
     Search01Icon,
     ArrowRight01Icon,
-    StarSquareIcon
+    StarSquareIcon,
+    Calendar02Icon
 } from 'hugeicons-react'
 import Swal from 'sweetalert2'
 
@@ -65,17 +66,40 @@ export default function Siswa() {
 
     const fetchExams = async () => {
         setLoading(true)
-        const { data, error } = await supabase
-            .from('ujian')
-            .select('*')
-            .order('created_at', { ascending: false })
+        try {
+            // Fetch semua ujian
+            const { data: ujianList, error } = await supabase
+                .from('ujian')
+                .select('*')
+                .order('created_at', { ascending: false })
 
-        if (error) {
+            if (error) throw error
+
+            // Ambil semua guru_id unik lalu fetch nama guru-nya sekaligus
+            const guruIds = [...new Set(ujianList?.map(u => u.guru_id).filter(Boolean) || [])]
+            let guruMap = {}
+
+            if (guruIds.length > 0) {
+                const { data: guruList } = await supabase
+                    .from('users')
+                    .select('id, nama')
+                    .in('id', guruIds)
+
+                guruList?.forEach(g => { guruMap[g.id] = g.nama })
+            }
+
+            // Gabungkan nama guru ke data ujian
+            const enriched = ujianList?.map(u => ({
+                ...u,
+                namaGuru: guruMap[u.guru_id] || '-'
+            })) || []
+
+            setExams(enriched)
+        } catch (err) {
             Swal.fire('Error', 'Gagal memuat ujian', 'error')
-        } else {
-            setExams(data || [])
+        } finally {
+            setLoading(false)
         }
-        setLoading(false)
     }
 
     const handleStartExam = async (exam) => {
@@ -107,8 +131,23 @@ export default function Siswa() {
         e.mata_pelajaran?.toLowerCase().includes(searchTerm.toLowerCase())
     )
 
+    const formatWaktu = (dateStr) => {
+        if (!dateStr) return null
+        return new Date(dateStr).toLocaleDateString('id-ID', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        })
+    }
+
     const ExamCard = ({ exam }) => {
         const isCompleted = completedExamIds.has(exam.id)
+        const namaGuru = exam.namaGuru || '-'
+        const waktuMulai = formatWaktu(exam.waktu_mulai)
+        const waktuSelesai = formatWaktu(exam.waktu_selesai)
 
         return (
             <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm relative">
@@ -135,17 +174,29 @@ export default function Siswa() {
                 </p>
 
                 <div className="space-y-2 text-sm text-gray-600 mb-6">
+                    {/* Durasi */}
                     <div className="flex items-center gap-2">
-                        <Clock01Icon className="w-4 h-4" />
-                        {exam.durasi_menit} Menit
+                        <Clock01Icon className="w-4 h-4 text-blue-400 shrink-0" />
+                        <span>{exam.durasi_menit} Menit</span>
                     </div>
+                    {/* Nama Guru */}
                     <div className="flex items-center gap-2">
-                        <CheckmarkCircle02Icon className="w-4 h-4" />
-                        {exam.guru?.nama_lengkap || 'Guru'}
+                        <UserCircleIcon className="w-4 h-4 text-purple-400 shrink-0" />
+                        <span className="truncate">{namaGuru}</span>
                     </div>
+                    {/* Waktu Mulai - Selesai */}
+                    {(waktuMulai || waktuSelesai) && (
+                        <div className="flex items-start gap-2">
+                            <Calendar02Icon className="w-4 h-4 text-green-400 shrink-0 mt-0.5" />
+                            <div className="text-xs leading-relaxed">
+                                {waktuMulai && <div><span className="text-gray-400">Mulai: </span>{waktuMulai}</div>}
+                                {waktuSelesai && <div><span className="text-gray-400">Selesai: </span>{waktuSelesai}</div>}
+                            </div>
+                        </div>
+                    )}
                 </div>
 
-                {/* BUTTON – HOVER ONLY */}
+                {/* Button */}
                 <button
                     onClick={() => handleStartExam(exam)}
                     disabled={!isCompleted && exam.status === 'selesai'}

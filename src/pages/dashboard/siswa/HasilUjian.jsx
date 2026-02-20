@@ -74,11 +74,20 @@ export default function HasilUjian() {
                 return
             }
 
+            // Fetch soal details to filter out deleted ones
+            const { data: soalDetails } = await supabase
+                .from('bank_soal')
+                .select('id')
+                .in('id', soalIds)
+                .is('deleted_at', null)
+
+            const activesoalIds = soalDetails?.map(s => s.id) || []
+
             const { data: answers, error: answerError } = await supabase
                 .from('ujian_jawaban')
                 .select('*')
                 .eq('siswa_id', user.id)
-                .in('soal_id', soalIds)
+                .in('soal_id', activesoalIds)
 
             if (answerError) throw answerError
 
@@ -131,7 +140,7 @@ export default function HasilUjian() {
                 {/* Main Card */}
                 <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                     {/* Header Section */}
-                    <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-8 text-white">
+                    <div className="bg-linear-to-r from-blue-600 to-blue-700 p-8 text-white">
                         <div className="flex items-center justify-between mb-6">
                             <div>
                                 <h1 className="text-2xl font-bold mb-1">{ujian.judul}</h1>

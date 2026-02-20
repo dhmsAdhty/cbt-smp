@@ -217,13 +217,14 @@ export default function UjianKerjakan() {
                 // Ideally this happens on creating 'ujian_jawaban' via database trigger or function.
                 // We will just insert the raw answer. Teacher/Admin dashboard calculates score.
                 // Wait... RekapNilaiView calculates based on 'is_correct'. So we need to set it here?
-                // Or fetch keys now?
+                // Let's fetch keys now?
 
                 // Let's fetch keys secretly just for submission logic
                 const { data: keys } = await supabase
                     .from('bank_soal')
                     .select('id, kunci_jawaban')
                     .in('id', soalList.map(s => s.id))
+                    .is('deleted_at', null)
 
                 const keyMap = {}
                 keys?.forEach(k => keyMap[k.id] = k.kunci_jawaban)
@@ -326,7 +327,7 @@ export default function UjianKerjakan() {
                 </header>
 
                 {/* Security Indicator */}
-                <div className="bg-gradient-to-r from-green-50 to-blue-50 border-b border-green-100 px-6 py-2">
+                <div className="bg-linear-to-r from-green-50 to-blue-50 border-b border-green-100 px-6 py-2">
                     <div className="flex items-center justify-between text-sm">
                         <div className="flex items-center gap-2 text-green-700">
                             <span className="text-lg">🛡️</span>
