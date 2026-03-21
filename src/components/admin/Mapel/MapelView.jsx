@@ -89,8 +89,6 @@ const MapelView = () => {
                     showConfirmButton: false,
                     timer: 1500,
                     timerProgressBar: true,
-                    timer: 1500,
-                    timerProgressBar: true,
                 })
 
                 await fetchMapel()
@@ -143,8 +141,6 @@ const MapelView = () => {
                     showConfirmButton: false,
                     timer: 1500,
                     timerProgressBar: true,
-                    timer: 1500,
-                    timerProgressBar: true,
                 })
 
                 await fetchMapel()
@@ -152,8 +148,6 @@ const MapelView = () => {
                 Swal.fire({
                     icon: 'error',
                     title: '❌ Error',
-                    text: err.message,
-                    confirmButtonColor: '#f97316',
                     text: err.message,
                     confirmButtonColor: '#f97316',
                     iconColor: '#f97316'

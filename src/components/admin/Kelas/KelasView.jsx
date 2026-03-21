@@ -91,8 +91,6 @@ const KelasView = () => {
                     showConfirmButton: false,
                     timer: 1500,
                     timerProgressBar: true,
-                    timer: 1500,
-                    timerProgressBar: true,
                 })
 
                 await fetchKelas()
@@ -145,8 +143,6 @@ const KelasView = () => {
                     showConfirmButton: false,
                     timer: 1500,
                     timerProgressBar: true,
-                    timer: 1500,
-                    timerProgressBar: true,
                 })
 
                 await fetchKelas()
@@ -154,8 +150,6 @@ const KelasView = () => {
                 Swal.fire({
                     icon: 'error',
                     title: '❌ Error',
-                    text: err.message,
-                    confirmButtonColor: '#f97316',
                     text: err.message,
                     confirmButtonColor: '#f97316',
                     iconColor: '#f97316'

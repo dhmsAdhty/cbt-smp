@@ -109,8 +109,6 @@ const SettingsView = () => {
                     title: 'Verifikasi Email',
                     text: 'Email verifikasi telah dikirim ke alamat email baru Anda.',
                     confirmButtonColor: '#f97316',
-                    text: 'Email verifikasi telah dikirim ke alamat email baru Anda.',
-                    confirmButtonColor: '#f97316',
                     iconColor: '#f97316'
                 })
             }
@@ -146,8 +144,6 @@ const SettingsView = () => {
                 showConfirmButton: false,
                 timer: 2000,
                 timerProgressBar: true,
-                timer: 2000,
-                timerProgressBar: true,
                 iconColor: '#f97316'
             })
 
@@ -158,8 +154,6 @@ const SettingsView = () => {
             Swal.fire({
                 icon: 'error',
                 title: '❌ Error',
-                text: error.message,
-                confirmButtonColor: '#f97316',
                 text: error.message,
                 confirmButtonColor: '#f97316',
                 iconColor: '#f97316'

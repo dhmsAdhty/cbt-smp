@@ -2,23 +2,11 @@ import { useState } from 'react'
 import { supabase, supabaseUrl, supabaseKey } from '../lib/supabaseClient'
 import { createClient } from '@supabase/supabase-js'
 import Swal from 'sweetalert2'
-import Papa from 'papaparse'
 import * as XLSX from 'xlsx'
 
 export const useBulkImport = (onSuccess) => {
     const [importProgress, setImportProgress] = useState({ current: 0, total: 0, isImporting: false })
     const [importResults, setImportResults] = useState({ success: [], failed: [] })
-
-    const downloadTemplate = () => {
-        const template = 'nama,email,password,role,kelas,mapel\nJohn Doe,john@sekolah.com,password123,siswa,X-A,\nJane Smith,jane@sekolah.com,password123,guru,,Matematika\nAdmin User,admin@sekolah.com,admin123,admin,,'
-        const blob = new Blob([template], { type: 'text/csv' })
-        const url = window.URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.href = url
-        a.download = 'template_import_users.csv'
-        a.click()
-        window.URL.revokeObjectURL(url)
-    }
 
     const downloadTemplateExcel = () => {
         const data = [
@@ -172,84 +160,57 @@ export const useBulkImport = (onSuccess) => {
         const file = event.target.files[0]
         if (!file) return
 
-        const fileExtension = file.name.split('.').pop().toLowerCase()
-        const isExcel = ['xlsx', 'xls'].includes(fileExtension)
+        parseExcelFile(file)
+            .then(users => {
+                const filteredUsers = users.filter(row => row.nama && row.email)
 
-        const processData = async (users) => {
-            const filteredUsers = users.filter(row => row.nama && row.email)
+                if (filteredUsers.length === 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'File Kosong',
+                        text: 'File tidak berisi data yang valid. Pastikan kolom "nama" dan "email" ada.',
+                        confirmButtonColor: '#f97316',
+                        background: '#1a1a1a',
+                        color: '#fff'
+                    })
+                    event.target.value = ''
+                    return
+                }
 
-            if (filteredUsers.length === 0) {
+                Swal.fire({
+                    title: 'Konfirmasi Import',
+                    html: `Anda akan mengimport <strong>${filteredUsers.length} users</strong>.<br/>Proses ini mungkin memakan waktu beberapa menit.<br/><br/>Lanjutkan?`,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#f97316',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: 'Ya, Import',
+                    cancelButtonText: 'Batal',
+                    background: '#1a1a1a',
+                    color: '#fff'
+                }).then(result => {
+                    if (result.isConfirmed) {
+                        processUsersInBatch(filteredUsers)
+                    }
+                    event.target.value = ''
+                })
+            })
+            .catch((error) => {
                 Swal.fire({
                     icon: 'error',
-                    title: 'File Kosong',
-                    text: 'File tidak berisi data yang valid. Pastikan kolom "nama" dan "email" ada.',
+                    title: 'Error Parsing Excel',
+                    text: error.message,
                     confirmButtonColor: '#f97316',
                     background: '#1a1a1a',
                     color: '#fff'
                 })
                 event.target.value = ''
-                return
-            }
-
-            const result = await Swal.fire({
-                title: 'Konfirmasi Import',
-                html: `Anda akan mengimport <strong>${filteredUsers.length} users</strong>.<br/>Proses ini mungkin memakan waktu beberapa menit.<br/><br/>Lanjutkan?`,
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#f97316',
-                cancelButtonColor: '#6b7280',
-                confirmButtonText: 'Ya, Import',
-                cancelButtonText: 'Batal',
-                background: '#1a1a1a',
-                color: '#fff'
             })
-
-            if (result.isConfirmed) {
-                await processUsersInBatch(filteredUsers)
-            }
-            event.target.value = ''
-        }
-
-        if (isExcel) {
-            parseExcelFile(file)
-                .then(users => processData(users))
-                .catch((error) => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error Parsing Excel',
-                        text: error.message,
-                        confirmButtonColor: '#f97316',
-                        background: '#1a1a1a',
-                        color: '#fff'
-                    })
-                    event.target.value = ''
-                })
-        } else {
-            Papa.parse(file, {
-                header: true,
-                skipEmptyLines: true,
-                complete: (results) => {
-                    processData(results.data)
-                },
-                error: (error) => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error Parsing CSV',
-                        text: error.message,
-                        confirmButtonColor: '#f97316',
-                        background: '#1a1a1a',
-                        color: '#fff'
-                    })
-                    event.target.value = ''
-                }
-            })
-        }
     }
 
     return {
         importProgress,
         importResults,
-        downloadTemplate,
         downloadTemplateExcel,
         handleBulkImport
     }
