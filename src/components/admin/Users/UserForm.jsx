@@ -68,6 +68,10 @@ const UserForm = ({ kelasList, mapelList, onSuccess }) => {
                 throw insertError
             }
 
+            // Pastikan admin tetap login, jangan auto-login sebagai user baru
+            // Logout dari tempSupabase untuk hindari session change
+            await tempSupabase.auth.signOut()
+
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil!',

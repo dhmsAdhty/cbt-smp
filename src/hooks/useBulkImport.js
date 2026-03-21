@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { supabase } from '../lib/supabaseClient'
+import { supabase, supabaseUrl, supabaseKey } from '../lib/supabaseClient'
+import { createClient } from '@supabase/supabase-js'
 import Swal from 'sweetalert2'
 import Papa from 'papaparse'
 
@@ -32,7 +33,12 @@ export const useBulkImport = (onSuccess) => {
                 try {
                     const password = user.password || 'sekolah123'
 
-                    const { data: authData, error: authError } = await supabase.auth.signUp({
+                    // Buat client sementara yang tidak persist session
+                    const tempSupabase = createClient(supabaseUrl, supabaseKey, {
+                        auth: { popups: false, persistSession: false, detectSessionInUrl: false, autoRefreshToken: false }
+                    })
+
+                    const { data: authData, error: authError } = await tempSupabase.auth.signUp({
                         email: user.email.trim(),
                         password: password,
                         options: {
@@ -57,6 +63,9 @@ export const useBulkImport = (onSuccess) => {
                     })
 
                     if (insertError) throw insertError
+
+                    // Pastikan admin tetap login, jangan auto-login sebagai user baru
+                    await tempSupabase.auth.signOut()
 
                     results.success.push({ nama: user.nama, email: user.email })
                 } catch (error) {
