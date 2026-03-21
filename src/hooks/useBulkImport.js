@@ -26,6 +26,10 @@ export const useBulkImport = (onSuccess) => {
         const batchSize = 10
         const results = { success: [], failed: [] }
 
+        // Simpan session admin saat ini
+        const { data: currentSession } = await supabase.auth.getSession()
+        const adminSession = currentSession.session
+
         for (let i = 0; i < users.length; i += batchSize) {
             const batch = users.slice(i, i + batchSize)
 
@@ -64,9 +68,6 @@ export const useBulkImport = (onSuccess) => {
 
                     if (insertError) throw insertError
 
-                    // Pastikan admin tetap login, jangan auto-login sebagai user baru
-                    await tempSupabase.auth.signOut()
-
                     results.success.push({ nama: user.nama, email: user.email })
                 } catch (error) {
                     results.failed.push({
@@ -82,6 +83,14 @@ export const useBulkImport = (onSuccess) => {
             if (i + batchSize < users.length) {
                 await new Promise(resolve => setTimeout(resolve, 1000))
             }
+        }
+
+        // Restore session admin agar tetap login di dashboard admin
+        if (adminSession) {
+            await supabase.auth.setSession({
+                access_token: adminSession.access_token,
+                refresh_token: adminSession.refresh_token
+            })
         }
 
         setImportProgress({ current: 0, total: 0, isImporting: false })

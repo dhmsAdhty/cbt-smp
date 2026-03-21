@@ -34,6 +34,10 @@ const UserForm = ({ kelasList, mapelList, onSuccess }) => {
         })
 
         try {
+            // Simpan session admin saat ini sebelum membuat user baru
+            const { data: currentSession } = await supabase.auth.getSession()
+            const adminSession = currentSession.session
+
             // Buat client sementara yang tidak persist session
             const tempSupabase = createClient(supabaseUrl, supabaseKey, {
                 auth: { popups: false, persistSession: false, detectSessionInUrl: false, autoRefreshToken: false }
@@ -68,9 +72,13 @@ const UserForm = ({ kelasList, mapelList, onSuccess }) => {
                 throw insertError
             }
 
-            // Pastikan admin tetap login, jangan auto-login sebagai user baru
-            // Logout dari tempSupabase untuk hindari session change
-            await tempSupabase.auth.signOut()
+            // Restore session admin agar tetap login di dashboard admin
+            if (adminSession) {
+                await supabase.auth.setSession({
+                    access_token: adminSession.access_token,
+                    refresh_token: adminSession.refresh_token
+                })
+            }
 
             Swal.fire({
                 icon: 'success',
