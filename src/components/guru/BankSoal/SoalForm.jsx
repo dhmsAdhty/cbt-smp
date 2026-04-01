@@ -30,6 +30,7 @@ const SoalForm = ({ soal, mapelId, kelasList = [], onClose }) => {
             { label: 'B', text: '', image_url: null },
             { label: 'C', text: '', image_url: null },
             { label: 'D', text: '', image_url: null },
+            { label: 'E', text: '', image_url: null },
         ]
     })
 
@@ -43,7 +44,7 @@ const SoalForm = ({ soal, mapelId, kelasList = [], onClose }) => {
     const [optionImageFiles, setOptionImageFiles] = useState({})
     // { A: previewUrl|null, B: ... }
     const [optionImagePreviews, setOptionImagePreviews] = useState({})
-    const optionFileRefs = useRef({ A: null, B: null, C: null, D: null })
+    const optionFileRefs = useRef({ A: null, B: null, C: null, D: null, E: null })
 
     useEffect(() => {
         if (soal) {
@@ -51,7 +52,8 @@ const SoalForm = ({ soal, mapelId, kelasList = [], onClose }) => {
                 { label: 'A', text: '', image_url: null },
                 { label: 'B', text: '', image_url: null },
                 { label: 'C', text: '', image_url: null },
-                { label: 'D', text: '', image_url: null }
+                { label: 'D', text: '', image_url: null },
+                { label: 'E', text: '', image_url: null }
             ]
             setFormData({
                 pertanyaan: soal.pertanyaan,
