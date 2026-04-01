@@ -364,7 +364,7 @@ export default function UjianKerjakan() {
                                     <label
                                         key={idx}
                                         className={`
-                                            flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all
+                                            flex items-start gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all
                                             ${jawaban[currentSoal.id] === opsi.label
                                                 ? 'border-blue-500 bg-blue-50'
                                                 : 'border-gray-100 hover:border-blue-200 bg-white hover:bg-gray-50'
@@ -372,7 +372,7 @@ export default function UjianKerjakan() {
                                         `}
                                     >
                                         <div className={`
-                                            w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm border-2
+                                            w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm border-2 shrink-0 mt-0.5
                                             ${jawaban[currentSoal.id] === opsi.label
                                                 ? 'border-blue-600 bg-blue-600 text-white'
                                                 : 'border-gray-300 text-gray-500'
@@ -388,7 +388,18 @@ export default function UjianKerjakan() {
                                             onChange={() => handleAnswerChange(currentSoal.id, opsi.label)}
                                             className="hidden"
                                         />
-                                        <span className="text-gray-700 font-medium">{opsi.text}</span>
+                                        <div className="flex flex-col gap-2 flex-1">
+                                            {opsi.text && (
+                                                <span className="text-gray-700 font-medium">{opsi.text}</span>
+                                            )}
+                                            {opsi.image_url && (
+                                                <img
+                                                    src={opsi.image_url}
+                                                    alt={`Jawaban ${opsi.label}`}
+                                                    className="max-h-48 w-auto rounded-lg border border-gray-200 object-contain"
+                                                />
+                                            )}
+                                        </div>
                                     </label>
                                 ))
                             ) : (
