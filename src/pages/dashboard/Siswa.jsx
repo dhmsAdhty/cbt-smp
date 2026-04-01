@@ -37,30 +37,14 @@ export default function Siswa() {
 
         setStudentName(user.user_metadata?.nama_lengkap || 'Siswa')
 
+        // Query langsung: ujian_jawaban yang dimiliki siswa ini, grouped by ujian_id
         const { data: answers } = await supabase
             .from('ujian_jawaban')
-            .select('soal_id')
+            .select('ujian_id')
             .eq('siswa_id', user.id)
 
-        const { data: exams } = await supabase
-            .from('ujian')
-            .select('id')
-
-        const answeredIds = new Set(answers?.map(a => a.soal_id) || [])
-        const completed = new Set()
-
-        for (const exam of exams || []) {
-            const { data: soal } = await supabase
-                .from('ujian_soal')
-                .select('soal_id')
-                .eq('ujian_id', exam.id)
-
-            const soalIds = soal?.map(s => s.soal_id) || []
-            if (soalIds.length && soalIds.every(id => answeredIds.has(id))) {
-                completed.add(exam.id)
-            }
-        }
-
+        // Semua ujian_id yang sudah pernah dijawab siswa ini = sudah selesai
+        const completed = new Set(answers?.map(a => a.ujian_id).filter(Boolean) || [])
         setCompletedExamIds(completed)
     }
 

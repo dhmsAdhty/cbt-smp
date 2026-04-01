@@ -38,67 +38,24 @@ export default function UjianKerjakan() {
         enableTimeTracking: true,
         enableFullscreen: true,
         onTabSwitch: (event) => {
-            // Escalating warnings based on tab switch count
-            const count = tabSwitchCount + 1
-
-            if (count === 1) {
-                // First warning
-                Swal.fire({
-                    icon: 'warning',
-                    title: '⚠️ Peringatan Pertama',
-                    html: `
-                        <p style="margin-bottom: 12px;"><strong>Anda telah berpindah tab ${count} kali!</strong></p>
-                        <p style="margin-bottom: 12px;">Untuk keamanan ujian, mohon:</p>
-                        <ul style="text-align: left; margin-left: 20px; margin-bottom: 12px;">
-                            <li>Jangan berpindah tab/window</li>
-                            <li>Fokus pada soal ujian</li>
-                            <li>Semua aktivitas dicatat sistem</li>
-                        </ul>
-                        <p style="color: #dc2626; font-weight: bold;">Jika berpindah tab 3 kali, ujian akan otomatis dikumpulkan!</p>
-                    `,
-                    confirmButtonText: 'Mengerti',
-                    confirmButtonColor: '#f59e0b',
-                    timer: 5000,
-                    timerProgressBar: true
-                })
-            } else if (count === 2) {
-                // Final warning
-                Swal.fire({
-                    icon: 'error',
-                    title: '🚨 Peringatan Terakhir!',
-                    html: `
-                        <p style="margin-bottom: 12px; font-size: 18px;"><strong>Tab Switch: ${count}x / 3x</strong></p>
-                        <p style="color: #dc2626; font-weight: bold; margin-bottom: 12px;">
-                            BAHAYA! 1 kali lagi ujian akan otomatis dikumpulkan!
-                        </p>
-                        <p>Tetap fokus di halaman ujian ini. Jangan berpindah tab!</p>
-                    `,
-                    confirmButtonText: 'Saya Mengerti',
-                    confirmButtonColor: '#dc2626',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false
-                })
-            } else if (count >= 3) {
-                // Auto submit
-                Swal.fire({
-                    icon: 'error',
-                    title: '❌ Ujian Otomatis Dikumpulkan',
-                    html: `
-                        <p style="margin-bottom: 12px;"><strong>Anda telah melanggar aturan ujian!</strong></p>
-                        <p style="margin-bottom: 12px;">Berpindah tab: <strong>${count} kali</strong></p>
-                        <p style="color: #dc2626; font-weight: bold;">
-                            Ujian akan dikumpulkan dengan jawaban yang sudah Anda isi.
-                        </p>
-                    `,
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#dc2626',
-                    allowOutsideClick: false,
-                    allowEscapeKey: false
-                }).then(() => {
-                    // Auto submit exam
-                    handleSubmit(true)
-                })
-            }
+            // Langsung auto-submit saat pertama kali pindah tab (0 toleransi)
+            Swal.fire({
+                icon: 'error',
+                title: '❌ Ujian Otomatis Dikumpulkan',
+                html: `
+                    <p style="margin-bottom: 12px;"><strong>Anda telah berpindah tab/window!</strong></p>
+                    <p style="margin-bottom: 12px;">Pelanggaran aturan ujian terdeteksi.</p>
+                    <p style="color: #dc2626; font-weight: bold;">
+                        Ujian akan dikumpulkan dengan jawaban yang sudah Anda isi.
+                    </p>
+                `,
+                confirmButtonText: 'OK',
+                confirmButtonColor: '#dc2626',
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            }).then(() => {
+                handleSubmit(true)
+            })
         }
     })
 
@@ -132,6 +89,20 @@ export default function UjianKerjakan() {
                 return
             }
             setStudentId(user.id)
+
+            // ✅ Guard: cek apakah siswa sudah pernah mengerjakan ujian ini
+            const { data: existing } = await supabase
+                .from('ujian_jawaban')
+                .select('id')
+                .eq('ujian_id', id)
+                .eq('siswa_id', user.id)
+                .limit(1)
+
+            if (existing && existing.length > 0) {
+                // Sudah selesai, redirect ke halaman hasil
+                navigate(`/dashboard/siswa/hasil/${id}`, { replace: true })
+                return
+            }
 
             // 1. Fetch Exam Details
             const { data: examData, error: examError } = await supabase
