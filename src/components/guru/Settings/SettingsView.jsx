@@ -96,22 +96,6 @@ const SettingsView = () => {
                 }
             }
 
-            // Update auth email if changed
-            if (formData.email !== userData.email) {
-                const { error: emailError } = await supabase.auth.updateUser({
-                    email: formData.email
-                })
-                if (emailError) throw emailError
-
-                Swal.fire({
-                    icon: 'info',
-                    title: 'Verifikasi Email',
-                    text: 'Email verifikasi telah dikirim ke alamat email baru Anda.',
-                    confirmButtonColor: '#3b82f6',
-                    iconColor: '#3b82f6'
-                })
-            }
-
             // Update password if provided
             if (formData.password) {
                 const { error: passwordError } = await supabase.auth.updateUser({
@@ -119,17 +103,6 @@ const SettingsView = () => {
                 })
                 if (passwordError) throw passwordError
             }
-
-            // Update users table
-            const { error: updateError } = await supabase
-                .from('users')
-                .update({
-                    nama: formData.nama,
-                    email: formData.email
-                })
-                .eq('id', user.id)
-
-            if (updateError) throw updateError
 
             Swal.fire({
                 icon: 'success',
@@ -429,28 +402,30 @@ const SettingsView = () => {
                         <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         Nama Lengkap
+                                        <span className="ml-1 text-xs bg-gray-100 text-gray-400 px-2 py-0.5 rounded-full">Tidak dapat diubah</span>
                                     </label>
                                     <input
                                         type="text"
                                         value={formData.nama}
-                                        onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm"
-                                        required
+                                        readOnly
+                                        disabled
+                                        className="w-full px-4 py-3 bg-gray-100 border border-gray-200 rounded-xl text-sm text-gray-500 cursor-not-allowed select-none"
                                     />
                                 </div>
 
                                 <div className="space-y-2">
-                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                                    <label className="flex items-center gap-2 text-sm font-medium text-gray-500">
                                         Email
+                                        <span className="ml-1 text-xs bg-gray-100 text-gray-400 px-2 py-0.5 rounded-full">Tidak dapat diubah</span>
                                     </label>
                                     <input
                                         type="email"
                                         value={formData.email}
-                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                        className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-sm"
-                                        required
+                                        readOnly
+                                        disabled
+                                        className="w-full px-4 py-3 bg-gray-100 border border-gray-200 rounded-xl text-sm text-gray-500 cursor-not-allowed select-none"
                                     />
                                 </div>
                             </div>
