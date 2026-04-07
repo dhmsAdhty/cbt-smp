@@ -7,6 +7,7 @@ import {
     UserMultiple02Icon,
     MeetingRoomIcon,
     BookOpen02Icon,
+    ChartHistogramIcon,
     Logout03Icon,
     Menu01Icon,
     Cancel01Icon,
@@ -71,6 +72,7 @@ export default function Sidebar({ activeTab, setActiveTab, menuItems: propMenuIt
         { id: 'users', label: 'Pengguna', icon: UserMultiple02Icon },
         { id: 'kelas', label: 'Kelas', icon: MeetingRoomIcon },
         { id: 'mapel', label: 'Mata Pelajaran', icon: BookOpen02Icon },
+        { id: 'statistik_mapel', label: 'Statistik Mapel', icon: ChartHistogramIcon },
         { id: 'trash_soal', label: 'Soal Terhapus', icon: Delete02Icon },
         { id: 'settings', label: 'Pengaturan', icon: Settings01Icon }
     ]

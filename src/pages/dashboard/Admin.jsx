@@ -6,6 +6,7 @@ import DashboardView from '../../components/admin/Dashboard/DashboardView'
 import UsersView from '../../components/admin/Users/UsersView'
 import KelasView from '../../components/admin/Kelas/KelasView'
 import MapelView from '../../components/admin/Mapel/MapelView'
+import StatistikMapelView from '../../components/admin/StatistikMapel/StatistikMapelView'
 import SettingsView from '../../components/admin/Settings/SettingsView'
 import TrashBankSoalView from '../../components/admin/TrashBankSoal/TrashBankSoalView'
 
@@ -32,6 +33,9 @@ export default function Admin() {
             case 'mapel':
                 return <MapelView />
 
+            case 'statistik_mapel':
+                return <StatistikMapelView />
+
             case 'trash_soal':
                 return <TrashBankSoalView />
 
@@ -49,6 +53,7 @@ export default function Admin() {
             users: 'Manajemen Users',
             kelas: 'Manajemen Kelas',
             mapel: 'Manajemen Mata Pelajaran',
+            statistik_mapel: 'Statistik Mata Pelajaran',
             trash_soal: 'Soal Terhapus',
             settings: 'Pengaturan Akun'
         }
@@ -61,6 +66,7 @@ export default function Admin() {
             users: 'Kelola data pengguna sistem',
             kelas: 'Kelola data kelas',
             mapel: 'Kelola data mata pelajaran',
+            statistik_mapel: 'Pantau jumlah soal, kelas, dan guru per mapel',
             trash_soal: 'Kelola dan pulihkan soal yang telah dihapus',
             settings: 'Kelola profil dan pengaturan akun Anda'
         }
