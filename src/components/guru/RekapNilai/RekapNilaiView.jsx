@@ -185,6 +185,8 @@ const RekapNilaiView = () => {
             })
 
             setSelectedAnswerData({
+                studentId: row.studentId,
+                ujianId: row.ujianId,
                 studentName: row.nama,
                 examTitle: row.judulUjian,
                 kelas: row.kelas,
@@ -300,6 +302,57 @@ const RekapNilaiView = () => {
     const handleBackToList = () => {
         setDetailMode(false)
         setTimeout(() => setSelectedAnswerData(null), 300) // Clear setelah animasi
+    }
+
+    const handleNilaiEssay = async (ans, isCorrect, ansIndex) => {
+        try {
+            let query = supabase
+                .from('ujian_jawaban')
+                .update({ is_correct: isCorrect })
+                .eq('siswa_id', selectedAnswerData.studentId)
+                .eq('soal_id', ans.soal_id)
+
+            if (selectedAnswerData.ujianId) {
+                query = query.eq('ujian_id', selectedAnswerData.ujianId)
+            }
+
+            const { error } = await query
+            if (error) throw error
+
+            // Update local state jawaban
+            const updatedAnswers = [...selectedAnswerData.answers]
+            updatedAnswers[ansIndex] = { ...updatedAnswers[ansIndex], is_correct: isCorrect }
+
+            // Hitung ulang nilai
+            const totalCount = updatedAnswers.length
+            const correctCount = updatedAnswers.filter(a => a.is_correct).length
+            const newScore = totalCount > 0 ? ((correctCount / totalCount) * 100).toFixed(1) : 0
+
+            setSelectedAnswerData(prev => ({
+                ...prev,
+                answers: updatedAnswers,
+                score: newScore
+            }))
+
+            // Update tabel rekap
+            setRekapData(prev => prev.map(item =>
+                item.studentId === selectedAnswerData.studentId && item.ujianId === selectedAnswerData.ujianId
+                    ? { ...item, correctCount, nilai: newScore }
+                    : item
+            ))
+
+            Swal.fire({
+                icon: 'success',
+                title: isCorrect ? 'Ditandai Benar!' : 'Ditandai Salah!',
+                timer: 1000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            })
+        } catch (error) {
+            console.error('Error updating essay score:', error)
+            Swal.fire('Error', 'Gagal memperbarui nilai. Pastikan RLS policy sudah diatur.', 'error')
+        }
     }
 
     const filteredData = rekapData.filter(item =>
@@ -536,27 +589,58 @@ const RekapNilaiView = () => {
                                                     {ans.tipe_soal === 'pilihan_ganda' ? 'Pilihan Ganda' : 'Essay'}
                                                 </motion.span>
                                             </div>
-                                            <motion.div
-                                                initial={{ opacity: 0, scale: 0.8 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                transition={{ delay: 0.2 + index * 0.05, type: "spring" }}
-                                                className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-bold ${ans.is_correct
-                                                    ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                                                    : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-                                                    }`}
-                                            >
-                                                {ans.is_correct ? (
-                                                    <>
-                                                        <CheckmarkCircle02Icon size={16} />
-                                                        <span>BENAR</span>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <Cancel01Icon size={16} />
-                                                        <span>SALAH</span>
-                                                    </>
-                                                )}
-                                            </motion.div>
+                                            {ans.tipe_soal === 'essay' ? (
+                                                <div className="flex gap-2">
+                                                    <motion.button
+                                                        whileHover={{ scale: 1.05 }}
+                                                        whileTap={{ scale: 0.95 }}
+                                                        onClick={() => handleNilaiEssay(ans, true, index)}
+                                                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-bold transition-all ${
+                                                            ans.is_correct
+                                                                ? 'bg-green-500 text-white shadow-md shadow-green-200 dark:shadow-green-900/30'
+                                                                : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-green-100 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400'
+                                                        }`}
+                                                    >
+                                                        <CheckmarkCircle02Icon size={15} />
+                                                        <span>Benar</span>
+                                                    </motion.button>
+                                                    <motion.button
+                                                        whileHover={{ scale: 1.05 }}
+                                                        whileTap={{ scale: 0.95 }}
+                                                        onClick={() => handleNilaiEssay(ans, false, index)}
+                                                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-bold transition-all ${
+                                                            !ans.is_correct
+                                                                ? 'bg-red-500 text-white shadow-md shadow-red-200 dark:shadow-red-900/30'
+                                                                : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400'
+                                                        }`}
+                                                    >
+                                                        <Cancel01Icon size={15} />
+                                                        <span>Salah</span>
+                                                    </motion.button>
+                                                </div>
+                                            ) : (
+                                                <motion.div
+                                                    initial={{ opacity: 0, scale: 0.8 }}
+                                                    animate={{ opacity: 1, scale: 1 }}
+                                                    transition={{ delay: 0.2 + index * 0.05, type: "spring" }}
+                                                    className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-bold ${ans.is_correct
+                                                        ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                                                        : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                                                        }`}
+                                                >
+                                                    {ans.is_correct ? (
+                                                        <>
+                                                            <CheckmarkCircle02Icon size={16} />
+                                                            <span>BENAR</span>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <Cancel01Icon size={16} />
+                                                            <span>SALAH</span>
+                                                        </>
+                                                    )}
+                                                </motion.div>
+                                            )}
                                         </div>
 
                                         <motion.p
@@ -655,6 +739,26 @@ const RekapNilaiView = () => {
                                                         {ans.jawaban_siswa || '-'}
                                                     </motion.p>
                                                 </div>
+                                                {ans.kunci_jawaban && (
+                                                    <motion.div
+                                                        initial={{ opacity: 0 }}
+                                                        animate={{ opacity: 1 }}
+                                                        transition={{ delay: 0.4 + index * 0.05 }}
+                                                        className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-700"
+                                                    >
+                                                        <p className="text-xs font-semibold text-green-700 dark:text-green-400 mb-2">
+                                                            ✅ Kunci Jawaban
+                                                        </p>
+                                                        <motion.p
+                                                            initial={{ opacity: 0 }}
+                                                            animate={{ opacity: 1 }}
+                                                            transition={{ delay: 0.45 + index * 0.05 }}
+                                                            className="text-sm text-green-800 dark:text-green-200 whitespace-pre-wrap"
+                                                        >
+                                                            {ans.kunci_jawaban}
+                                                        </motion.p>
+                                                    </motion.div>
+                                                )}
                                             </motion.div>
                                         )}
                                     </motion.div>
