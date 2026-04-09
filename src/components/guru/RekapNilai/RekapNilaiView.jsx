@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { supabase } from '../../../lib/supabaseClient'
+import * as XLSX from 'xlsx'
 import {
     Search01Icon,
     Download01Icon,
@@ -203,26 +204,20 @@ const RekapNilaiView = () => {
     }
 
     const handleExport = () => {
-        const headers = ['Nama Siswa', 'Kelas', 'Ujian', 'Benar', 'Total Soal', 'Nilai', 'Status']
-        const csvContent = [
-            headers.join(','),
-            ...filteredData.map(row => [
-                `"${row.nama}"`,
-                `"${row.kelas}"`,
-                `"${row.judulUjian}"`,
-                row.correctCount,
-                row.answeredCount,
-                row.nilai,
-                parseFloat(row.nilai) >= 70 ? 'LULUS' : 'REMEDIAL'
-            ].join(','))
-        ].join('\n')
+        const rows = filteredData.map(row => ({
+            'Nama Siswa': row.nama,
+            'Kelas': row.kelas,
+            'Ujian': row.judulUjian,
+            'Jawaban Benar': row.correctCount,
+            'Total Soal': row.answeredCount,
+            'Nilai': parseFloat(row.nilai),
+            'Status': parseFloat(row.nilai) >= 70 ? 'LULUS' : 'REMEDIAL'
+        }))
 
-        const blob = new Blob([csvContent], { type: 'text/csv' })
-        const url = window.URL.createObjectURL(blob)
-        const a = document.createElement('a')
-        a.href = url
-        a.download = `rekap-nilai-${mapelDetails?.nama_mapel || 'mapel'}-${new Date().toISOString().split('T')[0]}.csv`
-        a.click()
+        const ws = XLSX.utils.json_to_sheet(rows)
+        const wb = XLSX.utils.book_new()
+        XLSX.utils.book_append_sheet(wb, ws, 'Rekap Nilai')
+        XLSX.writeFile(wb, `rekap-nilai-${mapelDetails?.nama_mapel || 'mapel'}-${new Date().toISOString().split('T')[0]}.xlsx`)
     }
 
     const handleDeleteResult = async (studentId, studentName, ujianId) => {
@@ -473,23 +468,18 @@ const RekapNilaiView = () => {
                                     animate={{ opacity: 1, x: 0 }}
                                     transition={{ delay: 0.4 }}
                                     onClick={() => {
-                                        const csv = [
-                                            ['No', 'Pertanyaan', 'Tipe', 'Jawaban Siswa', 'Kunci Jawaban', 'Status'].join(','),
-                                            ...selectedAnswerData.answers.map((ans, idx) => [
-                                                idx + 1,
-                                                `"${ans.pertanyaan?.replace(/"/g, '""') || 'N/A'}"`,
-                                                ans.tipe_soal || 'pilihan_ganda',
-                                                `"${ans.jawaban_siswa?.replace(/"/g, '""') || '-'}"`,
-                                                `"${ans.kunci_jawaban?.replace(/"/g, '""') || '-'}"`,
-                                                ans.is_correct ? 'BENAR' : 'SALAH'
-                                            ].join(','))
-                                        ].join('\n')
-                                        const blob = new Blob([csv], { type: 'text/csv' })
-                                        const url = window.URL.createObjectURL(blob)
-                                        const a = document.createElement('a')
-                                        a.href = url
-                                        a.download = `jawaban-${selectedAnswerData.studentName}-${selectedAnswerData.examTitle}.csv`
-                                        a.click()
+                                        const rows = selectedAnswerData.answers.map((ans, idx) => ({
+                                            'No': idx + 1,
+                                            'Pertanyaan': ans.pertanyaan || 'N/A',
+                                            'Tipe': ans.tipe_soal === 'pilihan_ganda' ? 'Pilihan Ganda' : 'Essay',
+                                            'Jawaban Siswa': ans.jawaban_siswa || '-',
+                                            'Kunci Jawaban': ans.kunci_jawaban || '-',
+                                            'Status': ans.is_correct ? 'BENAR' : 'SALAH'
+                                        }))
+                                        const ws = XLSX.utils.json_to_sheet(rows)
+                                        const wb = XLSX.utils.book_new()
+                                        XLSX.utils.book_append_sheet(wb, ws, 'Detail Jawaban')
+                                        XLSX.writeFile(wb, `jawaban-${selectedAnswerData.studentName}-${selectedAnswerData.examTitle}.xlsx`)
                                     }}
                                     className="flex items-center gap-2 px-5 py-2.5 bg-white/20 hover:bg-white/30 rounded-xl transition-all font-semibold"
                                 >
@@ -723,7 +713,7 @@ const RekapNilaiView = () => {
                         className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 dark:disabled:bg-gray-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-blue-500/20 disabled:shadow-none"
                     >
                         <Download01Icon size={18} />
-                        <span>Export CSV</span>
+                        <span>Export Excel</span>
                     </motion.button>
                 </motion.div>
 
