@@ -17,7 +17,7 @@ const RecentActivity = () => {
                     <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500"></div>
                 </div>
             ) : activities.length > 0 ? (
-                <div className="space-y-3">
+                <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar">
                     {activities.map((activity) => (
                         <div key={activity.id} className="flex items-center gap-4 p-3 rounded-xl bg-orange-50/50 hover:bg-orange-100/50 transition-colors">
                             <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold shrink-0 ${

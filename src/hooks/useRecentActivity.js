@@ -14,7 +14,7 @@ export const useRecentActivity = () => {
                 .from('users')
                 .select('id, nama, role, kelas, mapel')
                 .order('id', { ascending: false }) // Fallback ke id descng jika created_at tidak ada, tapi umumnya order by created_at lebih baik. Kita coba urutkan dari ID terakhir asumsikan serial/uuid bisa memberikan indikasi baru
-                .limit(5)
+                .limit(25)
 
             if (usersError) throw usersError
 
@@ -23,7 +23,7 @@ export const useRecentActivity = () => {
                 .from('bank_soal')
                 .select('id, mapel_id, guru_id, created_at')
                 .order('id', { ascending: false })
-                .limit(5)
+                .limit(25)
 
             if (soalError) throw soalError
             
@@ -50,7 +50,7 @@ export const useRecentActivity = () => {
                 .select('id, nama, role, last_login')
                 .not('last_login', 'is', null)
                 .order('last_login', { ascending: false })
-                .limit(5)
+                .limit(25)
 
             if (loginsError) throw loginsError
 
@@ -102,7 +102,7 @@ export const useRecentActivity = () => {
             // Sort combining all them by approximate timestamp desc
             formattedActivities.sort((a, b) => b.timestamp - a.timestamp)
             
-            setActivities(formattedActivities.slice(0, 10))
+            setActivities(formattedActivities.slice(0, 25))
         } catch (err) {
             console.error('Error fetching recent activity:', err)
             setError(err)
@@ -113,6 +113,26 @@ export const useRecentActivity = () => {
 
     useEffect(() => {
         fetchActivity()
+
+        // Subscribe to real-time changes
+        const usersChannel = supabase
+            .channel('recent_users_changes')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'users' }, () => {
+                fetchActivity()
+            })
+            .subscribe()
+
+        const soalChannel = supabase
+            .channel('recent_soal_changes')
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'bank_soal' }, () => {
+                fetchActivity()
+            })
+            .subscribe()
+
+        return () => {
+            usersChannel.unsubscribe()
+            soalChannel.unsubscribe()
+        }
     }, [fetchActivity])
 
     return { loading, activities, error, refetch: fetchActivity }
