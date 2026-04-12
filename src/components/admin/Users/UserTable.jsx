@@ -1,39 +1,33 @@
-import { useState, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 
-const UserTable = ({ users, onViewUser }) => {
-    const [searchQuery, setSearchQuery] = useState('')
-    const [currentPage, setCurrentPage] = useState(1)
-    const itemsPerPage = 10
+const UserTable = ({
+    users,
+    totalUsers,
+    currentPage,
+    itemsPerPage,
+    searchQuery,
+    onPageChange,
+    onSearchChange,
+    onViewUser
+}) => {
+    const [localSearch, setLocalSearch] = useState(searchQuery)
 
-    // Filter users based on search query
-    const filteredUsers = useMemo(() => {
-        if (!searchQuery.trim()) return users
+    // Debounce search
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (localSearch !== searchQuery) {
+                onSearchChange(localSearch)
+                onPageChange(1) // Reset ke halaman 1 tiap kali pencarian berubah
+            }
+        }, 500)
+        return () => clearTimeout(timer)
+    }, [localSearch, searchQuery, onSearchChange, onPageChange])
 
-        const query = searchQuery.toLowerCase()
-        return users.filter(user =>
-            user.nama?.toLowerCase().includes(query) ||
-            user.email?.toLowerCase().includes(query) ||
-            user.role?.toLowerCase().includes(query) ||
-            user.kelas?.toLowerCase().includes(query) ||
-            user.mapel?.toLowerCase().includes(query)
-        )
-    }, [users, searchQuery])
-
-    // Calculate pagination
-    const totalPages = Math.ceil(filteredUsers.length / itemsPerPage)
+    const totalPages = Math.ceil((totalUsers || 0) / itemsPerPage)
     const startIndex = (currentPage - 1) * itemsPerPage
-    const endIndex = startIndex + itemsPerPage
-    const currentUsers = filteredUsers.slice(startIndex, endIndex)
 
-    // Reset to page 1 when search changes
-    const handleSearch = (value) => {
-        setSearchQuery(value)
-        setCurrentPage(1)
-    }
-
-    // Pagination controls
     const goToPage = (page) => {
-        setCurrentPage(Math.max(1, Math.min(page, totalPages)))
+        onPageChange(Math.max(1, Math.min(page, totalPages)))
     }
 
     return (
@@ -47,13 +41,13 @@ const UserTable = ({ users, onViewUser }) => {
                     <input
                         type="text"
                         placeholder="Cari nama, email, role, kelas, atau mapel..."
-                        value={searchQuery}
-                        onChange={(e) => handleSearch(e.target.value)}
+                        value={localSearch}
+                        onChange={(e) => setLocalSearch(e.target.value)}
                         className="w-full pl-10 pr-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
                     />
                 </div>
                 <div className="text-sm text-gray-600">
-                    {filteredUsers.length} user{filteredUsers.length !== 1 ? 's' : ''}
+                    {totalUsers} user{totalUsers !== 1 ? 's' : ''}
                 </div>
             </div>
 
@@ -69,8 +63,8 @@ const UserTable = ({ users, onViewUser }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {currentUsers.length > 0 ? (
-                            currentUsers.map((user) => (
+                        {users.length > 0 ? (
+                            users.map((user) => (
                                 <tr key={user.id} className="border-b border-gray-100 hover:bg-orange-50/50 transition-colors">
                                     <td className="p-4 text-sm text-gray-800 font-medium">{user.nama}</td>
                                     <td className="p-4">
@@ -87,7 +81,7 @@ const UserTable = ({ users, onViewUser }) => {
                                     <td className="p-4">
                                         <button
                                             onClick={() => onViewUser(user)}
-                                            className="px-4 py-2 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg text-sm font-medium transition-all shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transform hover:-translate-y-0.5"
+                                            className="px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg text-sm font-medium transition-all shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transform hover:-translate-y-0.5"
                                         >
                                             Lihat
                                         </button>
@@ -105,11 +99,11 @@ const UserTable = ({ users, onViewUser }) => {
                 </table>
             </div>
 
-            {/* Pagination */}
+            {/* Pagination Controls */}
             {totalPages > 1 && (
                 <div className="flex items-center justify-between pt-4 border-t border-gray-200">
                     <div className="text-sm text-gray-600">
-                        Menampilkan {startIndex + 1}-{Math.min(endIndex, filteredUsers.length)} dari {filteredUsers.length} user
+                        Menampilkan {startIndex + 1}-{Math.min(startIndex + itemsPerPage, totalUsers)} dari {totalUsers} user
                     </div>
                     <div className="flex items-center gap-2">
                         <button
@@ -122,10 +116,8 @@ const UserTable = ({ users, onViewUser }) => {
                             </svg>
                         </button>
 
-                        {/* Page Numbers */}
                         <div className="flex gap-1">
                             {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => {
-                                // Show first page, last page, current page, and pages around current
                                 if (
                                     page === 1 ||
                                     page === totalPages ||
@@ -136,7 +128,7 @@ const UserTable = ({ users, onViewUser }) => {
                                             key={page}
                                             onClick={() => goToPage(page)}
                                             className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${page === currentPage
-                                                ? 'bg-linear-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
+                                                ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
                                                 : 'bg-gray-100 text-gray-700 hover:bg-orange-100'
                                                 }`}
                                         >

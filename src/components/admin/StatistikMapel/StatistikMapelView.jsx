@@ -1,105 +1,167 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import LoadingSpinner from '../shared/LoadingSpinner'
+import GlassCard from '../shared/GlassCard'
 import { useMapelStats } from '../../../hooks/useMapelStats'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts'
+import { 
+    BookOpen02Icon, 
+    NoteEditIcon, 
+    UserMultiple02Icon, 
+    MeetingRoomIcon, 
+    Search01Icon, 
+    Calendar02Icon, 
+    ChartHistogramIcon,
+    PieChartIcon
+} from 'hugeicons-react'
 
-// SummaryCard Component
-const SummaryCard = ({ title, value, colorClass, iconBg, children }) => (
-    <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group cursor-default">
-        <div className="flex items-center gap-4">
-            <div className={`p-4 rounded-xl transition-colors duration-300 ${iconBg}`}>
-                {children}
+// =====================
+// Component: SummaryCard
+// =====================
+const SummaryCard = ({ title, value, subtitle, colorClass, iconBg, delay, children }) => (
+    <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay, duration: 0.4 }}
+    >
+        <GlassCard className="h-full overflow-hidden group">
+            <div className="p-6 relative">
+                {/* Decorative Background Blob */}
+                <div className={`absolute -right-6 -top-6 w-24 h-24 rounded-full opacity-10 blur-2xl transition-all duration-500 group-hover:scale-150 ${iconBg.split(' ')[0]}`} />
+                
+                <div className="flex items-start gap-4">
+                    <div className={`p-4 rounded-2xl transition-all duration-300 shadow-sm ${iconBg}`}>
+                        {children}
+                    </div>
+                    <div className="flex-1 relative z-10">
+                        <h3 className="text-sm font-semibold text-gray-500 mb-1">{title}</h3>
+                        <p className="text-2xl sm:text-3xl font-bold text-gray-800 tracking-tight">{value}</p>
+                        {subtitle && <p className="text-xs font-medium text-gray-400 mt-1">{subtitle}</p>}
+                    </div>
+                </div>
             </div>
-            <div>
-                <h3 className="text-sm font-medium text-slate-500 mb-1">{title}</h3>
-                <p className="text-2xl font-bold text-slate-800 tracking-tight">{value}</p>
-            </div>
-        </div>
-    </div>
+        </GlassCard>
+    </motion.div>
 )
 
-// MapelBarChart Component
+// =====================
+// Custom Tooltips
+// =====================
 const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
         return (
-            <div className="bg-white border border-slate-200 p-3 rounded-xl shadow-lg">
-                <p className="text-sm font-bold text-slate-800 mb-1">{label}</p>
-                <p className="text-sm font-medium text-orange-600">
-                    Total: {payload[0].value} Soal
+            <div className="bg-white/80 backdrop-blur-xl border border-gray-100 p-4 rounded-2xl shadow-xl">
+                <p className="text-sm font-bold text-gray-800 mb-2 flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+                    {label}
                 </p>
+                <div className="space-y-1">
+                    <p className="text-xs font-medium text-gray-600 flex justify-between gap-4">
+                        <span>Total Soal:</span>
+                        <span className="font-bold text-gray-900">{payload[0].value}</span>
+                    </p>
+                </div>
             </div>
         );
     }
     return null;
-};
+}
 
+const PieTooltip = ({ active, payload }) => {
+    if (active && payload && payload.length) {
+        return (
+            <div className="bg-white/90 backdrop-blur-xl border border-white/50 p-3 rounded-xl shadow-lg flex flex-col gap-1">
+                <div className="flex items-center gap-2 mb-1">
+                    <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: payload[0].payload.fill }} />
+                    <span className="font-bold text-gray-800">{payload[0].name}</span>
+                </div>
+                <div className="flex justify-between items-center text-sm gap-4">
+                    <span className="text-gray-500">Jumlah Soal</span>
+                    <span className="font-bold text-gray-900">{payload[0].value}</span>
+                </div>
+            </div>
+        );
+    }
+    return null;
+}
+
+// =====================
+// Charts
+// =====================
 const MapelBarChart = ({ data }) => {
     const palette = ['#f97316', '#fb923c', '#fdba74', '#ea580c', '#eab308', '#ca8a04', '#fed7aa', '#ffedd5']
+    
     return (
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col w-full h-full min-h-[350px]">
-            <div className="mb-6">
-                <h3 className="text-lg font-bold text-slate-800">Jumlah Soal per Mapel</h3>
-                <p className="text-sm text-slate-500">Visual perbandingan jumlah bank soal aktif</p>
+        <GlassCard className="h-full min-h-[380px] flex flex-col">
+            <div className="p-6 border-b border-gray-100/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div className="flex items-center gap-3">
+                    <div className="p-2 bg-gradient-to-br from-orange-100 to-orange-50 rounded-lg text-orange-600">
+                        <ChartHistogramIcon size={20} />
+                    </div>
+                    <div>
+                        <h3 className="text-lg font-bold text-gray-800">Distribusi per Mata Pelajaran</h3>
+                        <p className="text-xs text-gray-500">Grafik perbandingan total soal aktif</p>
+                    </div>
+                </div>
             </div>
 
-            <div className="flex-1 w-full min-h-[250px]">
+            <div className="flex-1 p-6 flex flex-col w-full h-[300px]">
                 {data.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center text-center h-full">
-                        <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-3">
-                            <span className="text-2xl">📊</span>
+                    <div className="flex flex-col items-center justify-center h-full text-center">
+                        <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-3">
+                            <ChartHistogramIcon size={32} className="text-gray-300" />
                         </div>
-                        <p className="text-sm font-medium text-slate-600">Belum ada data tersedia</p>
+                        <p className="text-sm font-medium text-gray-500">Belum ada data tersedia</p>
                     </div>
                 ) : (
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                            <defs>
+                                {palette.map((color, idx) => (
+                                    <linearGradient key={`colorUv${idx}`} id={`colorUv${idx}`} x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="5%" stopColor={color} stopOpacity={1}/>
+                                        <stop offset="95%" stopColor={color} stopOpacity={0.6}/>
+                                    </linearGradient>
+                                ))}
+                            </defs>
+                            <CartesianGrid strokeDasharray="4 4" vertical={false} strokeOpacity={0.4} stroke="#e2e8f0" />
                             <XAxis
                                 dataKey="namaMapel"
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: '#64748b', fontSize: 12 }}
+                                tick={{ fill: '#64748b', fontSize: 12, fontWeight: 500 }}
+                                dy={10}
                             />
                             <YAxis
                                 axisLine={false}
                                 tickLine={false}
-                                tick={{ fill: '#64748b', fontSize: 12 }}
+                                tick={{ fill: '#64748b', fontSize: 12, fontWeight: 500 }}
+                                dx={-10}
                             />
-                            <Tooltip cursor={{ fill: '#f8fafc' }} content={<CustomTooltip />} />
+                            <Tooltip cursor={{ fill: 'rgba(255, 237, 213, 0.4)' }} content={<CustomTooltip />} />
                             <Bar
                                 dataKey="jumlahSoal"
-                                radius={[4, 4, 0, 0]}
+                                radius={[8, 8, 4, 4]}
                                 barSize={40}
                                 animationDuration={1500}
+                                animationEasing="ease-out"
                             >
                                 {data.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={palette[index % palette.length]} />
+                                    <Cell key={`cell-${index}`} fill={`url(#colorUv${index % palette.length})`} />
                                 ))}
                             </Bar>
                         </BarChart>
                     </ResponsiveContainer>
                 )}
             </div>
-        </div>
+        </GlassCard>
     )
 }
 
-// KelasDistributionChart Component
-const PieTooltip = ({ active, payload }) => {
-    if (active && payload && payload.length) {
-        return (
-            <div className="bg-white border border-slate-200 p-2 rounded-lg shadow-md flex items-center justify-center">
-                <span className="font-semibold text-slate-800 mr-2">{payload[0].name}:</span>
-                <span className="text-orange-600 font-bold">{payload[0].value} Soal</span>
-            </div>
-        );
-    }
-    return null;
-};
-
 const KelasDistributionChart = ({ data }) => {
     const classCount = new Map()
-    const palette = ['#f97316', '#fb923c', '#fdba74', '#ea580c', '#eab308', '#ca8a04', '#fed7aa', '#ffedd5']
+    // Golden-Orange theme palette
+    const palette = ['#ea580c', '#eab308', '#f97316', '#ca8a04', '#fb923c', '#f59e0b', '#fdba74', '#fbbf24']
 
     data.forEach(item => {
         item.kelasList.forEach(kelas => {
@@ -108,264 +170,323 @@ const KelasDistributionChart = ({ data }) => {
     })
 
     const pieData = Array.from(classCount.entries())
-        .map(([name, value]) => ({ name, value }))
+        .map(([name, value], idx) => ({ name, value, fill: palette[idx % palette.length] }))
         .sort((a, b) => b.value - a.value)
 
-    if (pieData.length === 0) {
-        return (
-            <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col w-full h-full min-h-[350px]">
-                <div className="mb-6">
-                    <h3 className="text-lg font-bold text-slate-800">Distribusi Soal per Kelas</h3>
-                    <p className="text-sm text-slate-500">Penyebaran soal berdasarkan kelas</p>
-                </div>
-                <div className="flex-1 flex flex-col items-center justify-center text-center">
-                    <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-3">
-                        <span className="text-2xl">🍩</span>
-                    </div>
-                    <p className="text-sm font-medium text-slate-600">Belum ada data kelas</p>
-                </div>
-            </div>
-        )
-    }
-
     return (
-        <div className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm flex flex-col w-full h-full min-h-[350px]">
-            <div className="mb-6">
-                <h3 className="text-lg font-bold text-slate-800">Distribusi Soal per Kelas</h3>
-                <p className="text-sm text-slate-500">Penyebaran soal berdasarkan kelas</p>
+        <GlassCard className="h-full min-h-[380px] flex flex-col">
+            <div className="p-6 border-b border-gray-100/50 flex items-center gap-3">
+                <div className="p-2 bg-gradient-to-br from-amber-100 to-amber-50 rounded-lg text-amber-600">
+                    <PieChartIcon size={20} />
+                </div>
+                <div>
+                    <h3 className="text-lg font-bold text-gray-800">Distribusi Kelas</h3>
+                    <p className="text-xs text-gray-500">Penyebaran soal berdasarkan kelas</p>
+                </div>
             </div>
-            <div className="flex-1 w-full flex items-center justify-center min-h-[250px]">
-                <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                        <Pie
-                            data={pieData}
-                            cx="50%"
-                            cy="50%"
-                            innerRadius={65}
-                            outerRadius={95}
-                            paddingAngle={5}
-                            dataKey="value"
-                            stroke="none"
-                            animationDuration={1500}
-                        >
-                            {pieData.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={palette[index % palette.length]} className="focus:outline-none" />
-                            ))}
-                        </Pie>
-                        <Tooltip content={<PieTooltip />} />
-                        <Legend
-                            formatter={(value) => <span className="text-sm text-slate-600 font-medium">{value}</span>}
-                            iconType="circle"
-                            layout="horizontal"
-                            verticalAlign="bottom"
-                            align="center"
-                            wrapperStyle={{
-                                paddingTop: '20px'
-                            }}
-                        />
-                    </PieChart>
-                </ResponsiveContainer>
+
+            <div className="flex-1 p-4 w-full flex items-center justify-center min-h-[250px]">
+                {pieData.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center text-center">
+                        <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-3">
+                            <PieChartIcon size={32} className="text-gray-300" />
+                        </div>
+                        <p className="text-sm font-medium text-gray-500">Belum ada data kelas</p>
+                    </div>
+                ) : (
+                    <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                            <defs>
+                                {pieData.map((entry, index) => (
+                                    <linearGradient key={`pieGradient${index}`} id={`pieGradient${index}`} x1="0" y1="0" x2="1" y2="1">
+                                        <stop offset="0%" stopColor={entry.fill} stopOpacity={1}/>
+                                        <stop offset="100%" stopColor={entry.fill} stopOpacity={0.7}/>
+                                    </linearGradient>
+                                ))}
+                            </defs>
+                            <Pie
+                                data={pieData}
+                                cx="50%"
+                                cy="50%"
+                                innerRadius={70}
+                                outerRadius={105}
+                                paddingAngle={6}
+                                dataKey="value"
+                                stroke="rgba(255,255,255,0.7)"
+                                strokeWidth={2}
+                                animationDuration={1500}
+                                animationEasing="ease-out"
+                            >
+                                {pieData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={`url(#pieGradient${index})`} className="outline-none" />
+                                ))}
+                            </Pie>
+                            <Tooltip content={<PieTooltip />} />
+                        </PieChart>
+                    </ResponsiveContainer>
+                )}
             </div>
-        </div>
+        </GlassCard>
     )
 }
 
-// MapelCard Component
-const MapelCard = ({ item, index }) => {
+// =====================
+// Data Card (Detail Mapel)
+// =====================
+const MapelCard = ({ item, delay = 0 }) => {
     const guruText = item.guruList.length > 0 ? item.guruList.join(', ') : 'Belum ada guru'
+    
+    // Progress Bar Calcs
+    const pgPercent = item.jumlahSoal > 0 ? Math.round((item.jumlahPG / item.jumlahSoal) * 100) : 0;
+    const essayPercent = item.jumlahSoal > 0 ? Math.round((item.jumlahEssay / item.jumlahSoal) * 100) : 0;
 
     return (
-        <div
-            className="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-orange-500/5 hover:-translate-y-1 transition-all duration-300 flex flex-col gap-4 group"
-            style={{ animationDelay: `${index * 50}ms` }}
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay, duration: 0.4 }}
+            className="flex h-full"
         >
-            <div className="flex justify-between items-start gap-3">
-                <div>
-                    <h4 className="font-bold text-slate-800 line-clamp-1 group-hover:text-orange-600 transition-colors">{item.namaMapel}</h4>
-                    <p className="text-xs text-slate-500 mt-1 flex items-center gap-1.5">
-                        <span className="w-1.5 h-1.5 rounded-full bg-orange-500 inline-block"></span>
-                        {item.guruList.length > 0 ? `Diampu oleh ${item.guruList.length} Guru` : 'Belum ada guru'}
-                    </p>
-                </div>
-                <div className="px-3 py-1 bg-orange-50 text-orange-600 text-xs font-bold rounded-lg whitespace-nowrap shadow-sm border border-orange-100">
-                    {item.jumlahSoal} Soal
-                </div>
-            </div>
-
-            <div className="h-px w-full bg-slate-50" />
-
-            <div className="space-y-3">
-                <div>
-                    <p className="text-xs font-medium text-slate-400 mb-1.5">Guru Pengampu:</p>
-                    <p className="text-sm font-medium text-slate-700 line-clamp-1">{guruText}</p>
-                </div>
-                <div>
-                    <p className="text-xs font-medium text-slate-400 mb-2">Kelas Terdaftar:</p>
-                    <div className="flex flex-wrap gap-1.5">
-                        {item.kelasList.length > 0 ? item.kelasList.map((cls, idx) => (
-                            <span key={idx} className="px-2 py-1 bg-slate-50 border border-slate-200 text-slate-600 text-[11px] rounded-md font-medium">
-                                {cls}
-                            </span>
-                        )) : (
-                            <span className="text-xs text-slate-500 italic">Tidak ada kelas</span>
-                        )}
+            <GlassCard className="w-full flex flex-col p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group hover:border-orange-200">
+                {/* Header info */}
+                <div className="flex justify-between items-start gap-4 mb-4">
+                    <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-100 to-orange-50 flex items-center justify-center text-orange-500 group-hover:scale-110 transition-transform">
+                                <BookOpen02Icon size={16} />
+                            </div>
+                            <h4 className="font-bold text-lg text-gray-800 line-clamp-1 group-hover:text-orange-600 transition-colors">
+                                {item.namaMapel}
+                            </h4>
+                        </div>
+                        <div className="flex items-center gap-2 mt-2">
+                             <div className="px-3 py-1 bg-gradient-to-r from-orange-500 to-orange-400 text-white text-xs font-bold rounded-lg whitespace-nowrap shadow-sm">
+                                {item.jumlahSoal} Soal
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+
+                <div className="h-px border-b border-dashed border-gray-200 w-full mb-4" />
+
+                {/* Progress Bar PG vs Essay */}
+                <div className="mb-5">
+                    <div className="flex justify-between text-xs font-semibold text-gray-500 mb-1.5">
+                        <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-sm bg-orange-500 block"></span> Pilihan Ganda ({item.jumlahPG})</span>
+                        <span className="flex items-center gap-1.5">Essay ({item.jumlahEssay}) <span className="w-2 h-2 rounded-sm bg-amber-400 block"></span></span>
+                    </div>
+                    <div className="flex w-full h-2 bg-gray-100 rounded-full overflow-hidden shadow-inner">
+                        <div style={{ width: `${pgPercent}%` }} className="bg-orange-500 transition-all duration-1000" />
+                        <div style={{ width: `${essayPercent}%` }} className="bg-amber-400 transition-all duration-1000" />
+                    </div>
+                </div>
+
+                {/* Details Section */}
+                <div className="space-y-4 flex-1">
+                    {/* Teachers */}
+                    <div className="bg-gray-50/50 p-3 rounded-xl border border-gray-100">
+                        <div className="flex items-center gap-1.5 mb-1.5">
+                            <UserMultiple02Icon size={14} className="text-gray-400" />
+                            <p className="text-xs font-medium text-gray-500">Guru Pengampu:</p>
+                        </div>
+                        <p className="text-sm font-semibold text-gray-800 line-clamp-2">{guruText}</p>
+                    </div>
+
+                    {/* Classes */}
+                    <div className="bg-gray-50/50 p-3 rounded-xl border border-gray-100">
+                        <div className="flex items-center gap-1.5 mb-2">
+                            <MeetingRoomIcon size={14} className="text-gray-400" />
+                            <p className="text-xs font-medium text-gray-500">Kelas Terdaftar:</p>
+                        </div>
+                        <div className="flex flex-wrap gap-1.5">
+                            {item.kelasList.length > 0 ? (
+                                item.kelasList.map((cls, idx) => (
+                                    <span key={idx} className="px-2.5 py-1 bg-white border border-gray-200 text-gray-600 text-xs rounded-md shadow-xs font-medium">
+                                        {cls}
+                                    </span>
+                                ))
+                            ) : (
+                                <span className="text-xs text-gray-400 italic">Tidak ada kelas bertaut</span>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </GlassCard>
+        </motion.div>
     )
 }
 
-// Main View Component
+// =====================
+// Main Dashboard View
+// =====================
 export default function StatistikMapelView() {
     const { loading, mapelStats, error } = useMapelStats()
     const [searchTerm, setSearchTerm] = useState('')
 
-    // Safety check in case mapelStats is ever undefined initially
+    // Safety checks
     const stats = mapelStats || []
 
     const totalSoal = stats.reduce((sum, item) => sum + item.jumlahSoal, 0)
+    const totalPG = stats.reduce((sum, item) => sum + (item.jumlahPG || 0), 0)
+    const totalEssay = stats.reduce((sum, item) => sum + (item.jumlahEssay || 0), 0)
     const mapelAktif = stats.filter(item => item.jumlahSoal > 0).length
     const totalGuru = new Set(stats.flatMap(item => item.guruList || [])).size
     const totalKelas = new Set(stats.flatMap(item => item.kelasList || [])).size
 
-    if (loading) {
-        return <LoadingSpinner />
-    }
+    const filteredStats = useMemo(() => {
+        return stats.filter(item =>
+            item.namaMapel.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }, [stats, searchTerm]);
+
+    if (loading) return <LoadingSpinner />
 
     if (error) {
         return (
-            <div className="bg-red-50 border border-red-200 text-red-700 rounded-2xl p-6 flex flex-col items-center justify-center text-center min-h-[300px]">
-                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
-                    <span className="text-2xl">⚠️</span>
+            <div className="bg-red-50/80 backdrop-blur-md border border-red-200 text-red-700 rounded-2xl p-8 flex flex-col items-center justify-center text-center min-h-[400px]">
+                <div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mb-4 text-red-500">
+                    <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
                 </div>
-                <h3 className="text-lg font-bold mb-1">Gagal Memuat Statistik</h3>
-                <p className="text-sm opacity-80">{error}</p>
+                <h3 className="text-xl font-bold mb-2">Gagal Memuat Statistik</h3>
+                <p className="text-sm font-medium text-red-600/80 max-w-md">{error}</p>
             </div>
         )
     }
 
     const currentDate = new Date().toLocaleDateString('id-ID', {
-        day: 'numeric', month: 'short', year: 'numeric'
+        day: 'numeric', month: 'long', year: 'numeric'
     })
 
     return (
-        <div className="space-y-6 sm:space-y-8 animate-fade-in-up pb-8">
-            {/* Last Updated Badge */}
-            <div className="flex justify-end">
-                <div className="flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-lg shadow-sm">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span className="text-xs font-medium text-slate-600">Diperbarui: {currentDate}</span>
+        <div className="space-y-6 sm:space-y-8 pb-8">
+            {/* Header & Date Badge */}
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h2 className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">Analitik Sistem</h2>
+                    <p className="text-sm font-medium text-gray-500 mt-1">Pantau perkembangan bank soal harian</p>
+                </div>
+                <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-sm">
+                    <Calendar02Icon size={16} className="text-orange-500" />
+                    <span className="text-xs font-semibold text-gray-600">{currentDate}</span>
                 </div>
             </div>
 
-            {/* Summary Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {/* Top Stat Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
                 <SummaryCard
-                    title="Total Soal Aktif"
+                    title="Total Bank Soal"
                     value={totalSoal}
-                    iconBg="bg-orange-50 group-hover:bg-orange-500 text-orange-500 group-hover:text-white"
+                    subtitle={`${totalPG} Pilihan Ganda • ${totalEssay} Essay`}
+                    iconBg="bg-gradient-to-br from-orange-400 to-orange-600 text-white shadow-orange-500/30"
+                    delay={0.1}
                 >
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
+                    <NoteEditIcon size={28} />
                 </SummaryCard>
 
                 <SummaryCard
-                    title="Telah Ada Soal"
-                    value={`${mapelAktif} Mapel`}
-                    iconBg="bg-blue-50 group-hover:bg-blue-500 text-blue-500 group-hover:text-white"
+                    title="Mata Pelajaran Aktif"
+                    value={mapelAktif}
+                    subtitle={`Dari total ${stats.length} Mata Pelajaran`}
+                    iconBg="bg-gradient-to-br from-blue-400 to-blue-600 text-white shadow-blue-500/30"
+                    delay={0.2}
                 >
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
+                    <BookOpen02Icon size={28} />
                 </SummaryCard>
 
                 <SummaryCard
                     title="Guru Terlibat"
                     value={totalGuru}
-                    iconBg="bg-emerald-50 group-hover:bg-emerald-500 text-emerald-500 group-hover:text-white"
+                    subtitle="Membuat soal ke dalam bank"
+                    iconBg="bg-gradient-to-br from-emerald-400 to-emerald-600 text-white shadow-emerald-500/30"
+                    delay={0.3}
                 >
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                    </svg>
+                    <UserMultiple02Icon size={28} />
                 </SummaryCard>
 
                 <SummaryCard
-                    title="Kelas Terlibat"
+                    title="Kelas Terikat"
                     value={totalKelas}
-                    iconBg="bg-purple-50 group-hover:bg-purple-500 text-purple-500 group-hover:text-white"
+                    subtitle="Total kelas yang diajarkan"
+                    iconBg="bg-gradient-to-br from-purple-400 to-purple-600 text-white shadow-purple-500/30"
+                    delay={0.4}
                 >
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path d="M12 14l9-5-9-5-9 5 9 5z" />
-                        <path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222" />
-                    </svg>
+                    <MeetingRoomIcon size={28} />
                 </SummaryCard>
             </div>
 
-            {/* Charts Area */}
+            {/* Charts Section */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-                <div className="lg:col-span-2">
+                <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.5, duration: 0.4 }}
+                    className="lg:col-span-2"
+                >
                     <MapelBarChart data={stats} />
-                </div>
-                <div className="lg:col-span-1">
+                </motion.div>
+                <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.6, duration: 0.4 }}
+                    className="lg:col-span-1"
+                >
                     <KelasDistributionChart data={stats} />
-                </div>
+                </motion.div>
             </div>
 
-            {/* Detail Mapel Section */}
-            <div>
-                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-4 sm:mb-6">
-                    <div>
-                        <h3 className="text-xl font-bold text-slate-800">Rincian Data Mapel</h3>
-                        <p className="text-sm text-slate-500">Daftar lengkap statistik setiap mata pelajaran</p>
+            {/* Mapel Cards Grid */}
+            <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7, duration: 0.5 }}
+                className="pt-4"
+            >
+                <GlassCard className="p-6 sm:p-8">
+                    {/* Header Input */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                        <div>
+                            <h3 className="text-xl font-bold text-gray-800">Rincian Data Subjek</h3>
+                            <p className="text-sm text-gray-500 mt-1">Daftar lengkap statistik setiap mata pelajaran beserta rasionya.</p>
+                        </div>
+                        <div className="w-full sm:w-72 relative">
+                            <Search01Icon size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                            <input
+                                type="text"
+                                placeholder="Cari mata pelajaran..."
+                                className="w-full pl-10 pr-4 py-2.5 text-sm text-gray-800 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-400 transition-all shadow-sm"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
                     </div>
-                    <div className="w-full sm:w-64">
-                        <input
-                            type="text"
-                            placeholder="Cari mata pelajaran..."
-                            className="w-full px-4 py-2 text-sm text-slate-800 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </div>
-                </div>
 
-                {stats.length > 0 ? (
-                    (() => {
-                        const filteredStats = stats.filter(item =>
-                            item.namaMapel.toLowerCase().includes(searchTerm.toLowerCase())
-                        );
-
-                        if (filteredStats.length === 0) {
-                            return (
-                                <div className="bg-white p-10 rounded-2xl border border-slate-100 shadow-sm text-center flex flex-col items-center justify-center">
-                                    <div className="text-4xl mb-3 opacity-50">🔍</div>
-                                    <h4 className="text-lg font-bold text-slate-800 mb-1">Tidak Ditemukan</h4>
-                                    <p className="text-sm text-slate-500">Mata pelajaran dengan kata kunci "{searchTerm}" tidak ditemukan.</p>
-                                </div>
-                            );
-                        }
-
-                        return (
-                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+                    {/* Cards Content */}
+                    <AnimatePresence mode="popLayout">
+                        {filteredStats.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 sm:gap-6">
                                 {filteredStats.map((item, index) => (
-                                    <MapelCard key={item.id} item={item} index={index} />
+                                    <MapelCard key={item.id} item={item} delay={0.1 * (index % 10)} />
                                 ))}
                             </div>
-                        );
-                    })()
-                ) : (
-                    <div className="bg-white p-10 rounded-2xl border border-slate-100 shadow-sm text-center flex flex-col items-center justify-center">
-                        <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <span className="text-3xl">📂</span>
-                        </div>
-                        <h4 className="text-lg font-bold text-slate-800 mb-1">Data Belum Tersedia</h4>
-                        <p className="text-sm text-slate-500">Tambahkan mata pelajaran dan soal untuk memunculkan rincian di sini.</p>
-                    </div>
-                )}
-            </div>
+                        ) : (
+                            <motion.div 
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="flex flex-col items-center justify-center py-16 px-4 bg-white/50 border border-dashed border-gray-200 rounded-2xl"
+                            >
+                                <div className="p-4 bg-gray-50 rounded-full mb-3">
+                                    <Search01Icon size={32} className="text-gray-300" />
+                                </div>
+                                <h4 className="text-lg font-bold text-gray-800 mb-1">Data Tidak Ditemukan</h4>
+                                <p className="text-sm text-gray-500 max-w-md text-center">
+                                    {stats.length > 0 ? `Mata pelajaran dengan kata kunci "${searchTerm}" tidak ditemukan.` : 'Tidak ada mata pelajaran yang telah terdaftar di database.'}
+                                </p>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </GlassCard>
+            </motion.div>
         </div>
     )
 }

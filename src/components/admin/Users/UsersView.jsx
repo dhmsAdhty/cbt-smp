@@ -17,21 +17,45 @@ const UsersView = () => {
     const [editData, setEditData] = useState({})
     const [isLoading, setIsLoading] = useState(true)
 
-    const fetchData = async () => {
-        setIsLoading(true)
+    // Pagination & Search States
+    const [totalUsers, setTotalUsers] = useState(0)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [searchQuery, setSearchQuery] = useState('')
+    const itemsPerPage = 10
+
+    const fetchSelectData = async () => {
         try {
-            // Fetch users, kelas, mapel
-            const { data: usersData, error: usersError } = await supabase.from('users').select('*')
             const { data: kelasData } = await supabase.from('kelas').select('*')
             const { data: mapelData } = await supabase.from('mapel').select('*')
+            setKelasList(kelasData || [])
+            setMapelList(mapelData || [])
+        } catch (error) {
+            console.error('Error fetching select data:', error)
+        }
+    }
+
+    const fetchUsers = async () => {
+        setIsLoading(true)
+        try {
+            let query = supabase.from('users').select('*', { count: 'exact' })
+            
+            if (searchQuery) {
+                query = query.or(`nama.ilike.%${searchQuery}%,email.ilike.%${searchQuery}%,role.ilike.%${searchQuery}%,kelas.ilike.%${searchQuery}%,mapel.ilike.%${searchQuery}%`)
+            }
+
+            const startIndex = (currentPage - 1) * itemsPerPage
+            const endIndex = startIndex + itemsPerPage - 1
+
+            const { data: usersData, error: usersError, count } = await query
+                .order('nama', { ascending: true })
+                .range(startIndex, endIndex)
 
             if (usersError) throw usersError
 
             setUsers(usersData || [])
-            setKelasList(kelasData || [])
-            setMapelList(mapelData || [])
+            setTotalUsers(count || 0)
         } catch (error) {
-            console.error('Error fetching data:', error)
+            console.error('Error fetching users:', error)
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -43,8 +67,12 @@ const UsersView = () => {
     }
 
     useEffect(() => {
-        fetchData()
+        fetchSelectData()
     }, [])
+
+    useEffect(() => {
+        fetchUsers()
+    }, [currentPage, searchQuery])
 
     const handleViewUser = (user) => {
         setSelectedUser(user)
@@ -91,7 +119,7 @@ const UsersView = () => {
             })
 
             handleCloseModal()
-            await fetchData()
+            await fetchUsers()
             // if (onRefresh) onRefresh()
         } catch (err) {
             Swal.fire({
@@ -135,7 +163,7 @@ const UsersView = () => {
                 })
 
                 handleCloseModal()
-                await fetchData()
+                await fetchUsers()
                 // if (onRefresh) onRefresh()
             } catch (err) {
                 Swal.fire({
@@ -161,14 +189,14 @@ const UsersView = () => {
                         <h3 className="font-bold text-xl text-gray-800">Tambah User Baru</h3>
                     </div>
 
-                    <BulkImport onSuccess={fetchData} />
+                    <BulkImport onSuccess={fetchUsers} />
 
                     <div className="border-t border-gray-200 my-6"></div>
 
                     <UserForm
                         kelasList={kelasList}
                         mapelList={mapelList}
-                        onSuccess={fetchData}
+                        onSuccess={fetchUsers}
                     />
                 </GlassCard>
 
@@ -176,12 +204,18 @@ const UsersView = () => {
                 <GlassCard className="p-6 lg:col-span-2">
                     <div className="flex items-center justify-between mb-6">
                         <h3 className="font-bold text-xl text-gray-800">
-                            Daftar Users ({users.length})
+                            Daftar Users ({totalUsers})
                         </h3>
                     </div>
 
                     <UserTable
                         users={users}
+                        totalUsers={totalUsers}
+                        currentPage={currentPage}
+                        itemsPerPage={itemsPerPage}
+                        searchQuery={searchQuery}
+                        onPageChange={setCurrentPage}
+                        onSearchChange={setSearchQuery}
                         onViewUser={handleViewUser}
                     />
                 </GlassCard>

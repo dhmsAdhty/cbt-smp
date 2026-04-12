@@ -63,7 +63,7 @@ const RekapNilaiView = () => {
             console.log('📚 Mapel soal:', { mapelId: mapelData.id, totalSoal: soalIds.length, soalIds })
 
             if (soalIds.length === 0) {
-                console.log('⚠️ No soal found for this mapel')
+                console.log(' No soal found for this mapel')
                 setRekapData([])
                 setLoading(false)
                 return
@@ -595,11 +595,10 @@ const RekapNilaiView = () => {
                                                         whileHover={{ scale: 1.05 }}
                                                         whileTap={{ scale: 0.95 }}
                                                         onClick={() => handleNilaiEssay(ans, true, index)}
-                                                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-bold transition-all ${
-                                                            ans.is_correct
+                                                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-bold transition-all ${ans.is_correct
                                                                 ? 'bg-green-500 text-white shadow-md shadow-green-200 dark:shadow-green-900/30'
                                                                 : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-green-100 hover:text-green-600 dark:hover:bg-green-900/30 dark:hover:text-green-400'
-                                                        }`}
+                                                            }`}
                                                     >
                                                         <CheckmarkCircle02Icon size={15} />
                                                         <span>Benar</span>
@@ -608,11 +607,10 @@ const RekapNilaiView = () => {
                                                         whileHover={{ scale: 1.05 }}
                                                         whileTap={{ scale: 0.95 }}
                                                         onClick={() => handleNilaiEssay(ans, false, index)}
-                                                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-bold transition-all ${
-                                                            !ans.is_correct
+                                                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-bold transition-all ${!ans.is_correct
                                                                 ? 'bg-red-500 text-white shadow-md shadow-red-200 dark:shadow-red-900/30'
                                                                 : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400'
-                                                        }`}
+                                                            }`}
                                                     >
                                                         <Cancel01Icon size={15} />
                                                         <span>Salah</span>

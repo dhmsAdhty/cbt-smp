@@ -18,7 +18,7 @@ export const useMapelStats = () => {
                 { data: usersData, error: usersError }
             ] = await Promise.all([
                 supabase.from('mapel').select('id, nama_mapel').order('nama_mapel', { ascending: true }),
-                supabase.from('bank_soal').select('id, mapel_id, kelas_id, guru_id, deleted_at'),
+                supabase.from('bank_soal').select('id, mapel_id, kelas_id, guru_id, deleted_at, tipe_soal'),
                 supabase.from('kelas').select('id, nama_kelas'),
                 supabase.from('users').select('id, nama, role, mapel')
             ])
@@ -43,10 +43,16 @@ export const useMapelStats = () => {
                     soal => soal.mapel_id === mapel.id && soal.deleted_at === null
                 )
 
+                let jumlahPG = 0
+                let jumlahEssay = 0
+
                 const kelasSet = new Set()
                 const guruSet = new Set()
 
                 activeSoal.forEach(soal => {
+                    if (soal.tipe_soal === 'pilihan_ganda') jumlahPG++
+                    if (soal.tipe_soal === 'essay') jumlahEssay++
+
                     if (soal.kelas_id && kelasMap.has(soal.kelas_id)) {
                         kelasSet.add(kelasMap.get(soal.kelas_id))
                     }
@@ -65,6 +71,8 @@ export const useMapelStats = () => {
                     id: mapel.id,
                     namaMapel: mapel.nama_mapel,
                     jumlahSoal: activeSoal.length,
+                    jumlahPG,
+                    jumlahEssay,
                     kelasList: Array.from(kelasSet).sort((a, b) => a.localeCompare(b)),
                     guruList: Array.from(guruSet).sort((a, b) => a.localeCompare(b))
                 }

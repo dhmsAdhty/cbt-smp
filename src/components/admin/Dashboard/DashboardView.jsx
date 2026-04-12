@@ -38,7 +38,7 @@ const DashboardView = () => {
             </div>
 
             {/* Recent Activity */}
-            <RecentActivity users={dataList.users} />
+            <RecentActivity />
         </div>
     )
 }

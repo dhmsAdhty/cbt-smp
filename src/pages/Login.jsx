@@ -65,6 +65,13 @@ export default function Login() {
             return
         }
 
+        // Update last login
+        try {
+            await supabase.from('users').update({ last_login: new Date().toISOString() }).eq('id', user.id)
+        } catch (e) {
+            console.error('Failed to update last login:', e)
+        }
+
         Swal.fire({
             icon: 'success',
             title: `Selamat Datang, ${profile.nama}!`,
