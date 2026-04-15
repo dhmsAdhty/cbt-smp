@@ -83,7 +83,7 @@ const UjianForm = ({ ujian, guruId, onClose }) => {
             setLoadingSoal(true)
             const { data, error } = await supabase
                 .from('bank_soal')
-                .select('id, pertanyaan, bobot, tipe_soal')
+                .select('id, pertanyaan, tipe_soal')
                 .eq('mapel_id', mapelId)
                 .is('deleted_at', null)
                 .order('created_at', { ascending: false })
@@ -501,10 +501,6 @@ const UjianForm = ({ ujian, guruId, onClose }) => {
                                                 <div className="flex items-center gap-2 mb-1.5">
                                                     <span className="text-xs font-bold text-gray-500">
                                                         {soal.tipe_soal === 'pilihan_ganda' ? 'PG' : 'Essay'}
-                                                    </span>
-                                                    <span className="w-1 h-1 rounded-full bg-gray-300"></span>
-                                                    <span className="text-xs bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400 px-2 py-0.5 rounded-full font-medium">
-                                                        Bobot: {soal.bobot}
                                                     </span>
                                                 </div>
                                                 <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2 leading-relaxed">

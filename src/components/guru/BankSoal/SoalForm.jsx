@@ -23,7 +23,6 @@ const SoalForm = ({ soal, mapelId, kelasList = [], onClose }) => {
         pertanyaan: '',
         tipe_soal: 'pilihan_ganda',
         kunci_jawaban: '',
-        bobot: 1,
         kelas_id: '',
         opsi_jawaban: [
             { label: 'A', text: '', image_url: null },
@@ -59,7 +58,6 @@ const SoalForm = ({ soal, mapelId, kelasList = [], onClose }) => {
                 pertanyaan: soal.pertanyaan,
                 tipe_soal: soal.tipe_soal || 'pilihan_ganda',
                 kunci_jawaban: soal.kunci_jawaban,
-                bobot: soal.bobot || 1,
                 kelas_id: soal.kelas_id || '',
                 opsi_jawaban: opsi.map(o => ({
                     label: o.label,
@@ -224,7 +222,6 @@ const SoalForm = ({ soal, mapelId, kelasList = [], onClose }) => {
                 tipe_soal: formData.tipe_soal,
                 opsi_jawaban: formData.tipe_soal === 'pilihan_ganda' ? finalOpsi : null,
                 kunci_jawaban: formData.kunci_jawaban || null,
-                bobot: parseInt(formData.bobot),
                 kelas_id: formData.kelas_id ? parseInt(formData.kelas_id) : null,
                 gambar_url: imageUrl
             }
@@ -467,8 +464,8 @@ const SoalForm = ({ soal, mapelId, kelasList = [], onClose }) => {
                                 ))}
                             </div>
 
-                            {/* Kunci Jawaban & Bobot */}
-                            <div className="grid md:grid-cols-2 gap-6 pt-2">
+                            {/* Kunci Jawaban */}
+                            <div className="pt-2">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                         Kunci Jawaban
@@ -483,20 +480,6 @@ const SoalForm = ({ soal, mapelId, kelasList = [], onClose }) => {
                                             <span className="text-gray-400 italic text-sm">Klik huruf A-D di atas untuk memilih</span>
                                         )}
                                     </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Bobot Soal
-                                    </label>
-                                    <input
-                                        type="number"
-                                        min="1"
-                                        className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-                                        value={formData.bobot}
-                                        onChange={(e) => setFormData({ ...formData, bobot: e.target.value })}
-                                    />
-                                    <p className="text-xs text-gray-500 mt-1">Nilai poin untuk soal ini jika benar.</p>
                                 </div>
                             </div>
                         </div>
@@ -515,20 +498,6 @@ const SoalForm = ({ soal, mapelId, kelasList = [], onClose }) => {
                                     onChange={e => setFormData({ ...formData, kunci_jawaban: e.target.value })}
                                 />
                                 <p className="text-xs text-gray-500 mt-1">Jawaban ini tidak ditampilkan ke siswa, hanya sebagai panduan penilaian.</p>
-                            </div>
-
-                            <div className="max-w-xs">
-                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                    Bobot Soal
-                                </label>
-                                <input
-                                    type="number"
-                                    min="1"
-                                    className="w-full px-4 py-2 bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-                                    value={formData.bobot}
-                                    onChange={(e) => setFormData({ ...formData, bobot: e.target.value })}
-                                />
-                                <p className="text-xs text-gray-500 mt-1">Nilai poin maksimal untuk soal essay ini.</p>
                             </div>
                         </div>
                     )}

@@ -340,9 +340,6 @@ const SoalCard = ({ soal, index, onEdit, onDelete }) => (
                         </span>
                     )}
                 </div>
-                <span className="text-xs text-gray-400 font-medium">
-                    Bobot: {soal.bobot}
-                </span>
             </div>
         </div>
 
