@@ -41,7 +41,7 @@ const Select = ({ value, onChange, options, placeholder = "Pilih...", label, cla
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                     >
-                        <Listbox.Options className="absolute z-10 mt-2 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl max-h-60 overflow-auto focus:outline-none">
+                        <Listbox.Options className="absolute z-[80] mt-2 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl max-h-60 overflow-auto focus:outline-none">
                             {options.map((option) => (
                                 <Listbox.Option
                                     key={option.value}

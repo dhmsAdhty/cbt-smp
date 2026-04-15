@@ -50,9 +50,9 @@ const SummaryCard = ({ title, value, subtitle, colorClass, iconBg, delay, childr
 const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
         return (
-            <div className="bg-white/80 backdrop-blur-xl border border-gray-100 p-4 rounded-2xl shadow-xl">
+            <div className="bg-white border border-[#e7ecf0] p-4 rounded-xl shadow-md">
                 <p className="text-sm font-bold text-gray-800 mb-2 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+                    <span className="w-2 h-2 rounded-full bg-[#0085db]"></span>
                     {label}
                 </p>
                 <div className="space-y-1">
@@ -70,7 +70,7 @@ const CustomTooltip = ({ active, payload, label }) => {
 const PieTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
         return (
-            <div className="bg-white/90 backdrop-blur-xl border border-white/50 p-3 rounded-xl shadow-lg flex flex-col gap-1">
+            <div className="bg-white border border-[#e7ecf0] p-3 rounded-xl shadow-md flex flex-col gap-1">
                 <div className="flex items-center gap-2 mb-1">
                     <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: payload[0].payload.fill }} />
                     <span className="font-bold text-gray-800">{payload[0].name}</span>
@@ -89,13 +89,13 @@ const PieTooltip = ({ active, payload }) => {
 // Charts
 // =====================
 const MapelBarChart = ({ data }) => {
-    const palette = ['#f97316', '#fb923c', '#fdba74', '#ea580c', '#eab308', '#ca8a04', '#fed7aa', '#ffedd5']
+    const palette = ['#0085db', '#46caeb', '#0071ba', '#3cacc8', '#4bd08b', '#40b176', '#5f686f', '#111c2d']
     
     return (
         <GlassCard className="h-full min-h-[380px] flex flex-col">
             <div className="p-6 border-b border-gray-100/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="p-2 bg-gradient-to-br from-orange-100 to-orange-50 rounded-lg text-orange-600">
+                    <div className="p-2 bg-gradient-to-br from-[#e5f3fb] to-[#e1f5fa] rounded-lg text-[#0085db]">
                         <ChartHistogramIcon size={20} />
                     </div>
                     <div>
@@ -124,7 +124,7 @@ const MapelBarChart = ({ data }) => {
                                     </linearGradient>
                                 ))}
                             </defs>
-                            <CartesianGrid strokeDasharray="4 4" vertical={false} strokeOpacity={0.4} stroke="#e2e8f0" />
+                            <CartesianGrid strokeDasharray="4 4" vertical={false} strokeOpacity={0.5} stroke="#e7ecf0" />
                             <XAxis
                                 dataKey="namaMapel"
                                 axisLine={false}
@@ -138,7 +138,7 @@ const MapelBarChart = ({ data }) => {
                                 tick={{ fill: '#64748b', fontSize: 12, fontWeight: 500 }}
                                 dx={-10}
                             />
-                            <Tooltip cursor={{ fill: 'rgba(255, 237, 213, 0.4)' }} content={<CustomTooltip />} />
+                            <Tooltip cursor={{ fill: 'rgba(229, 243, 251, 0.8)' }} content={<CustomTooltip />} />
                             <Bar
                                 dataKey="jumlahSoal"
                                 radius={[8, 8, 4, 4]}
@@ -161,7 +161,7 @@ const MapelBarChart = ({ data }) => {
 const KelasDistributionChart = ({ data }) => {
     const classCount = new Map()
     // Golden-Orange theme palette
-    const palette = ['#ea580c', '#eab308', '#f97316', '#ca8a04', '#fb923c', '#f59e0b', '#fdba74', '#fbbf24']
+    const palette = ['#0085db', '#46caeb', '#0071ba', '#3cacc8', '#4bd08b', '#40b176', '#5f686f', '#111c2d']
 
     data.forEach(item => {
         item.kelasList.forEach(kelas => {
@@ -176,7 +176,7 @@ const KelasDistributionChart = ({ data }) => {
     return (
         <GlassCard className="h-full min-h-[380px] flex flex-col">
             <div className="p-6 border-b border-gray-100/50 flex items-center gap-3">
-                <div className="p-2 bg-gradient-to-br from-amber-100 to-amber-50 rounded-lg text-amber-600">
+                <div className="p-2 bg-gradient-to-br from-[#e5f3fb] to-[#e1f5fa] rounded-lg text-[#0085db]">
                     <PieChartIcon size={20} />
                 </div>
                 <div>
@@ -247,20 +247,20 @@ const MapelCard = ({ item, delay = 0 }) => {
             transition={{ delay, duration: 0.4 }}
             className="flex h-full"
         >
-            <GlassCard className="w-full flex flex-col p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group hover:border-orange-200">
+            <GlassCard className="w-full flex flex-col p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group hover:border-[#0085db]/20">
                 {/* Header info */}
                 <div className="flex justify-between items-start gap-4 mb-4">
                     <div className="flex-1">
                         <div className="flex items-center gap-2 mb-1">
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-100 to-orange-50 flex items-center justify-center text-orange-500 group-hover:scale-110 transition-transform">
+                            <div className="w-8 h-8 rounded-full bg-[#e5f3fb] flex items-center justify-center text-[#0085db] group-hover:scale-110 transition-transform">
                                 <BookOpen02Icon size={16} />
                             </div>
-                            <h4 className="font-bold text-lg text-gray-800 line-clamp-1 group-hover:text-orange-600 transition-colors">
+                            <h4 className="font-bold text-lg text-gray-800 line-clamp-1 group-hover:text-[#0085db] transition-colors">
                                 {item.namaMapel}
                             </h4>
                         </div>
                         <div className="flex items-center gap-2 mt-2">
-                             <div className="px-3 py-1 bg-gradient-to-r from-orange-500 to-orange-400 text-white text-xs font-bold rounded-lg whitespace-nowrap shadow-sm">
+                             <div className="px-3 py-1 bg-[#0085db] text-white text-xs font-bold rounded-lg whitespace-nowrap shadow-sm">
                                 {item.jumlahSoal} Soal
                             </div>
                         </div>
@@ -272,12 +272,12 @@ const MapelCard = ({ item, delay = 0 }) => {
                 {/* Progress Bar PG vs Essay */}
                 <div className="mb-5">
                     <div className="flex justify-between text-xs font-semibold text-gray-500 mb-1.5">
-                        <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-sm bg-orange-500 block"></span> Pilihan Ganda ({item.jumlahPG})</span>
-                        <span className="flex items-center gap-1.5">Essay ({item.jumlahEssay}) <span className="w-2 h-2 rounded-sm bg-amber-400 block"></span></span>
+                        <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-sm bg-[#0085db] block"></span> Pilihan Ganda ({item.jumlahPG})</span>
+                        <span className="flex items-center gap-1.5">Essay ({item.jumlahEssay}) <span className="w-2 h-2 rounded-sm bg-[#46caeb] block"></span></span>
                     </div>
                     <div className="flex w-full h-2 bg-gray-100 rounded-full overflow-hidden shadow-inner">
-                        <div style={{ width: `${pgPercent}%` }} className="bg-orange-500 transition-all duration-1000" />
-                        <div style={{ width: `${essayPercent}%` }} className="bg-amber-400 transition-all duration-1000" />
+                        <div style={{ width: `${pgPercent}%` }} className="bg-[#0085db] transition-all duration-1000" />
+                        <div style={{ width: `${essayPercent}%` }} className="bg-[#46caeb] transition-all duration-1000" />
                     </div>
                 </div>
 
@@ -366,7 +366,7 @@ export default function StatistikMapelView() {
                     <p className="text-sm font-medium text-gray-500 mt-1">Pantau perkembangan bank soal harian</p>
                 </div>
                 <div className="flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-md border border-gray-100 rounded-xl shadow-sm">
-                    <Calendar02Icon size={16} className="text-orange-500" />
+                    <Calendar02Icon size={16} className="text-[#0085db]" />
                     <span className="text-xs font-semibold text-gray-600">{currentDate}</span>
                 </div>
             </div>
@@ -377,7 +377,7 @@ export default function StatistikMapelView() {
                     title="Total Bank Soal"
                     value={totalSoal}
                     subtitle={`${totalPG} Pilihan Ganda • ${totalEssay} Essay`}
-                    iconBg="bg-gradient-to-br from-orange-400 to-orange-600 text-white shadow-orange-500/30"
+                    iconBg="bg-[#0085db] text-white"
                     delay={0.1}
                 >
                     <NoteEditIcon size={28} />
@@ -453,7 +453,7 @@ export default function StatistikMapelView() {
                             <input
                                 type="text"
                                 placeholder="Cari mata pelajaran..."
-                                className="w-full pl-10 pr-4 py-2.5 text-sm text-gray-800 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-400 transition-all shadow-sm"
+                                className="w-full pl-10 pr-4 py-2.5 text-sm text-gray-800 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0085db]/20 focus:border-[#0085db] transition-all shadow-sm"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                             />

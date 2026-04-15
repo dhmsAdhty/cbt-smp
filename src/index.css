@@ -1,7 +1,43 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root {
   color-scheme: light;
+}
+
+* {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Template card styles */
+.card {
+  @apply bg-white rounded-[18px] border border-[#e7ecf0] shadow-[0px_2px_6px_rgba(37,83,185,0.1)];
+}
+
+.card-body {
+  @apply p-6;
+}
+
+/* Sidebar active link */
+.sidebar-link.active,
+.sidebar-link:hover {
+  @apply text-[#0085db];
+}
+
+/* Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f0f5f9;
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #c4c9cc;
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #0085db;
 }
 
 @theme {

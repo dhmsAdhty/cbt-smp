@@ -172,10 +172,10 @@ const SettingsView = () => {
                 icon: <ShieldKeyIcon size={14} className="text-purple-600" />
             },
             guru: {
-                bg: 'bg-gradient-to-r from-orange-500/20 to-orange-600/20',
-                text: 'text-orange-700',
-                border: 'border-orange-500/30',
-                icon: <School01Icon size={14} className="text-orange-600" />
+                bg: 'bg-gradient-to-r from-[#0085db]/20 to-[#0071ba]/20',
+                text: 'text-[#0085db]',
+                border: 'border-[#0085db]/30',
+                icon: <School01Icon size={14} className="text-[#0085db]" />
             },
             siswa: {
                 bg: 'bg-gradient-to-r from-green-500/20 to-green-600/20',
@@ -216,7 +216,7 @@ const SettingsView = () => {
                 <div className="relative z-10 flex flex-col lg:flex-row lg:items-center gap-8">
                     {/* Avatar */}
                     <div className="flex items-center gap-6 p-5">
-                        <div className="relative w-28 h-28 rounded-full bg-orange-500 flex items-center justify-center text-white text-4xl font-bold shadow-xl border-4 border-white">
+                        <div className="relative w-28 h-28 rounded-full bg-[#0085db] flex items-center justify-center text-white text-4xl font-bold shadow-xl border-4 border-white">
                             {getInitials(userData.nama)}
                         </div>
                     </div>
@@ -229,7 +229,7 @@ const SettingsView = () => {
                             {!isEditing && (
                                 <button
                                     onClick={() => setIsEditing(true)}
-                                    className="p-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white shadow-lg shadow-orange-500/30 transition-all duration-300 transform hover:scale-110 hover:-translate-y-0.5"
+                                    className="p-2.5 rounded-xl bg-[#0085db] hover:bg-[#0071ba] text-white shadow-lg shadow-[#0085db]/30 transition-all duration-300 transform hover:scale-110 hover:-translate-y-0.5"
                                 >
                                     <Edit02Icon size={18} />
                                 </button>
@@ -238,7 +238,7 @@ const SettingsView = () => {
 
                         <div className="flex flex-wrap items-center gap-3 mb-3">
                             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 rounded-full border border-gray-200">
-                                <Mail01Icon size={14} className="text-orange-500" />
+                                <Mail01Icon size={14} className="text-[#0085db]" />
                                 <span className="text-sm text-gray-700">{userData.email}</span>
                             </div>
 
@@ -262,7 +262,7 @@ const SettingsView = () => {
                 <div className="p-5 flex lg:flex-col gap-3 lg:ml-auto border-t lg:border-t-0 lg:border-l border-gray-100">
                     <div className="px-4 py-2.5 bg-gray-50 rounded-xl border border-gray-200">
                         <p className="text-xs text-gray-500">Role Status</p>
-                        <p className="font-bold text-orange-600 capitalize">{userData.role}</p>
+                        <p className="font-bold text-[#0085db] capitalize">{userData.role}</p>
                     </div>
                     {userData.kelas && (
                         <div className="px-4 py-2.5 bg-gray-50 rounded-xl border border-gray-200">
@@ -285,7 +285,7 @@ const SettingsView = () => {
                 <GlassCard className="p-8 bg-white">
                     <div className="flex items-center justify-between mb-8">
                         <div className="flex items-center gap-3">
-                            <div className="p-2.5 rounded-lg bg-orange-500 text-white">
+                            <div className="p-2.5 rounded-lg bg-[#0085db] text-white">
                                 <User02Icon size={24} />
                             </div>
                             <div>
@@ -301,7 +301,7 @@ const SettingsView = () => {
                         {!isEditing && (
                             <button
                                 onClick={() => setIsEditing(true)}
-                                className="group relative px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 transition-all duration-300 transform hover:-translate-y-0.5 overflow-hidden"
+                                className="group relative px-6 py-3 bg-[#0085db] hover:bg-[#0071ba] text-white rounded-xl font-semibold shadow-lg shadow-[#0085db]/30 transition-all duration-300 transform hover:-translate-y-0.5 overflow-hidden"
                             >
                                 <div className="relative flex items-center gap-2">
                                     <Edit02Icon size={18} />
@@ -323,7 +323,7 @@ const SettingsView = () => {
                             ].map((item, index) => {
                                 const Icon = item.icon
                                 const colors = {
-                                    orange: 'bg-orange-50 text-orange-600 border-orange-100',
+                                    orange: 'bg-[#e5f3fb] text-[#0085db] border-orange-100',
                                     blue: 'bg-blue-50 text-blue-600 border-blue-100',
                                     purple: 'bg-purple-50 text-purple-600 border-purple-100',
                                     red: 'bg-red-50 text-red-600 border-red-100',
@@ -369,28 +369,28 @@ const SettingsView = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div className="space-y-2">
                                     <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                                        <User02Icon className="w-4 h-4 text-orange-500" />
+                                        <User02Icon className="w-4 h-4 text-[#0085db]" />
                                         Nama Lengkap
                                     </label>
                                     <input
                                         type="text"
                                         value={formData.nama}
                                         onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
-                                        className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
+                                        className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0085db]/20 focus:border-[#0085db] transition-all duration-200"
                                         required
                                     />
                                 </div>
 
                                 <div className="space-y-2">
                                     <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                                        <Mail01Icon className="w-4 h-4 text-orange-500" />
+                                        <Mail01Icon className="w-4 h-4 text-[#0085db]" />
                                         Email
                                     </label>
                                     <input
                                         type="email"
                                         value={formData.email}
                                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                        className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
+                                        className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0085db]/20 focus:border-[#0085db] transition-all duration-200"
                                         required
                                     />
                                 </div>
@@ -398,7 +398,7 @@ const SettingsView = () => {
 
                             <div className="space-y-2">
                                 <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                                    <LockPasswordIcon className="w-4 h-4 text-orange-500" />
+                                    <LockPasswordIcon className="w-4 h-4 text-[#0085db]" />
                                     Password Baru
                                 </label>
                                 <div className="relative">
@@ -406,14 +406,14 @@ const SettingsView = () => {
                                         type={showPassword ? "text" : "password"}
                                         value={formData.password}
                                         onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                        className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
+                                        className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0085db]/20 focus:border-[#0085db] transition-all duration-200"
                                         placeholder="Kosongkan jika tidak ingin mengubah"
                                         minLength={6}
                                     />
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-orange-500 transition-colors"
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[#0085db] transition-colors"
                                     >
                                         {showPassword ? '🙈' : '👁️'}
                                     </button>
@@ -422,7 +422,7 @@ const SettingsView = () => {
 
                             <div className="space-y-2">
                                 <label className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                                    <LockPasswordIcon className="w-4 h-4 text-orange-500" />
+                                    <LockPasswordIcon className="w-4 h-4 text-[#0085db]" />
                                     Konfirmasi Password
                                 </label>
                                 <div className="relative">
@@ -430,14 +430,14 @@ const SettingsView = () => {
                                         type={showConfirmPassword ? "text" : "password"}
                                         value={formData.confirmPassword}
                                         onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                                        className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all duration-200"
+                                        className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0085db]/20 focus:border-[#0085db] transition-all duration-200"
                                         placeholder="Konfirmasi password baru"
                                         minLength={6}
                                     />
                                     <button
                                         type="button"
                                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-orange-500 transition-colors"
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-[#0085db] transition-colors"
                                     >
                                         {showConfirmPassword ? '🙈' : '👁️'}
                                     </button>
@@ -448,7 +448,7 @@ const SettingsView = () => {
                                 <button
                                     type="submit"
                                     disabled={loading}
-                                    className="flex-1 relative group px-6 py-3.5 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
+                                    className="flex-1 relative group px-6 py-3.5 bg-[#0085db] hover:bg-[#0071ba] text-white rounded-xl font-semibold shadow-lg shadow-[#0085db]/30 transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden"
                                 >
                                     <div className="relative flex items-center justify-center gap-2">
                                         {loading ? (
@@ -493,7 +493,7 @@ const SettingsView = () => {
                 {/* Security Tips Card */}
                 <GlassCard className="p-6 bg-white border border-gray-200">
                     <div className="flex items-start gap-4">
-                        <div className="p-2.5 rounded-lg bg-orange-500 text-white">
+                        <div className="p-2.5 rounded-lg bg-[#0085db] text-white">
                             <InformationCircleIcon size={20} />
                         </div>
 
@@ -509,7 +509,7 @@ const SettingsView = () => {
                                     'Ganti password secara berkala',
                                 ].map((tip, i) => (
                                     <div key={i} className="flex items-center gap-2 text-sm text-gray-600">
-                                        <span className="w-1.5 h-1.5 bg-orange-500 rounded-full"></span>
+                                        <span className="w-1.5 h-1.5 bg-[#0085db] rounded-full"></span>
                                         {tip}
                                     </div>
                                 ))}

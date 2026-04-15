@@ -281,16 +281,16 @@ const itemVariants = {
 
 const InfoHeader = ({ totalItems, onRefresh }) => (
     <GlassCard>
-        <div className="p-4 sm:p-5 bg-linear-to-r from-orange-50 to-amber-50 rounded-xl">
+        <div className="p-4 sm:p-5 bg-[#e5f3fb] rounded-xl">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="p-2.5 bg-orange-100 rounded-xl shrink-0">
-                        <Delete02Icon size={24} className="text-orange-600" />
+                    <div className="p-2.5 bg-white rounded-xl shrink-0">
+                        <Delete02Icon size={24} className="text-[#0085db]" />
                     </div>
                     <div>
                         <h2 className="text-lg sm:text-xl font-bold text-gray-900">Sampah Soal</h2>
                         <p className="text-sm text-gray-600 mt-0.5">
-                            Total <span className="font-semibold text-orange-600">{totalItems}</span> soal telah dihapus
+                            Total <span className="font-semibold text-[#0085db]">{totalItems}</span> soal telah dihapus
                         </p>
                     </div>
                 </div>
@@ -298,7 +298,7 @@ const InfoHeader = ({ totalItems, onRefresh }) => (
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={onRefresh}
-                    className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-gray-50 text-orange-600 border border-orange-200 rounded-xl font-semibold transition-all shadow-xs"
+                    className="flex items-center justify-center gap-2 px-4 py-2.5 bg-white hover:bg-[#f0f5f9] text-[#0085db] border border-[#0085db]/20 rounded-xl font-semibold transition-all shadow-xs"
                 >
                     <RefreshIcon size={18} />
                     <span>Refresh</span>
@@ -332,14 +332,14 @@ const Toolbar = ({
                 {/* Header Toolbar */}
                 <div className="flex items-center justify-between gap-3 mb-4">
                     <div className="flex items-center gap-2">
-                        <FilterIcon size={20} className="text-orange-600" />
+                        <FilterIcon size={20} className="text-[#0085db]" />
                         <h3 className="text-base sm:text-lg font-semibold text-gray-900">Filter Pencarian</h3>
                     </div>
                     
                     {/* Tombol toggle filter untuk mobile */}
                     <button
                         onClick={() => setIsFilterOpen(!isFilterOpen)}
-                        className="lg:hidden flex items-center gap-2 px-3 py-1.5 bg-orange-50 text-orange-600 rounded-lg text-sm font-medium"
+                        className="lg:hidden flex items-center gap-2 px-3 py-1.5 bg-[#e5f3fb] text-[#0085db] rounded-lg text-sm font-medium"
                     >
                         <FilterIcon size={16} />
                         {isFilterOpen ? 'Sembunyikan' : 'Tampilkan'} Filter
@@ -355,7 +355,7 @@ const Toolbar = ({
                             placeholder="Cari pertanyaan soal..."
                             value={searchTerm}
                             onChange={(e) => onSearchChange(e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all text-sm sm:text-base"
+                            className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0085db]/20 focus:border-[#0085db] transition-all text-sm sm:text-base"
                         />
                     </div>
                 </div>
@@ -408,8 +408,8 @@ const Toolbar = ({
 
                     {/* Info filter aktif (untuk mobile) */}
                     {(filterGuru || filterMapel || filterKelas) && (
-                        <div className="mt-3 p-2 bg-orange-50 rounded-lg lg:hidden">
-                            <p className="text-xs text-orange-700">
+                        <div className="mt-3 p-2 bg-[#e5f3fb] rounded-lg lg:hidden">
+                            <p className="text-xs text-[#0085db]">
                                 Filter aktif: {
                                     [
                                         filterGuru && 'Guru',
@@ -432,8 +432,8 @@ const EmptyState = () => (
         animate={{ opacity: 1, y: 0 }}
         className="text-center py-12 sm:py-16 px-4 bg-white rounded-2xl border border-gray-200"
     >
-        <div className="w-20 h-20 sm:w-24 sm:h-24 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Delete02Icon size={40} className="text-orange-300" />
+        <div className="w-20 h-20 sm:w-24 sm:h-24 bg-[#e5f3fb] rounded-full flex items-center justify-center mx-auto mb-4">
+            <Delete02Icon size={40} className="text-[#46caeb]" />
         </div>
         <p className="text-lg sm:text-xl mb-2 font-semibold text-gray-900">Tidak ada soal yang dihapus</p>
         <p className="text-sm text-gray-500 max-w-md mx-auto">
@@ -460,8 +460,8 @@ const SoalCard = ({ soal, guruList, mapelList, kelasList, onRestore, onDelete })
             className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-all h-full flex flex-col"
         >
             {/* Header */}
-            <div className="px-4 py-3 bg-orange-50 border-b border-orange-200 flex items-center justify-between gap-2 flex-wrap">
-                <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-orange-200 text-orange-700 whitespace-nowrap">
+            <div className="px-4 py-3 bg-[#e5f3fb] border-b border-[#0085db]/10 flex items-center justify-between gap-2 flex-wrap">
+                <span className="text-xs font-bold px-2.5 py-1 rounded-lg bg-[#0085db] text-white whitespace-nowrap">
                     {soal.tipe_soal === 'pilihan_ganda' ? 'Pilihan Ganda' : 'Essay'}
                 </span>
                 <span className="text-xs text-gray-500 flex items-center gap-1 shrink-0">
@@ -723,7 +723,7 @@ export default function TrashBankSoalView() {
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-[400px]">
-                <LoadingSpinner color="orange" />
+                <LoadingSpinner color="blue" />
             </div>
         )
     }
@@ -770,7 +770,7 @@ export default function TrashBankSoalView() {
                     {/* Info hasil pencarian */}
                     <div className="flex items-center justify-between">
                         <p className="text-sm text-gray-600">
-                            Menampilkan <span className="font-semibold text-orange-600">{filteredSoals.length}</span> dari{' '}
+                            Menampilkan <span className="font-semibold text-[#0085db]">{filteredSoals.length}</span> dari{' '}
                             <span className="font-semibold">{trashedSoals.length}</span> soal
                         </p>
                     </div>

@@ -7,6 +7,8 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+template/
+
 # Dependencies 
 node_modules
 package-lock.json # Opsional: Biasanya ini boleh diupload, tapi node_modules WAJIB ignore

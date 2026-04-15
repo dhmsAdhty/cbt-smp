@@ -181,12 +181,12 @@ const UsersView = () => {
     if (isLoading) return <LoadingSpinner />
 
     return (
-        <div className="animate-fade-in-up timer-4000">
+        <div className="animate-fade-in-up">
             <div className="grid lg:grid-cols-3 gap-8">
                 {/* Form Tambah User */}
                 <GlassCard className="p-6 lg:col-span-1 ">
                     <div className="flex items-center gap-3 mb-6">
-                        <h3 className="font-bold text-xl text-gray-800">Tambah User Baru</h3>
+                        <h3 className="font-bold text-xl text-[#111c2d]">Tambah User Baru</h3>
                     </div>
 
                     <BulkImport onSuccess={fetchUsers} />
@@ -203,7 +203,7 @@ const UsersView = () => {
                 {/* Tabel Users */}
                 <GlassCard className="p-6 lg:col-span-2">
                     <div className="flex items-center justify-between mb-6">
-                        <h3 className="font-bold text-xl text-gray-800">
+                        <h3 className="font-bold text-xl text-[#111c2d]">
                             Daftar Users ({totalUsers})
                         </h3>
                     </div>
@@ -224,9 +224,9 @@ const UsersView = () => {
             {/* Modal Detail User */}
             {selectedUser && (
                 <div className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in" onClick={handleCloseModal}>
-                    <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slide-up" onClick={(e) => e.stopPropagation()}>
+                    <div className="bg-white rounded-2xl border border-[#e7ecf0] shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-slide-up" onClick={(e) => e.stopPropagation()}>
                         {/* Header */}
-                        <div className="bg-linear-to-r from-orange-500 to-orange-600 p-6 rounded-t-2xl">
+                        <div className="bg-linear-to-r from-[#0085db] to-[#0071ba] p-6 rounded-t-2xl">
                             <div className="flex items-center justify-between">
                                 <div className="flex items-center gap-4">
                                     <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-xl flex items-center justify-center text-white text-2xl font-bold">
@@ -234,7 +234,7 @@ const UsersView = () => {
                                     </div>
                                     <div>
                                         <h2 className="text-2xl font-bold text-white">{selectedUser.nama}</h2>
-                                        <p className="text-orange-100">{selectedUser.email}</p>
+                                        <p className="text-blue-100">{selectedUser.email}</p>
                                     </div>
                                 </div>
                                 <button
@@ -254,24 +254,24 @@ const UsersView = () => {
                                 // View Mode
                                 <>
                                     <div className="grid grid-cols-2 gap-4">
-                                        <div className="p-4 bg-orange-50/50 rounded-xl">
+                                        <div className="p-4 bg-[#f0f5f9] rounded-xl border border-[#e7ecf0]">
                                             <p className="text-sm text-gray-500 mb-1">Nama Lengkap</p>
                                             <p className="font-semibold text-gray-800">{selectedUser.nama}</p>
                                         </div>
-                                        <div className="p-4 bg-orange-50/50 rounded-xl">
+                                        <div className="p-4 bg-[#f0f5f9] rounded-xl border border-[#e7ecf0]">
                                             <p className="text-sm text-gray-500 mb-1">Email</p>
                                             <p className="font-semibold text-gray-800">{selectedUser.email}</p>
                                         </div>
-                                        <div className="p-4 bg-orange-50/50 rounded-xl">
+                                        <div className="p-4 bg-[#f0f5f9] rounded-xl border border-[#e7ecf0]">
                                             <p className="text-sm text-gray-500 mb-1">Role</p>
                                             <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${selectedUser.role === 'admin' ? 'bg-purple-100 text-purple-700' :
-                                                selectedUser.role === 'guru' ? 'bg-orange-100 text-orange-700' :
-                                                    'bg-green-100 text-green-700'
+                                                selectedUser.role === 'guru' ? 'bg-[#e5f3fb] text-[#0085db]' :
+                                                    'bg-[#dffff3] text-[#40b176]'
                                                 }`}>
                                                 {selectedUser.role}
                                             </span>
                                         </div>
-                                        <div className="p-4 bg-orange-50/50 rounded-xl">
+                                        <div className="p-4 bg-[#f0f5f9] rounded-xl border border-[#e7ecf0]">
                                             <p className="text-sm text-gray-500 mb-1">
                                                 {selectedUser.role === 'siswa' ? 'Kelas' : selectedUser.role === 'guru' ? 'Mata Pelajaran' : 'Kelas/Mapel'}
                                             </p>
@@ -285,13 +285,13 @@ const UsersView = () => {
                                     <div className="flex gap-3 pt-4 border-t border-gray-200">
                                         <button
                                             onClick={() => setIsEditing(true)}
-                                            className="flex-1 px-6 py-3 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all transform hover:-translate-y-0.5"
+                                            className="flex-1 px-6 py-3 bg-[#0085db] hover:bg-[#0071ba] text-white rounded-xl font-semibold shadow-sm transition-all transform hover:-translate-y-0.5"
                                         >
                                             Edit
                                         </button>
                                         <button
                                             onClick={handleDelete}
-                                            className="flex-1 px-6 py-3 bg-linear-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white rounded-xl font-semibold shadow-lg shadow-orange-600/30 hover:shadow-xl hover:shadow-orange-600/40 transition-all transform hover:-translate-y-0.5"
+                                            className="flex-1 px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-xl font-semibold shadow-sm transition-all transform hover:-translate-y-0.5"
                                         >
                                             Hapus
                                         </button>
@@ -307,7 +307,7 @@ const UsersView = () => {
                                                 type="text"
                                                 value={editData.nama}
                                                 onChange={(e) => setEditData({ ...editData, nama: e.target.value })}
-                                                className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+                                                className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0085db]/20 focus:border-[#0085db] transition-all"
                                             />
                                         </div>
                                         <div>
@@ -316,7 +316,7 @@ const UsersView = () => {
                                                 type="email"
                                                 value={editData.email}
                                                 onChange={(e) => setEditData({ ...editData, email: e.target.value })}
-                                                className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+                                                className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0085db]/20 focus:border-[#0085db] transition-all"
                                             />
                                         </div>
                                         <Select
@@ -353,7 +353,7 @@ const UsersView = () => {
                                     <div className="flex gap-3 pt-4 border-t border-gray-200">
                                         <button
                                             onClick={handleUpdate}
-                                            className="flex-1 px-6 py-3 bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all transform hover:-translate-y-0.5"
+                                            className="flex-1 px-6 py-3 bg-[#0085db] hover:bg-[#0071ba] text-white rounded-xl font-semibold shadow-sm transition-all transform hover:-translate-y-0.5"
                                         >
                                             Simpan
                                         </button>

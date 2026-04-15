@@ -115,7 +115,7 @@ const UserForm = ({ kelasList, mapelList, onSuccess }) => {
                     required
                     type="email"
                     placeholder="user@sekolah.com"
-                    className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+                    className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0085db]/20 focus:border-[#0085db] transition-all"
                     value={formData.email}
                     onChange={e => setFormData({ ...formData, email: e.target.value })}
                 />
@@ -127,7 +127,7 @@ const UserForm = ({ kelasList, mapelList, onSuccess }) => {
                     required
                     type="text"
                     placeholder="John Doe"
-                    className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+                    className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0085db]/20 focus:border-[#0085db] transition-all"
                     value={formData.nama}
                     onChange={e => setFormData({ ...formData, nama: e.target.value })}
                 />
@@ -140,7 +140,7 @@ const UserForm = ({ kelasList, mapelList, onSuccess }) => {
                     type="password"
                     placeholder="Minimal 6 karakter"
                     minLength={6}
-                    className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+                    className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0085db]/20 focus:border-[#0085db] transition-all"
                     value={formData.password}
                     onChange={e => setFormData({ ...formData, password: e.target.value })}
                 />
@@ -179,7 +179,7 @@ const UserForm = ({ kelasList, mapelList, onSuccess }) => {
 
             <button
                 type="submit"
-                className="w-full bg-linear-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white py-3 rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all transform hover:-translate-y-0.5"
+                className="w-full bg-[#0085db] hover:bg-[#0071ba] text-white py-3 rounded-xl font-semibold shadow-sm transition-all transform hover:-translate-y-0.5"
             >
                 Tambah User
             </button>

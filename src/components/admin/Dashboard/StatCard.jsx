@@ -1,30 +1,23 @@
+// Matches template color palette from tailwind.config.js
 const StatCard = ({ title, count, color, icon }) => {
     const colors = {
-        orange: 'from-orange-500 to-orange-600',
-        orangeLight: 'from-orange-400 to-orange-500',
-        green: 'from-green-500 to-green-600',
-        purple: 'from-purple-500 to-purple-600'
+        orange: { bg: 'bg-[#0085db]', light: 'bg-[#e5f3fb]', text: 'text-[#0085db]' },
+        orangeLight: { bg: 'bg-[#46caeb]', light: 'bg-[#e1f5fa]', text: 'text-[#46caeb]' },
+        green: { bg: 'bg-[#4bd08b]', light: 'bg-[#dffff3]', text: 'text-[#4bd08b]' },
+        purple: { bg: 'bg-[#5a6a85]', light: 'bg-[#e6ecf1]', text: 'text-[#5a6a85]' }
     }
 
+    const c = colors[color] || colors.orange
+
     return (
-        <div className="group relative overflow-hidden rounded-2xl bg-white/80 backdrop-blur-xl border border-orange-100/50 shadow-xl shadow-orange-500/10 hover:shadow-2xl hover:shadow-orange-500/20 transition-all duration-500 hover:-translate-y-1">
-            <div className="absolute inset-0 bg-gradient-to-br opacity-5 group-hover:opacity-10 transition-opacity" style={{
-                backgroundImage: `linear-gradient(to bottom right, var(--tw-gradient-stops))`
-            }}></div>
-            <div className="relative p-6">
-                <div className="flex items-center justify-between mb-4">
-                    <div className={`p-3 rounded-xl bg-gradient-to-br ${colors[color]} text-white shadow-lg transform group-hover:scale-110 transition-transform`}>
-                        {icon}
-                    </div>
-                    <div className="text-right">
-                        <p className="text-sm text-gray-500 font-medium">{title}</p>
-                        <p className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
-                            {count}
-                        </p>
-                    </div>
+        <div className="bg-white rounded-[18px] border border-[#e7ecf0] shadow-[0px_2px_6px_rgba(37,83,185,0.1)] p-6">
+            <div className="flex items-center gap-4">
+                <div className={`w-12 h-12 rounded-full ${c.bg} flex items-center justify-center text-white shrink-0`}>
+                    {icon}
                 </div>
-                <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
-                    <div className={`h-full bg-gradient-to-r ${colors[color]} rounded-full transform origin-left group-hover:scale-x-100 scale-x-75 transition-transform duration-700`}></div>
+                <div>
+                    <p className="text-sm text-[#707a82] font-medium">{title}</p>
+                    <p className="text-2xl font-bold text-[#111c2d] mt-0.5">{count}</p>
                 </div>
             </div>
         </div>

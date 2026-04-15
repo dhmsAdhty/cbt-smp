@@ -205,55 +205,90 @@ export default function Siswa() {
     ]
 
     return (
-        <div className="min-h-screen bg-gray-50 flex">
-            <Sidebar
-                activeTab={activeTab}
-                setActiveTab={setActiveTab}
-                menuItems={menuItems}
-                themeColor="blue"
-                userRole="siswa"
-            />
+        <div className="min-h-screen bg-[#f0f5f9]">
+            {/* Top Strip */}
+            <div className="sticky top-0 z-50 py-[15px] px-6 bg-[linear-gradient(90deg,_#0f0533_0%,_#1b0a5c_100%)]">
+                <div className="max-w-[1400px] mx-auto flex items-center justify-between">
+                    <p className="text-white text-sm font-semibold tracking-wide">CBT Siswa Panel</p>
+                    <span className="text-blue-200 text-xs">Sekolah Tahfidz Al Hikmah</span>
+                </div>
+            </div>
 
-            <main className="flex-1 p-6 lg:ml-80">
-                {activeTab === 'profile' ? (
-                    <ProfileView />
-                ) : (
-                    <div className="max-w-7xl mx-auto space-y-6">
-                        <div className="flex flex-col md:flex-row justify-between gap-4">
-                            <div>
-                                <h2 className="text-3xl font-bold text-gray-800">
-                                    Halo, {studentName}
-                                </h2>
-                                <p className="text-gray-500">Selamat datang di ruang ujian</p>
-                            </div>
+            <div className="flex p-5 xl:pr-0">
+                <Sidebar
+                    activeTab={activeTab}
+                    setActiveTab={setActiveTab}
+                    menuItems={menuItems}
+                    themeColor="blue"
+                    userRole="siswa"
+                />
 
-                            <div className="relative w-full md:w-80">
-                                <Search01Icon className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-                                <input
-                                    value={searchTerm}
-                                    onChange={e => setSearchTerm(e.target.value)}
-                                    placeholder="Cari ujian..."
-                                    className="w-full pl-12 pr-4 py-3 border rounded-xl outline-none"
-                                />
-                            </div>
+                <div className="w-full lg:ml-[270px] xl:px-6 px-0">
+                    <main className="h-full max-w-full">
+                        <div className="p-0 flex flex-col gap-6">
+                            {/* Header */}
+                            <header className="bg-white shadow-[0px_2px_6px_rgba(37,83,185,0.1)] rounded-[18px] w-full text-sm py-4 px-6 border border-[#e7ecf0]">
+                                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                                    <div>
+                                        <h1 className="text-xl font-semibold text-[#111c2d]">
+                                            {activeTab === 'profile' ? 'Profil Saya' : 'Dashboard Siswa'}
+                                        </h1>
+                                        <p className="text-[#707a82] text-sm mt-0.5">Selamat datang di ruang ujian CBT</p>
+                                    </div>
+                                    <span className="inline-flex w-fit px-3 py-1.5 rounded-full bg-[#dffff3] text-[#4bd08b] text-xs font-semibold">
+                                        Siswa
+                                    </span>
+                                </div>
+                            </header>
+
+                            {activeTab === 'profile' ? (
+                                <ProfileView />
+                            ) : (
+                                <div className="space-y-6">
+                                    <div className="flex flex-col md:flex-row justify-between gap-4">
+                                        <div>
+                                            <h2 className="text-2xl font-bold text-[#111c2d]">
+                                                Halo, {studentName}
+                                            </h2>
+                                            <p className="text-[#707a82] text-sm">Selamat datang di ruang ujian</p>
+                                        </div>
+
+                                        <div className="relative w-full md:w-80">
+                                            <Search01Icon className="absolute left-4 top-1/2 -translate-y-1/2 text-[#707a82]" size={18} />
+                                            <input
+                                                value={searchTerm}
+                                                onChange={e => setSearchTerm(e.target.value)}
+                                                placeholder="Cari ujian..."
+                                                className="w-full pl-11 pr-4 py-2.5 bg-white border border-[#e7ecf0] rounded-[7px] outline-none focus:ring-2 focus:ring-[#0085db]/20 focus:border-[#0085db] text-sm text-[#111c2d]"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {loading ? (
+                                        <p className="text-[#707a82] text-sm">Memuat ujian...</p>
+                                    ) : filteredExams.length ? (
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                            {filteredExams.map(exam => (
+                                                <ExamCard key={exam.id} exam={exam} />
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <p className="text-center text-[#707a82] py-20 text-sm">
+                                            Tidak ada ujian tersedia
+                                        </p>
+                                    )}
+                                </div>
+                            )}
+
+                            <footer>
+                                <p className="text-sm text-[#707a82] font-normal p-3 text-center">
+                                    CBT &copy; {new Date().getFullYear()} Sekolah Tahfidz Al Hikmah
+                                </p>
+                            </footer>
                         </div>
-
-                        {loading ? (
-                            <p className="text-gray-500">Memuat ujian...</p>
-                        ) : filteredExams.length ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {filteredExams.map(exam => (
-                                    <ExamCard key={exam.id} exam={exam} />
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="text-center text-gray-500 py-20">
-                                Tidak ada ujian tersedia
-                            </p>
-                        )}
-                    </div>
-                )}
-            </main>
+                    </main>
+                </div>
+            </div>
         </div>
     )
 }

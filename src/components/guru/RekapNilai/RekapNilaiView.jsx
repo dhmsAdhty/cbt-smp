@@ -169,7 +169,7 @@ const RekapNilaiView = () => {
             const soalIds = answers.map(a => a.soal_id)
             const { data: soalList } = await supabase
                 .from('bank_soal')
-                .select('id, pertanyaan, opsi_jawaban, kunci_jawaban, tipe_soal')
+                .select('id, pertanyaan, opsi_jawaban, kunci_jawaban, tipe_soal, gambar_url')
                 .in('id', soalIds)
                 .is('deleted_at', null)
 
@@ -178,6 +178,7 @@ const RekapNilaiView = () => {
                 return {
                     ...ans,
                     pertanyaan: soal?.pertanyaan,
+                    gambar_url: soal?.gambar_url,
                     opsi_jawaban: soal?.opsi_jawaban,
                     kunci_jawaban: soal?.kunci_jawaban,
                     tipe_soal: soal?.tipe_soal
@@ -650,6 +651,21 @@ const RekapNilaiView = () => {
                                             {ans.pertanyaan || 'Pertanyaan tidak tersedia'}
                                         </motion.p>
 
+                                        {ans.gambar_url && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 10 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ delay: 0.28 + index * 0.05 }}
+                                                className="ml-10 mb-4"
+                                            >
+                                                <img
+                                                    src={ans.gambar_url}
+                                                    alt={`Gambar soal ${index + 1}`}
+                                                    className="max-w-full md:max-w-xl rounded-xl border border-gray-200 dark:border-gray-600 shadow-sm"
+                                                />
+                                            </motion.div>
+                                        )}
+
                                         {ans.tipe_soal === 'pilihan_ganda' && ans.opsi_jawaban && (
                                             <motion.div
                                                 initial={{ opacity: 0, y: 10 }}
@@ -687,6 +703,15 @@ const RekapNilaiView = () => {
                                                                 >
                                                                     <span className="font-bold mr-2">{opsi.label}.</span>
                                                                     {opsi.text || opsi.value}
+                                                                    {opsi.image_url && (
+                                                                        <div className="mt-2">
+                                                                            <img
+                                                                                src={opsi.image_url}
+                                                                                alt={`Gambar opsi ${opsi.label}`}
+                                                                                className="max-w-full md:max-w-sm rounded-lg border border-gray-200 dark:border-gray-600"
+                                                                            />
+                                                                        </div>
+                                                                    )}
                                                                     {isKunci && (
                                                                         <motion.span
                                                                             initial={{ scale: 0 }}

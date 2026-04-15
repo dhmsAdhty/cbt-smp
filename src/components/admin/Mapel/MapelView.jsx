@@ -166,10 +166,10 @@ const MapelView = () => {
                     <div className="flex items-center gap-3">
 
                         <div>
-                            <h2 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-gray-800">
+                            <h2 className="text-2xl font-bold text-[#111c2d]">
                                 Tambah Mata Pelajaran
                             </h2>
-                            <p className="text-sm text-gray-500">
+                            <p className="text-sm text-[#5f686f]">
                                 Kelola data mata pelajaran sekolah
                             </p>
                         </div>
@@ -179,7 +179,7 @@ const MapelView = () => {
                         {/* Search Input */}
                         <div className="relative">
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <svg className="h-5 w-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="h-5 w-5 text-[#0085db]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </div>
@@ -188,14 +188,14 @@ const MapelView = () => {
                                 placeholder="Cari mapel..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-64 pl-10 pr-4 py-2.5 bg-white/80 backdrop-blur-sm border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 placeholder-gray-400 text-gray-900 transition-all duration-200"
+                                className="w-64 pl-10 pr-4 py-2.5 bg-[#f0f5f9] border border-[#e7ecf0] rounded-xl focus:ring-2 focus:ring-[#0085db]/20 focus:border-[#0085db] placeholder-gray-400 text-[#111c2d] transition-all duration-200"
                             />
                         </div>
 
                         {/* Add Button */}
                         <button
                             onClick={handleAdd}
-                            className="group relative px-6 py-2.5 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all duration-300 transform hover:-translate-y-0.5 overflow-hidden"
+                            className="group relative px-6 py-2.5 bg-gradient-to-r from-[#0085db] to-[#0071ba] hover:from-[#0071ba] hover:to-[#00639f] text-white rounded-xl font-semibold shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5 overflow-hidden"
                         >
                             <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                             <div className="relative flex items-center gap-2">
@@ -211,15 +211,15 @@ const MapelView = () => {
                 {/* Stats */}
                 <div className="flex items-center gap-4 mt-4 pt-4 border-t border-gray-200">
                     <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
-                        <span className="text-sm text-gray-600">
-                            Total Mapel: <span className="font-bold text-orange-600">{mapelList.length}</span>
+                        <span className="w-2 h-2 bg-[#0085db] rounded-full"></span>
+                        <span className="text-sm text-[#5f686f]">
+                            Total Mapel: <span className="font-bold text-[#0085db]">{mapelList.length}</span>
                         </span>
                     </div>
                     {searchTerm && (
                         <div className="flex items-center gap-2">
                             <span className="w-2 h-2 bg-blue-500 rounded-full"></span>
-                            <span className="text-sm text-gray-600">
+                            <span className="text-sm text-[#5f686f]">
                                 Hasil pencarian: <span className="font-bold text-blue-600">{filteredMapel.length}</span>
                             </span>
                         </div>
@@ -240,11 +240,11 @@ const MapelView = () => {
                                 onMouseLeave={() => setIsHovering(null)}
                             >
                                 {/* Premium Card */}
-                                <div className="relative p-5 bg-gradient-to-br from-white to-orange-50/50 rounded-xl border border-orange-100/50 shadow-lg hover:shadow-2xl hover:shadow-orange-500/20 transition-all duration-500 hover:-translate-y-1 overflow-hidden">
+                                <div className="relative p-5 bg-white rounded-xl border border-[#e7ecf0] shadow-sm hover:shadow-md transition-all duration-500 hover:-translate-y-1 overflow-hidden">
 
                                     {/* Background Decoration */}
-                                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-orange-400/10 to-orange-600/10 rounded-full blur-2xl"></div>
-                                    <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-orange-400/10 to-orange-600/10 rounded-full blur-xl"></div>
+                                    <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-[#46caeb]/10 to-[#0085db]/10 rounded-full blur-2xl"></div>
+                                    <div className="absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-[#46caeb]/10 to-[#0085db]/10 rounded-full blur-xl"></div>
 
                                     {/* Content */}
                                     <div className="relative">
@@ -252,7 +252,7 @@ const MapelView = () => {
                                             <div className="flex items-center gap-3">
                                                 {/* Icon */}
                                                 <div>
-                                                    <h3 className="font-bold text-sm text-gray-800 group-hover:text-orange-600 transition-colors">
+                                                    <h3 className="font-bold text-sm text-[#111c2d] group-hover:text-[#0085db] transition-colors">
                                                         {mapel.nama_mapel}
                                                     </h3>
                                                 </div>
@@ -283,9 +283,9 @@ const MapelView = () => {
                     <div className="flex flex-col items-center justify-center py-16 px-4">
                         {/* Empty State */}
                         <div className="relative mb-6">
-                            <div className="absolute inset-0 bg-orange-500 rounded-full blur-3xl opacity-20 animate-pulse"></div>
-                            <div className="relative w-24 h-24 rounded-full bg-gradient-to-br from-orange-400/20 to-orange-600/20 flex items-center justify-center">
-                                <svg className="w-12 h-12 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div className="absolute inset-0 bg-[#0085db] rounded-full blur-3xl opacity-10 animate-pulse"></div>
+                            <div className="relative w-24 h-24 rounded-full bg-[#e5f3fb] flex items-center justify-center">
+                                <svg className="w-12 h-12 text-[#0085db]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                 </svg>
                             </div>
@@ -316,9 +316,9 @@ const MapelView = () => {
             {/* Quick Actions */}
             {filteredMapel.length > 0 && (
                 <div className="flex justify-end">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-orange-50 rounded-lg border border-orange-200">
-                        <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
-                        <span className="text-sm text-orange-700">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#e5f3fb] rounded-lg border border-[#0085db]/20">
+                        <span className="w-2 h-2 bg-[#0085db] rounded-full animate-pulse"></span>
+                        <span className="text-sm text-[#0085db]">
                             {filteredMapel.length} mata pelajaran ditampilkan
                         </span>
                     </div>

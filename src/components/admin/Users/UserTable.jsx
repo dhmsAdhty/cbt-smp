@@ -43,45 +43,45 @@ const UserTable = ({
                         placeholder="Cari nama, email, role, kelas, atau mapel..."
                         value={localSearch}
                         onChange={(e) => setLocalSearch(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all"
+                        className="w-full pl-10 pr-4 py-2.5 bg-[#f0f5f9] border border-[#e7ecf0] rounded-xl focus:ring-2 focus:ring-[#0085db]/20 focus:border-[#0085db] transition-all"
                     />
                 </div>
-                <div className="text-sm text-gray-600">
+                <div className="text-sm text-[#5f686f] font-medium">
                     {totalUsers} user{totalUsers !== 1 ? 's' : ''}
                 </div>
             </div>
 
             {/* Table */}
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto rounded-xl border border-[#e7ecf0]">
                 <table className="w-full">
                     <thead>
-                        <tr className="border-b border-gray-200">
-                            <th className="text-left p-4 text-sm font-semibold text-gray-700">Nama</th>
-                            <th className="text-left p-4 text-sm font-semibold text-gray-700">Role</th>
-                            <th className="text-left p-4 text-sm font-semibold text-gray-700">Kelas/Mapel</th>
-                            <th className="text-left p-4 text-sm font-semibold text-gray-700">Aksi</th>
+                        <tr className="border-b border-[#e7ecf0] bg-[#f0f5f9]">
+                            <th className="text-left p-4 text-xs font-bold text-[#5f686f] uppercase tracking-wide">Nama</th>
+                            <th className="text-left p-4 text-xs font-bold text-[#5f686f] uppercase tracking-wide">Role</th>
+                            <th className="text-left p-4 text-xs font-bold text-[#5f686f] uppercase tracking-wide">Kelas/Mapel</th>
+                            <th className="text-left p-4 text-xs font-bold text-[#5f686f] uppercase tracking-wide">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
                         {users.length > 0 ? (
                             users.map((user) => (
-                                <tr key={user.id} className="border-b border-gray-100 hover:bg-orange-50/50 transition-colors">
-                                    <td className="p-4 text-sm text-gray-800 font-medium">{user.nama}</td>
+                                <tr key={user.id} className="border-b border-[#eef2f6] hover:bg-[#f8fbfe] transition-colors">
+                                    <td className="p-4 text-sm text-[#111c2d] font-semibold">{user.nama}</td>
                                     <td className="p-4">
                                         <span className={`px-3 py-1 rounded-full text-xs font-semibold ${user.role === 'admin' ? 'bg-purple-100 text-purple-700' :
-                                            user.role === 'guru' ? 'bg-orange-100 text-orange-700' :
-                                                'bg-green-100 text-green-700'
+                                            user.role === 'guru' ? 'bg-[#e5f3fb] text-[#0085db]' :
+                                                'bg-[#dffff3] text-[#40b176]'
                                             }`}>
                                             {user.role}
                                         </span>
                                     </td>
-                                    <td className="p-4 text-gray-600">
+                                    <td className="p-4 text-[#5f686f]">
                                         {user.kelas || user.mapel || '-'}
                                     </td>
                                     <td className="p-4">
                                         <button
                                             onClick={() => onViewUser(user)}
-                                            className="px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg text-sm font-medium transition-all shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transform hover:-translate-y-0.5"
+                                            className="px-4 py-2 bg-gradient-to-r from-[#0085db] to-[#0071ba] hover:from-[#0071ba] hover:to-[#00639f] text-white rounded-lg text-sm font-semibold transition-all shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
                                         >
                                             Lihat
                                         </button>
@@ -90,7 +90,7 @@ const UserTable = ({
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="4" className="p-8 text-center text-gray-500">
+                                <td colSpan="4" className="p-8 text-center text-[#707a82]">
                                     {searchQuery ? 'Tidak ada user yang sesuai dengan pencarian' : 'Belum ada user'}
                                 </td>
                             </tr>
@@ -101,15 +101,15 @@ const UserTable = ({
 
             {/* Pagination Controls */}
             {totalPages > 1 && (
-                <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                    <div className="text-sm text-gray-600">
+                <div className="flex items-center justify-between pt-4 border-t border-[#e7ecf0]">
+                    <div className="text-sm text-[#5f686f]">
                         Menampilkan {startIndex + 1}-{Math.min(startIndex + itemsPerPage, totalUsers)} dari {totalUsers} user
                     </div>
                     <div className="flex items-center gap-2">
                         <button
                             onClick={() => goToPage(currentPage - 1)}
                             disabled={currentPage === 1}
-                            className="px-3 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-orange-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            className="px-3 py-2 rounded-lg bg-[#f0f5f9] text-[#5f686f] hover:bg-[#e5f3fb] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -128,8 +128,8 @@ const UserTable = ({
                                             key={page}
                                             onClick={() => goToPage(page)}
                                             className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${page === currentPage
-                                                ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg shadow-orange-500/30'
-                                                : 'bg-gray-100 text-gray-700 hover:bg-orange-100'
+                                                ? 'bg-gradient-to-r from-[#0085db] to-[#0071ba] text-white shadow-sm'
+                                                : 'bg-[#f0f5f9] text-[#5f686f] hover:bg-[#e5f3fb]'
                                                 }`}
                                         >
                                             {page}
@@ -139,7 +139,7 @@ const UserTable = ({
                                     page === currentPage - 2 ||
                                     page === currentPage + 2
                                 ) {
-                                    return <span key={page} className="px-2 text-gray-400">...</span>
+                                    return <span key={page} className="px-2 text-[#707a82]">...</span>
                                 }
                                 return null
                             })}
@@ -148,7 +148,7 @@ const UserTable = ({
                         <button
                             onClick={() => goToPage(currentPage + 1)}
                             disabled={currentPage === totalPages}
-                            className="px-3 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-orange-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                            className="px-3 py-2 rounded-lg bg-[#f0f5f9] text-[#5f686f] hover:bg-[#e5f3fb] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
