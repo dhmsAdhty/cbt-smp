@@ -1,97 +1,91 @@
-// src/App.jsx
-import { useState, useEffect } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { supabase } from './lib/supabaseClient'
-
-// Import Halaman (Perhatikan path folder 'dashboard' baru)
-import Login from './pages/Login'
-import Admin from './pages/dashboard/Admin'
-import Guru from './pages/dashboard/Guru'
-import Siswa from './pages/dashboard/Siswa'
-import UjianKerjakan from './pages/dashboard/siswa/UjianKerjakan'
-import HasilUjian from './pages/dashboard/siswa/HasilUjian'
-
-// Import Satpam
-import ProtectedRoute from './components/ProtectedRoute'
-
-// Import Error Handling
-import NotFound from './pages/NotFound'
-import ErrorBoundary from './components/ui/ErrorBoundary'
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
 function App() {
-  const [session, setSession] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [countdown, setCountdown] = useState(10);
+  const newUrl = "https://cbt-ats.pages.dev";
 
   useEffect(() => {
-    // 1. Cek sesi saat aplikasi pertama dibuka
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-      setLoading(false)
-    })
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          window.location.href = newUrl;
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
 
-    // 2. Pasang pendengar (listener) jika user login/logout
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-      setLoading(false)
-    })
-
-    return () => subscription.unsubscribe()
-  }, [])
-
-  // Tampilkan layar loading putih saat cek status login (supaya tidak kedip)
-  if (loading) {
-    return <div className="h-screen flex items-center justify-center">Memuat...</div>
-  }
+    return () => clearInterval(timer);
+  }, []);
 
   return (
-    <ErrorBoundary>
-      <Router>
-        <Routes>
-          {/* Halaman Login (Publik) */}
-          <Route path="/" element={<Login />} />
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 relative overflow-hidden font-sans text-slate-800">
+      
+      {/* Subtle Background Elements */}
+      <div className="absolute top-0 w-full h-96 bg-gradient-to-b from-blue-50 to-transparent z-0"></div>
 
-          {/* === AREA TERPROTEKSI (DASHBOARD) === */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="max-w-xl w-full bg-white border border-slate-200 rounded-3xl p-8 md:p-12 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.05)] relative z-10 text-center"
+      >
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.6, ease: "easeOut" }}
+          className="w-16 h-16 md:w-20 md:h-20 bg-blue-50 border border-blue-100 rounded-2xl mx-auto flex items-center justify-center mb-8 shadow-sm"
+        >
+          <svg className="w-8 h-8 md:w-10 md:h-10 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7h12m0 0v12m0-12l-14 14" />
+          </svg>
+        </motion.div>
 
-          {/* Admin */}
-          <Route path="/dashboard/admin" element={
-            <ProtectedRoute user={session} allowedRoles={['admin']}>
-              <Admin />
-            </ProtectedRoute>
-          } />
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+        >
+          <div className="inline-block px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-600 text-xs font-semibold mb-6 tracking-widest uppercase">
+            Pembaruan Sistem CBT
+          </div>
 
-          {/* Guru */}
-          <Route path="/dashboard/guru" element={
-            <ProtectedRoute user={session} allowedRoles={['guru']}>
-              <Guru />
-            </ProtectedRoute>
-          } />
+          <h1 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight text-slate-900">
+            Sistem Telah Dipindahkan
+          </h1>
+          
+          <p className="text-slate-600 text-base md:text-lg mb-8 leading-relaxed font-normal">
+            Situs CBT telah dialihkan dari <span className="text-slate-400 line-through">cbt-smp.pages.dev</span> ke alamat baru.
+          </p>
 
-          {/* Siswa */}
-          <Route path="/dashboard/siswa" element={
-            <ProtectedRoute user={session} allowedRoles={['siswa']}>
-              <Siswa />
-            </ProtectedRoute>
-          } />
+          <div className="bg-slate-50/80 rounded-2xl p-6 mb-8 border border-slate-100">
+            <p className="text-xs text-slate-500 mb-2 font-medium tracking-widest uppercase">Alamat Baru</p>
+            <p className="text-2xl md:text-3xl font-medium text-blue-600 tracking-wide break-all">
+              cbt-ats.pages.dev
+            </p>
+          </div>
 
-          <Route path="/dashboard/siswa/ujian/:id" element={
-            <ProtectedRoute user={session} allowedRoles={['siswa']}>
-              <UjianKerjakan />
-            </ProtectedRoute>
-          } />
+          <a 
+            href={newUrl}
+            className="group relative inline-flex items-center justify-center w-full sm:w-auto px-8 py-3.5 bg-blue-600 text-white font-medium rounded-xl overflow-hidden transition-all hover:bg-blue-700 active:scale-95 shadow-md shadow-blue-600/20"
+          >
+            <span className="relative z-10 flex items-center gap-2">
+              Lanjutkan
+              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </span>
+          </a>
 
-          <Route path="/dashboard/siswa/hasil/:id" element={
-            <ProtectedRoute user={session} allowedRoles={['siswa']}>
-              <HasilUjian />
-            </ProtectedRoute>
-          } />
-
-          {/* 404 Not Found */}
-          <Route path="*" element={<NotFound />} />
-
-        </Routes>
-      </Router>
-    </ErrorBoundary>
-  )
+          <p className="mt-8 text-xs text-slate-500 font-normal tracking-wide">
+            Mengalihkan otomatis dalam <span className="font-semibold text-slate-700">{countdown}</span> detik
+          </p>
+        </motion.div>
+      </motion.div>
+    </div>
+  );
 }
 
-export default App
+export default App;
